@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mr Wind</title>
+    <description>诸君，武运昌隆</description>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 15 Feb 2020 15:17:28 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Feb 2020 15:17:28 +0800</lastBuildDate>
+    <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>CentOS7定时任务详解</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#crontab&quot; id=&quot;markdown-toc-crontab&quot;&gt;crontab&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#1crontab命令&quot; id=&quot;markdown-toc-1crontab命令&quot;&gt;1，crontab命令&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2crontab-格式&quot; id=&quot;markdown-toc-2crontab-格式&quot;&gt;2，crontab 格式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#use-the-hash-sign-to-prefix-a-comment&quot; id=&quot;markdown-toc-use-the-hash-sign-to-prefix-a-comment&quot;&gt;Use the hash sign to prefix a comment&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#--minute-0--59&quot; id=&quot;markdown-toc---minute-0--59&quot;&gt;+—————- minute (0 – 59)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#---hour-0--23&quot; id=&quot;markdown-toc----hour-0--23&quot;&gt;| +————- hour (0 – 23)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#----day-of-month-1--31&quot; id=&quot;markdown-toc-----day-of-month-1--31&quot;&gt;| | +———- day of month (1 – 31)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#-----month-1--12&quot; id=&quot;markdown-toc------month-1--12&quot;&gt;| | | +——- month (1 – 12)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#------day-of-week-0--7-sunday0-or-7&quot; id=&quot;markdown-toc-------day-of-week-0--7-sunday0-or-7&quot;&gt;| | | | +—- day of week (0 – 7) (Sunday=0 or 7)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#----&quot; id=&quot;markdown-toc-----&quot;&gt;| | | | |&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#-----command-to-be-executed&quot; id=&quot;markdown-toc------command-to-be-executed&quot;&gt;* * * * * command to be executed&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#4-创建cron脚本&quot; id=&quot;markdown-toc-4-创建cron脚本&quot;&gt;4 创建cron脚本&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#将脚本改为可执行针对shellsh文件&quot; id=&quot;markdown-toc-将脚本改为可执行针对shellsh文件&quot;&gt;将脚本改为可执行（针对shell，.sh文件）&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;工作中需要开启一个定时任务：每天晚上2点进行爬虫代码的运行，这不得不去学习一下linux 下的定时任务crontab&lt;/p&gt;
+
+&lt;h2 id=&quot;crontab&quot;&gt;crontab&lt;/h2&gt;
+
+&lt;p&gt;yum install crontabs&lt;/p&gt;
+
+&lt;p&gt;说明：
+/sbin/service crond start //启动服务
+/sbin/service crond stop //关闭服务
+/sbin/service crond restart //重启服务
+/sbin/service crond reload //重新载入配置
+查看crontab服务状态：service crond status
+手动启动crontab服务：service crond start
+查看crontab服务是否已设置为开机启动，执行命令：ntsysv
+加入开机自动启动:
+chkconfig crond on&lt;/p&gt;
+
+&lt;h2 id=&quot;1crontab命令&quot;&gt;1，crontab命令&lt;/h2&gt;
+
+&lt;p&gt;功能说明：设置计时器。
+语　　法：crontab [-u &lt;用户名称&gt;][配置文件] 或 crontab [-u &lt;用户名称&gt;][-elr]&lt;/用户名称&gt;&lt;/用户名称&gt;&lt;/p&gt;
+
+&lt;p&gt;补充说明：cron是一个常驻服务，它提供计时器的功能，让用户在特定的时间得以执行预设的指令或程序。只要用户会编辑计时器的配置文件，就可以使 用计时器的功能。&lt;/p&gt;
+
+&lt;p&gt;其配置文件格式如下：
+Minute Hour Day Month DayOFWeek Command&lt;/p&gt;
+
+&lt;p&gt;参　　数：
+-e 　编辑该用户的计时器设置。
+-l 　列出该用户的计时器设置。
+-r 　删除该用户的计时器设置。
+-u&lt;用户名称&gt; 　指定要设定计时器的用户名称。&lt;/用户名称&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2crontab-格式&quot;&gt;2，crontab 格式&lt;/h2&gt;
+
+&lt;p&gt;基本格式 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;　 *　 *　 *　　command
+分　时　日　月　周　 命令
+第1列表示分钟1～59 每分钟用&lt;/em&gt;或者 */1表示
+第2列表示小时1～23（0表示0点）
+第3列表示日期1～31
+第4列 表示月份1～12
+第5列标识号星期0～6（0表示星期天）
+第6列要运行的命令
+```js&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;use-the-hash-sign-to-prefix-a-comment&quot;&gt;Use the hash sign to prefix a comment&lt;/h1&gt;
+&lt;h1 id=&quot;--minute-0--59&quot;&gt;+—————- minute (0 – 59)&lt;/h1&gt;
+&lt;h1 id=&quot;---hour-0--23&quot;&gt;| +————- hour (0 – 23)&lt;/h1&gt;
+&lt;h1 id=&quot;----day-of-month-1--31&quot;&gt;| | +———- day of month (1 – 31)&lt;/h1&gt;
+&lt;h1 id=&quot;-----month-1--12&quot;&gt;| | | +——- month (1 – 12)&lt;/h1&gt;
+&lt;h1 id=&quot;------day-of-week-0--7-sunday0-or-7&quot;&gt;| | | | +—- day of week (0 – 7) (Sunday=0 or 7)&lt;/h1&gt;
+&lt;h1 id=&quot;----&quot;&gt;| | | | |&lt;/h1&gt;
+&lt;h1 id=&quot;-----command-to-be-executed&quot;&gt;* * * * * command to be executed&lt;/h1&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## 3，crontab文件的一些例子：
+
+&amp;gt; 1 简单打印
+
+```js
+
+每天早上6点 
+0 6 * * * echo &quot;Good morning.&quot; &amp;gt;&amp;gt; /tmp/test.txt //注意单纯echo，从屏幕上看不到任何输出，因为cron把任何输出都email到root的信箱了。
+
+每两个小时 
+0 */2 * * * echo &quot;Have a break now.&quot; &amp;gt;&amp;gt; /tmp/test.txt  
+
+晚上11点到早上8点之间每两个小时和早上八点 
+0 23-7/2，8 * * * echo &quot;Have a good dream&quot; &amp;gt;&amp;gt; /tmp/test.txt
+
+每个月的4号和每个礼拜的礼拜一到礼拜三的早上11点 
+0 11 4 * 1-3 command line
+
+1月1日早上4点 
+0 4 1 1 * command line SHELL=/bin/bash PATH=/sbin:/bin:/usr/sbin:/usr/bin MAILTO=root //如果出现错误，或者有数据输出，数据作为邮件发给这个帐号 HOME=/ 
+
+每小时执行/etc/cron.hourly内的脚本
+01 * * * * root run-parts /etc/cron.hourly
+
+每天执行/etc/cron.daily内的脚本
+02 4 * * * root run-parts /etc/cron.daily 
+
+每星期执行/etc/cron.weekly内的脚本
+22 4 * * 0 root run-parts /etc/cron.weekly 
+
+每月去执行/etc/cron.monthly内的脚本 
+42 4 1 * * root run-parts /etc/cron.monthly 
+
+注意: &quot;run-parts&quot;这个参数了，如果去掉这个参数的话，后面就可以写要运行的某个脚本名，而不是文件夹名。 　 
+
+每天的下午4点、5点、6点的5 min、15 min、25 min、35 min、45 min、55 min时执行命令。 
+5，15，25，35，45，55 16，17，18 * * * command
+
+每周一，三，五的下午3：00系统进入维护状态，重新启动系统。
+00 15 * * 1，3，5 shutdown -r +5
+
+每小时的10分，40分执行用户目录下的innd/bbslin这个指令： 
+10，40 * * * * innd/bbslink 
+
+每小时的1分执行用户目录下的bin/account这个指令： 
+1 * * * * bin/account
+
+每天早晨三点二十分执行用户目录下如下所示的两个指令（每个指令以;分隔）： 
+20 3 * * * （/bin/rm -f expire.ls logins.bad;bin/expire$#@62;expire.1st）　　
+
+每年的一月和四月，4号到9号的3点12分和3点55分执行/bin/rm -f expire.1st这个指令，并把结果添加在mm.txt这个文件之后（mm.txt文件位于用户自己的目录位置）。 
+12,55 3 4-9 1,4 * /bin/rm -f expire.1st$#@62;$#@62;mm.txt 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;2 nginx示例&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每晚的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每月&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;日的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每周六、周日的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每天&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;至&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;之间每隔&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分钟重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每星期六的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pm&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/1 * * * /&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每一小时重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;晚上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点到早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点之间，每&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;隔一小时重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;wed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每月的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;号与每周一到周三&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jan&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;一月一号的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/30 * * * * /u&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sbin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ntpdate&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;210.72&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;145.20&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;每半小时同步一下时间&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;4-创建cron脚本&quot;&gt;4 创建cron脚本&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;第一步：写cron脚本文件,命名为crontest.cron。
+15,30,45,59 * * * * echo “xgmtest…..” » xgmtest.txt  表示，每隔15分钟，执行打印一次命令&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第二步：添加定时任务。执行命令 “crontab crontest.cron”。搞定&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第三步：”crontab -l” 查看定时任务是否成功或者检测/var/spool/cron下是否生成对应cron脚本&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;将脚本改为可执行针对shellsh文件&quot;&gt;将脚本改为可执行（针对shell，.sh文件）&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;chmod +x filename&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;引用：&lt;/p&gt;
+
+&lt;p&gt;http://blog.csdn.net/u012402276/article/details/51063269
+https://www.cnblogs.com/longjshz/p/5779215.html
+http://blog.csdn.net/edgdvcyz/article/details/53348832&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 10 Feb 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/linux/2018/02/10/centos-crontab/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2018/02/10/centos-crontab/</guid>
+        
+        <category>centos7</category>
+        
+        <category>crontab</category>
+        
+        <category>linux</category>
+        
+        <category>工具软件</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
+    
+      <item>
+        <title>工作填坑之内网与外网</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#概念&quot; id=&quot;markdown-toc-概念&quot;&gt;概念&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#坑&quot; id=&quot;markdown-toc-坑&quot;&gt;坑&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#场景&quot; id=&quot;markdown-toc-场景&quot;&gt;场景&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#解决&quot; id=&quot;markdown-toc-解决&quot;&gt;解决&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#总结&quot; id=&quot;markdown-toc-总结&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;概念&quot;&gt;概念&lt;/h2&gt;
+
+&lt;p&gt;内网：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;内网也就是局域网，内网的计算机以NAT（&lt;a href=&quot;https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2&quot;&gt;网络地址转换&lt;/a&gt;）协议，通过一个公共的&lt;a href=&quot;https://baike.baidu.com/item/%E7%BD%91%E5%85%B3&quot;&gt;网关&lt;/a&gt;访问Internet。内网的计算机可向Internet上的其他计算机发送连接请求，但Internet上其他的计算机无法向内网的计算机发送连接请求。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;最直观的就是像网吧，公司内部的电脑用交换机，HUB，路由连起来的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;外网：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;外网IP包括：ADSL拨号的动态IP用动态&lt;a href=&quot;https://baike.baidu.com/item/%E8%A7%A3%E6%9E%90%E5%9F%9F%E5%90%8D&quot;&gt;解析域名&lt;/a&gt;来绑定IP，又叫&lt;a href=&quot;https://baike.baidu.com/item/%E5%8A%A8%E6%80%81%E5%9F%9F%E5%90%8D&quot;&gt;动态域名&lt;/a&gt;；固定的外网IP(这种多半为网吧的IP)即，整个网吧的那个主IP。外网IP指的是：打开ADSL&lt;a href=&quot;https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1&quot;&gt;路由&lt;/a&gt;功能的用户你的外网IP就应该是ADSL设备的IP，网吧里的外网IP是指整个网吧的主IP，校园网的外网IP就是整个校园网的那个主IP，小区网的外网IP与校园网同理，长宽的用户就要试下了，可以上论坛，看看你的IP是多少，那么那个IP就是你要绑定的，所有的内网用户都可以这样查的，论坛
+上的IP就是你要绑定的IP&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;坑&quot;&gt;坑&lt;/h2&gt;
+
+&lt;p&gt;第一次搭建服务器相关项目，因为第一次直接使用的是一台服务器，外网的ip，在自己的windows 是可以用mongodb 客户端与redis 客户端进行服务器上的mongodb服务端与redis服务端相连接的，并没有遇到什么困难&lt;/p&gt;
+
+&lt;h2 id=&quot;场景&quot;&gt;场景&lt;/h2&gt;
+
+&lt;p&gt;因为后台与爬虫用的同一个mongodb与redis，而那台服务器又是单核的，2g运行内存。导致mongodb老是因为连接池开得过多而被挂掉，后来就买了内网的mongodb与redis服务，一开始啥都不懂，也不知道这是一个坑，在自己本机上进行mongodb，redis测试，一直连接不上去，代码是改了又改，&lt;/p&gt;
+
+&lt;h2 id=&quot;解决&quot;&gt;解决&lt;/h2&gt;
+
+&lt;p&gt;后来老大过来了，你这是内网的，外网的当然连接不上去了，你得在腾讯云服务器上进行连接&lt;/p&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;后来就直接在腾讯云服务器上测试连接，然后就连好了。这个问题搞到我们三到晚上12点，确实菜，然后预料到的确实少，回过头来看下代码，一点毛病都没有啊！不知道有句mmp，该不该讲。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 01 Feb 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/2018/02/01/about-inner-outer-ip/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/2018/02/01/about-inner-outer-ip/</guid>
+        
+        <category>MongoDB</category>
+        
+        <category>Redis</category>
+        
+        <category>工具软件</category>
+        
+        
+        <category>工具软件</category>
+        
+      </item>
+    
+      <item>
+        <title>Ubuntu 16.04 下MySQL的安装</title>
+        <description>
+&lt;p&gt;1， 打开终端：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;sudo apt-get install mysql-server&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2 ，接下来会让你选择y/n, 这里你选择y,&lt;/p&gt;
+
+&lt;p&gt;3 ，这里会出现一个让你输入mysql-server的密码，输入完后如果鼠标点击不了，可以使用Tab键+enter键继续下一步&lt;/p&gt;
+
+&lt;p&gt;4 ，接下来，会继续让我们输入一次密码&lt;/p&gt;
+
+&lt;p&gt;5， 密码输入完后，我们这里的mysql-server的用户名是：root ，密码是我们刚刚设置过的密码，&lt;/p&gt;
+
+&lt;p&gt;6， 这时候已经安装完成了，我们需要验证一下是否安装上了mysql-server&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;mysql -u root -p&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;按enter键后会让我们输入密码，当我们输入密码后，会出现：&lt;/p&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;nx&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Inspiron&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5421&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Enter&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
+&lt;span class=&quot;nx&quot;&gt;Welcome&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MySQL&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;monitor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;Commands&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MySQL&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ubuntu0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;16.04&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ubuntu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;Copyright&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;its&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;affiliates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;All&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rights&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reserved&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registered&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trademark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Corporation&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;its&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;affiliates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Other&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;names&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;may&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trademarks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;their&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;respective&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;owners&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;help;&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;help&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clear&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;current&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;7 ， 这样我们就在Ubuntu下安装好了mysql-server。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 13 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/linux/2018/01/13/setup-mysql-inubuntu/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2018/01/13/setup-mysql-inubuntu/</guid>
+        
+        <category>linux</category>
+        
+        <category>ubuntu16.04</category>
+        
+        <category>工具软件</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
+    
+      <item>
+        <title>win10 关闭更新</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;因为自己的电脑装了双系统（win10 跟Ubuntu16.04），在win10下，有时候每次关机的时候都说要进行更新后进行关机，就是自动更新功能，现在的选项中没有关闭自动更新的选项了，这是一个bug，微软要强制更新。&lt;/p&gt;
+
+&lt;p&gt;我就忍受不了自动更新，会拉取网络，影响我们的上网体验，但是我们不要他自动更新，那怎么办呢，其实还是有解决方法的，下面就介绍怎么关闭自动更新功能！（ps：百度有些人写的其实是win8的自动更新，根本就不是win10的，我这个才是win10的处理方法）希望能帮到你们。&lt;/p&gt;
+
+&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤&lt;/h2&gt;
+
+&lt;p&gt;1 右键点击左下角微软按钮，找到“运行”   也可用键盘的win+R&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-07f3d54cc3ce1538.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2 在运行处输入 “services.msc”   点击确定。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-2df616c88439415a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3 在弹出来的服务中，找到“Windows Update”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-403c9d7761ad60b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;4 选择禁用&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-1728ba13ad50acfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;5 点击确定或者启动就可以了，这时候我们可以看到：
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-8d901951002a4bc1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;会多出这两个位置，这样子就设置成功了。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 13 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/win10/2018/01/13/close-win10-update/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/win10/2018/01/13/close-win10-update/</guid>
+        
+        <category>win10</category>
+        
+        <category>工具软件</category>
+        
+        
+        <category>win10</category>
+        
+      </item>
+    
+      <item>
+        <title>News_scrapy_redis 框架系统</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#设计目标&quot; id=&quot;markdown-toc-设计目标&quot;&gt;设计目标&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#框架使用说明&quot; id=&quot;markdown-toc-框架使用说明&quot;&gt;框架使用说明&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#框架环境&quot; id=&quot;markdown-toc-框架环境&quot;&gt;框架环境&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#框架完善&quot; id=&quot;markdown-toc-框架完善&quot;&gt;框架完善&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;该文档针对爬虫系统设计目标中相应的场景给出技术方案&lt;/p&gt;
+
+&lt;h2 id=&quot;设计目标&quot;&gt;设计目标&lt;/h2&gt;
+
+&lt;p&gt;1、代码复用，功能模块化。可以支持上千个网站的数据爬取；&lt;/p&gt;
+
+&lt;p&gt;2、易扩展。爬虫框架易扩展，爬取规则、解析规则、入库规则易扩展，支持框架切换；&lt;/p&gt;
+
+&lt;p&gt;3、健壮性、可维护性。对数据爬取过程中的各种异常，例如：断网、反爬升级、爬“脏数据”等，需要实时的监控，以及给出准确的定位。异常处理以及降级措施需要完善；&lt;/p&gt;
+
+&lt;p&gt;4、后续扩展为分布式结构；&lt;/p&gt;
+
+&lt;p&gt;5、支持功能模块的易调整；&lt;/p&gt;
+
+&lt;h2 id=&quot;框架使用说明&quot;&gt;框架使用说明&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;News_scrapy_redis4. &lt;a href=&quot;https://github.com/xudailong/News_scrapy_redis.git&quot;&gt;github地址&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;News_scrapy_redis&lt;/code&gt; 基于&lt;code class=&quot;highlighter-rouge&quot;&gt;scrapy_redis&lt;/code&gt;实现数据的增量爬取（含去重），支持分布式，支持异常日志等输出，功能模块化。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;树结构：&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;idea&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Daily_crawler&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ETL&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_scrapy&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;spiders&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__pycache__&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__pycache__&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_simhash&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_statistics&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;各模块说明：&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;Daily_crawler：&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;daily_crawler.cron crontab&lt;/code&gt;的定时文件, 定时运行&lt;code class=&quot;highlighter-rouge&quot;&gt;start_crawl.sh&lt;/code&gt;脚本&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;start_crawl.sh&lt;/code&gt; 启动爬虫模块，并将每次爬取所花费的时间 写入 log/run_time.txt&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;push_urls.py&lt;/code&gt; 每次在爬虫之前运行，清空调度队列，并将start_url push到调度队列中&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_crawl.sh&lt;/code&gt; 执行爬虫模块（增量爬取）， 并自动进行相似文档去重，ETL, 存入mongodb&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;ETL:（暂时用不到）&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/Model&lt;/code&gt; 存放训练好的词典，语料，TF-IDF，LDA， word2vec模型&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding.py&lt;/code&gt; 新闻语料的清洗，以及自动化生成新闻的标题和内容embedding&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding_simhash.py&lt;/code&gt; 增加了自动化相似文档的去重&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stop_words&lt;/code&gt; 常用的中文停留词&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;train_step1&lt;/code&gt; 训练LDA模型&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;train_step2&lt;/code&gt; 训练LDA模型&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;log:&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding_simhash.log&lt;/code&gt; 执行auto_embedding_simhash.py的日志文件&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;crawler.log&lt;/code&gt; 执行scrapy-redis爬虫模块的日志文件&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_count.log&lt;/code&gt; 执行news_statistics.py的日志文件&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;run_time.txt&lt;/code&gt; 每次执行爬虫脚本的运行时间&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;News_data:&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;每个文件夹是抓每天从各个网站抓取到的新闻&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;News_scrapy:&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;基于scrapy-redis的爬虫模块，在scrapy的基础上修改得到&lt;/li&gt;
+      &lt;li&gt;各大网站数据的爬取解析工作主要在该文件中进行&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;News_simhash（此处只需要进行title的去重）:&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;实现相似文档的去重&lt;/li&gt;
+      &lt;li&gt;automatic_simhash.py 自动实现相似文档的去重（仅基于新闻内容）&lt;/li&gt;
+      &lt;li&gt;content_index.pkl 序列化的新闻内容SimhashIndex类，相当于所有新闻sinhash_value的一张表，并且随着抓取的新闻越来越多，该表会不断增大title_index.pkl 序列化的新闻标题SimhashIndex类， 未使用&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;generate_simhash_index.py&lt;/code&gt; 初始化这张Simhash_index，生成content和title的Simhash_index&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;near_duplicates.py&lt;/code&gt; 对初始化的Simhash_index进行相似新闻内容的去重&lt;/li&gt;
+      &lt;li&gt;test.py 测试content_index.pkl中content_index类新闻的数量&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;News_statistics:&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_count.json&lt;/code&gt; 每天从各个网站抓取的新闻数量&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_statistics.py&lt;/code&gt; 统计新闻增量的脚本&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;框架环境&quot;&gt;框架环境&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Redis环境环境&lt;/li&gt;
+  &lt;li&gt;scrapy框架环境&lt;/li&gt;
+  &lt;li&gt;python3环境环境&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;框架完善&quot;&gt;框架完善&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;IP代理池&lt;/li&gt;
+  &lt;li&gt;cookies池&lt;/li&gt;
+  &lt;li&gt;其他&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Tue, 09 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/</guid>
+        
+        <category>scrapy_redis</category>
+        
+        <category>爬虫</category>
+        
+        
+        <category>爬虫</category>
+        
+      </item>
+    
+      <item>
+        <title>window下python3环境安装scrapy</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#环境&quot; id=&quot;markdown-toc-环境&quot;&gt;环境：&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#初次安装&quot; id=&quot;markdown-toc-初次安装&quot;&gt;初次安装：&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#打开网站&quot; id=&quot;markdown-toc-打开网站&quot;&gt;打开网站&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#安装wheel&quot; id=&quot;markdown-toc-安装wheel&quot;&gt;安装wheel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#安装whl文件&quot; id=&quot;markdown-toc-安装whl文件&quot;&gt;安装.whl文件&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#end&quot; id=&quot;markdown-toc-end&quot;&gt;end&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;目录：&lt;/p&gt;
+
+&lt;p&gt;[TOC]&lt;/p&gt;
+
+&lt;h2 id=&quot;环境&quot;&gt;环境：&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;python3  3.6.4， win7 64位&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;初次安装&quot;&gt;初次安装：&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pip install scrapy&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;使用这个命令，在win7 64位是怎么也安装不上去的，因为这已经是第二次了，&lt;/p&gt;
+
+&lt;p&gt;当这个命令输出完后，会出现一系列的问题。当然了，不用怕，这不是需要解决问题的方法来了嘛。&lt;/p&gt;
+
+&lt;p&gt;可能出现需要下载版本对应的visual studio,但是也太大了，或也可以说下载慢。。。。。。但是，我们可以不用去进行下载，只要进行下面几个文件的安装就可以了。&lt;/p&gt;
+
+&lt;h2 id=&quot;打开网站&quot;&gt;打开网站&lt;/h2&gt;
+
+&lt;p&gt;首先你打开这个网站（里面包含了各种编译好的库）：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml&quot;&gt;http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;安装wheel&quot;&gt;安装wheel&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pip install wheel&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;安装成功的界面&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-93cab0d529ca1dba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;wheel—success.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;安装whl文件&quot;&gt;安装.whl文件&lt;/h2&gt;
+
+&lt;p&gt;这里需要安装三个.whl文件，而且是全名的安装，&lt;/p&gt;
+
+&lt;p&gt;以下三个文件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-eaf16a31171cd6ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;.whl文件.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;中途可能会出现&lt;code class=&quot;highlighter-rouge&quot;&gt;Failed to build XXXX&lt;/code&gt; 或者是&lt;code class=&quot;highlighter-rouge&quot;&gt;twisted&lt;/code&gt;等相关的内容&lt;/p&gt;
+
+&lt;p&gt;因为scrapy是基于twisted框架的，所以，twisted框架也需要进行安装&lt;/p&gt;
+
+&lt;p&gt;当上面三个文件安装好了：&lt;/p&gt;
+
+&lt;p&gt;再次运行：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;scrapy&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;startproject&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pyjy&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这样就完成了scrapy在win下python3下的安装&lt;/p&gt;
+
+&lt;h2 id=&quot;end&quot;&gt;end&lt;/h2&gt;
+
+</description>
+        <pubDate>Thu, 04 Jan 2018 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/04/scrapy-setup-in-win/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/04/scrapy-setup-in-win/</guid>
+        
+        <category>scrapy</category>
+        
+        <category>爬虫</category>
+        
+        
+        <category>爬虫</category>
+        
+      </item>
+    
+      <item>
+        <title>Ubuntu16.04设置Pycharm桌面快捷键</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#ubuntu下所有的快捷方式都在&quot; id=&quot;markdown-toc-ubuntu下所有的快捷方式都在&quot;&gt;Ubuntu下所有的快捷方式都在：&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#解压&quot; id=&quot;markdown-toc-解压&quot;&gt;解压&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#终端打开&quot; id=&quot;markdown-toc-终端打开&quot;&gt;终端打开&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#张贴&quot; id=&quot;markdown-toc-张贴&quot;&gt;张贴&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#添加可执行权限&quot; id=&quot;markdown-toc-添加可执行权限&quot;&gt;添加可执行权限&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#拷贝到桌面&quot; id=&quot;markdown-toc-拷贝到桌面&quot;&gt;拷贝到桌面&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ubuntu下所有的快捷方式都在&quot;&gt;Ubuntu下所有的快捷方式都在：&lt;/h2&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;解压&quot;&gt;解压&lt;/h2&gt;
+
+&lt;p&gt;这里我将pycharm下载并解压到了/home/snakeson/developer文件夹下&lt;/p&gt;
+
+&lt;p&gt;这里的pycharm.sh是批处理执行文件，prcharm.png是快捷方式图标&lt;/p&gt;
+
+&lt;h2 id=&quot;终端打开&quot;&gt;终端打开&lt;/h2&gt;
+
+&lt;p&gt;使用Ubuntu终端进行打开：
+方法一（使用vim）：&lt;/p&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;vi&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;方法二（使用gedit）：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gedit&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后就会弹出一个新框：&lt;/p&gt;
+&lt;h2 id=&quot;张贴&quot;&gt;张贴&lt;/h2&gt;
+&lt;p&gt;我们将下面的内容贴上去：&lt;/p&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Desktop&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Application&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;GenericName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm3&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Comment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Python&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;IDE&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/home/snakeson/developer/pycharm-community-2017.2.3/bin/pycharm.sh&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Icon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/home/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;developer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;community&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2017.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;png&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Terminal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Categories&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;hr /&gt;
+&lt;p&gt;注意一定要将Desktop Entry复制进去，也就是上面的全部都要复制进去，这里我们需要替换掉两个地方：&lt;strong&gt;Exec=”xx”&lt;/strong&gt;和&lt;strong&gt;Icon=&lt;/strong&gt;,这里要替换掉我们的pycharm解压的目录，当然了，我已经替换好了，如果你的目录跟我的目录不一样的话，你得把路径给换了，不管你是pycharm2017还是pycharm2016,，例如Comment什么的都不要改变，只变上面提到的两个路径就可以了。&lt;/p&gt;
+
+&lt;h2 id=&quot;添加可执行权限&quot;&gt;添加可执行权限&lt;/h2&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;拷贝到桌面&quot;&gt;拷贝到桌面&lt;/h2&gt;
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;将&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;文件拷贝到桌面，双击即可运行。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 13 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/snakeson/2017/12/13/Ubuntu16.04-pycharm-icon-setting/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/13/Ubuntu16.04-pycharm-icon-setting/</guid>
+        
+        <category>Ubuntu</category>
+        
+        <category>Pycharm</category>
+        
+        
+        <category>SnakeSon</category>
+        
+      </item>
+    
+      <item>
+        <title>这是徐代龙进行的第二篇文章</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#目的&quot; id=&quot;markdown-toc-目的&quot;&gt;目的：&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;目的&quot;&gt;目的：&lt;/h2&gt;
+
+&lt;p&gt;写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;/p&gt;
+
+&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤：&lt;/h2&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Successfully&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installed&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Parsing&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;documentation&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Done&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installing&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;documentation&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installed&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Configuration&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;yml&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;
+       &lt;span class=&quot;nx&quot;&gt;Destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_site&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;Incremental&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;disabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Enable&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;incremental&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;Generating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.499&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;Please&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;following&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gemfile&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;avoid&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;polling&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;wdm&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;gt;= 0.1.0&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;win_platform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;Auto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;regeneration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;F:/myself/643435675.github.io&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//127.0.0.1:4001/&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;running&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;press&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+
+&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serve&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Configuration&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;yml&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;
+       &lt;span class=&quot;nx&quot;&gt;Destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_site&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;Incremental&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;disabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Enable&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;incremental&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;Generating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.859&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;Please&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;following&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gemfile&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;avoid&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;polling&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;wdm&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;gt;= 0.1.0&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;win_platform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;
+ &lt;span class=&quot;nx&quot;&gt;Auto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;regeneration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;F:/myself/643435675.github.io&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//127.0.0.1:4001/&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;running&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;press&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;主要进行了以上操作：
+cd 643435675.github.io  文件夹下&lt;/p&gt;
+
+&lt;p&gt;执行命令：&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll &lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;下一步：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;接下来：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;然后这样就可以在浏览器中输入：http://127.0.0.1:4001/ 进行刚刚文章的访问了。&lt;/p&gt;
+
+&lt;p&gt;补充：&lt;/p&gt;
+
+&lt;p&gt;因为首页与详情页显示某篇文章的内容是不一样的，在首页中进行文章的裁剪显示：
+需要进行加入四个空行：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gu&quot;&gt;## 目的：&lt;/span&gt;
+
+写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;span class=&quot;sb&quot;&gt;
+
+
+
+
+&lt;/span&gt;&lt;span class=&quot;gu&quot;&gt;## 操作步骤：&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;不进行添加的话，首页会把整篇文章完全展示出来，添加了四个空行之后就只会显示部分了，当然了，这篇文章在首页是显示的部分，也就是&lt;strong&gt;目的下的内容&lt;/strong&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 07 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/</guid>
+        
+        <category>hexo</category>
+        
+        <category>JavaScript</category>
+        
+        
+        <category>SnakeSon</category>
+        
+      </item>
+    
+      <item>
+        <title>这是徐代龙进行的第二篇文章</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#目的&quot; id=&quot;markdown-toc-目的&quot;&gt;目的：&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;目的&quot;&gt;目的：&lt;/h2&gt;
+
+&lt;p&gt;写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;/p&gt;
+
+&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤：&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
+$ gem install jekyll
+Successfully installed jekyll-3.6.2
+Parsing documentation for jekyll-3.6.2
+Done installing documentation for jekyll after 2 seconds
+1 gem installed
+
+spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
+$ jekyll s
+Configuration file: F:/myself/643435675.github.io/_config.yml
+            Source: F:/myself/643435675.github.io
+       Destination: F:/myself/643435675.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 5.499 seconds.
+  Please add the following to your Gemfile to avoid polling for changes:
+    gem 'wdm', '&amp;gt;= 0.1.0' if Gem.win_platform?
+ Auto-regeneration: enabled for 'F:/myself/643435675.github.io'
+    Server address: http://127.0.0.1:4001/
+  Server running... press ctrl-c to stop.
+
+
+spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
+$ jekyll serve
+Configuration file: F:/myself/643435675.github.io/_config.yml
+            Source: F:/myself/643435675.github.io
+       Destination: F:/myself/643435675.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 2.859 seconds.
+  Please add the following to your Gemfile to avoid polling for changes:
+    gem 'wdm', '&amp;gt;= 0.1.0' if Gem.win_platform?
+ Auto-regeneration: enabled for 'F:/myself/643435675.github.io'
+    Server address: http://127.0.0.1:4001/
+  Server running... press ctrl-c to stop.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;主要进行了以上操作：
+cd 643435675.github.io  文件夹下&lt;/p&gt;
+
+&lt;p&gt;执行命令：&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll &lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;下一步：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;接下来：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;然后这样就可以在浏览器中输入：http://127.0.0.1:4001/ 进行刚刚文章的访问了。&lt;/p&gt;
+
+&lt;p&gt;补充：&lt;/p&gt;
+
+&lt;p&gt;因为首页与详情页显示某篇文章的内容是不一样的，在首页中进行文章的裁剪显示：
+需要进行加入四个空行：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## 目的：
+
+写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章
+
+
+
+
+## 操作步骤：
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;不进行添加的话，首页会把整篇文章完全展示出来，添加了四个空行之后就只会显示部分了，当然了，这篇文章在首页是显示的部分，也就是&lt;strong&gt;目的下的内容&lt;/strong&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 07 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/snakeson/2017/12/07/git-push-github/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/07/git-push-github/</guid>
+        
+        <category>hexo</category>
+        
+        <category>JavaScript</category>
+        
+        
+        <category>SnakeSon</category>
+        
+      </item>
+    
+      <item>
+        <title>这是我自己来测试的md页面</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#原理&quot; id=&quot;markdown-toc-原理&quot;&gt;原理&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#代码&quot; id=&quot;markdown-toc-代码&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#补充&quot; id=&quot;markdown-toc-补充&quot;&gt;补充&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;关于写倒计时大家可能都都比较熟悉，使用 setTimeout 或 setInterval 就可以搞定。几秒钟或者几分钟的倒计时这样写没有问题，但是如果是长时间的倒计时，这样写就会不准确。如果用户修改了他的设备时间，这样的倒计时就没有意义了。今天就说说写一个精确的倒计时的方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://img.alicdn.com/tfs/TB18QnlOpXXXXcVXpXXXXXXXXXX-388-256.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;原理&quot;&gt;原理&lt;/h2&gt;
+
+&lt;p&gt;众所周知 setTimeout 或者 setInterval 调用的时候会有微小的误差。有人做了一个 &lt;a href=&quot;https://bl.ocks.org/kenpenn/raw/92ebaa71696b4c4c3acd672b1bb3f49a/&quot;&gt;demo&lt;/a&gt; 来观察这个现象并对其做了修正。短时间的误差倒也可以接受，但是作为一个长时间的倒计时，误差累计就会导致倒计时不准确。&lt;/p&gt;
+
+&lt;p&gt;因此我们可以在获取剩余时间的时候，每次 new 一个设备时间，因为设备时间的流逝相对是准确的，并且如果设备打开了网络时间同步，也会解决这个问题。&lt;/p&gt;
+
+&lt;p&gt;但是，如果用户修改了设备时间，那么整个倒计时就没有意义了，用户只要将设备时间修改为倒计时的 endTime 就可以轻易看到倒计时结束是页面的变化。因此一开始获取服务端时间就是很重要的。&lt;/p&gt;
+
+&lt;p&gt;简单的说，一个简单的精确倒计时原理如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;初始化时请求一次服务器时间 serverTime，再 new 一个设备时间 deviceTime&lt;/li&gt;
+  &lt;li&gt;deviceTime 与 serverTime 的差作为时间偏移修正&lt;/li&gt;
+  &lt;li&gt;每次递归时 new 一个系统时间，解决 setTimeout 不准确的问题&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;代码&quot;&gt;代码&lt;/h2&gt;
+
+&lt;p&gt;获取剩余时间的代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * 获取剩余时间
+ * @param  {Number} endTime    截止时间
+ * @param  {Number} deviceTime 设备时间
+ * @param  {Number} serverTime 服务端时间
+ * @return {Object}            剩余时间对象
+ */&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getRemainTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minutes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hours&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;days&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;hours&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hours&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;minutes&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;del&gt;获取服务器时间可以使用 mtop 接口 &lt;code class=&quot;highlighter-rouge&quot;&gt;mtop.common.getTimestamp&lt;/code&gt; &lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;然后可以通过下面的方式来使用：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 获取服务端时间（获取服务端时间代码略）&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;getServerTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//设置定时器&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;intervalTimer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// 得到剩余时间&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getRemainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// 倒计时到两个小时内&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7200000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// do something&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;//倒计时结束&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;intervalTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// do something&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这样的的写法也可以做到准确倒计时，同时也比较简洁。不需要隔段时间再去同步一次服务端时间。&lt;/p&gt;
+
+&lt;h2 id=&quot;补充&quot;&gt;补充&lt;/h2&gt;
+
+&lt;p&gt;在写倒计时的时候遇到了一个坑这里记录一下。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;千万别在倒计时结束的时候请求接口&lt;/strong&gt;。会让服务端瞬间 QPS 峰值达到非常高。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://img.alicdn.com/tfs/TB1LBzjOpXXXXcnXpXXXXXXXXXX-154-71.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果在倒计时结束的时候要使用新的数据渲染页面，正确的做法是：&lt;/p&gt;
+
+&lt;p&gt;在倒计时结束前的一段时间里，先请求好数据，倒计时结束后，再渲染页面。&lt;/p&gt;
+
+&lt;p&gt;关于倒计时，如果你有什么更好的解决方案，欢迎评论交流。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/javascript/2017/12/04/test-my-webapp/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/javascript/2017/12/04/test-my-webapp/</guid>
+        
+        <category>countdown</category>
+        
+        <category>JavaScript</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,57 @@
+I"<ul id="markdown-toc">
+  <li><a href="#ubuntu下所有的快捷方式都在" id="markdown-toc-ubuntu下所有的快捷方式都在">Ubuntu下所有的快捷方式都在：</a></li>
+  <li><a href="#解压" id="markdown-toc-解压">解压</a></li>
+  <li><a href="#终端打开" id="markdown-toc-终端打开">终端打开</a></li>
+  <li><a href="#张贴" id="markdown-toc-张贴">张贴</a></li>
+  <li><a href="#添加可执行权限" id="markdown-toc-添加可执行权限">添加可执行权限</a></li>
+  <li><a href="#拷贝到桌面" id="markdown-toc-拷贝到桌面">拷贝到桌面</a></li>
+</ul>
+
+<h2 id="ubuntu下所有的快捷方式都在">Ubuntu下所有的快捷方式都在：</h2>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">share</span><span class="o">/</span><span class="nx">applications</span>
+</code></pre></div></div>
+
+<h2 id="解压">解压</h2>
+
+<p>这里我将pycharm下载并解压到了/home/snakeson/developer文件夹下</p>
+
+<p>这里的pycharm.sh是批处理执行文件，prcharm.png是快捷方式图标</p>
+
+<h2 id="终端打开">终端打开</h2>
+
+<p>使用Ubuntu终端进行打开：
+方法一（使用vim）：</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">sudo</span> <span class="nx">vi</span>  <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">share</span><span class="o">/</span><span class="nx">applications</span><span class="o">/</span><span class="nx">pycharm</span><span class="p">.</span><span class="nx">desktop</span>
+</code></pre></div></div>
+
+<p>方法二（使用gedit）：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">sudo</span> <span class="nx">gedit</span>  <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">share</span><span class="o">/</span><span class="nx">applications</span><span class="o">/</span><span class="nx">pycharm</span><span class="p">.</span><span class="nx">desktop</span>
+</code></pre></div></div>
+
+<p>然后就会弹出一个新框：</p>
+<h2 id="张贴">张贴</h2>
+<p>我们将下面的内容贴上去：</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">[</span><span class="nx">Desktop</span> <span class="nx">Entry</span><span class="p">]</span>
+<span class="nx">Type</span><span class="o">=</span><span class="nx">Application</span>
+<span class="nx">Name</span><span class="o">=</span><span class="nx">Pycharm</span>
+<span class="nx">GenericName</span><span class="o">=</span><span class="nx">Pycharm3</span>
+<span class="nx">Comment</span><span class="o">=</span><span class="nx">Pycharm3</span><span class="p">:</span><span class="nx">The</span> <span class="nx">Python</span> <span class="nx">IDE</span>
+<span class="nx">Exec</span><span class="o">=</span><span class="dl">"</span><span class="s2">/home/snakeson/developer/pycharm-community-2017.2.3/bin/pycharm.sh</span><span class="dl">"</span> <span class="o">%</span><span class="nx">f</span>
+<span class="nx">Icon</span><span class="o">=</span><span class="sr">/home/</span><span class="nx">snakeson</span><span class="o">/</span><span class="nx">developer</span><span class="o">/</span><span class="nx">pycharm</span><span class="o">-</span><span class="nx">community</span><span class="o">-</span><span class="mf">2017.2</span><span class="p">.</span><span class="mi">3</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">pycharm</span><span class="p">.</span><span class="nx">png</span>
+<span class="nx">Terminal</span><span class="o">=</span><span class="nx">pycharm</span>
+<span class="nx">Categories</span><span class="o">=</span><span class="nx">Pycharm</span><span class="p">;</span>
+
+</code></pre></div></div>
+<hr />
+<p>注意一定要将Desktop Entry复制进去，也就是上面的全部都要复制进去，这里我们需要替换掉两个地方：<strong>Exec=”xx”</strong>和<strong>Icon=</strong>,这里要替换掉我们的pycharm解压的目录，当然了，我已经替换好了，如果你的目录跟我的目录不一样的话，你得把路径给换了，不管你是pycharm2017还是pycharm2016,，例如Comment什么的都不要改变，只变上面提到的两个路径就可以了。</p>
+
+<h2 id="添加可执行权限">添加可执行权限</h2>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">sudo</span> <span class="nx">chmod</span> <span class="o">+</span><span class="nx">x</span> <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">share</span><span class="o">/</span><span class="nx">applications</span><span class="o">/</span><span class="nx">pycharm</span><span class="p">.</span><span class="nx">desktop</span>
+</code></pre></div></div>
+
+<h2 id="拷贝到桌面">拷贝到桌面</h2>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">将</span><span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">share</span><span class="o">/</span><span class="nx">applications</span><span class="o">/</span><span class="nx">pycharm</span><span class="p">.</span><span class="nx">desktop</span><span class="err">文件拷贝到桌面，双击即可运行。</span>
+</code></pre></div></div>
+:ET

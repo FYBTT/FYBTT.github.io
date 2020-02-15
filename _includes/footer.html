@@ -1,8 +1,8 @@
 <!-- Footer -->
-<footer>
+<footer class="bs-docs-footer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="col-lg-12 col-md-12">
                 <ul class="list-inline text-center">
                     <!-- kill the Facebook and Weibo -->
                     <li>
@@ -13,7 +13,7 @@
                             </span>
                         </a>
                     </li>
-                    {% if site.twitter_username %}
+                    {% if site.twitter_username %} 
                     <li>
                         <a href="https://twitter.com/{{ site.twitter_username }}">
                             <span class="fa-stack fa-lg">
@@ -85,8 +85,15 @@
                     -->
 
                 </ul>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <p class="copyright text-muted">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </p>
                 <p class="copyright text-muted">
                 &copy; {{ site.time | date: '%Y' }} {{ site.owner.name }} ❖ Powered by Jekyll.
+                <span>
+                    Theme modified by <a>Bear</a>.
+                </span>
                 </p>
             </div>
         </div>

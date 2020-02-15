@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="诸君，武运昌隆">
+
+    <title>使用 JavaScript 创建并下载文件 - Mr Wind</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/javascript/2016/11/22/js-create-file-and-download/">
+
+    <!-- Icons -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <!--
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Documentation extras -->
+   <!-- <link rel="stylesheet" href="/css/docs.min.css">
+   -->
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+
+
+<body ontouchstart="">
+
+    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
+    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+        <img alt="Brand" src="/img/favicon.png">
+    </a>
+    <ul class="navbar ml-md-auto nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/" >Home</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/about/">About</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/archive/">Archive</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/milestone/">milestone</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+          
+    </ul>
+</header>
+
+
+
+    <!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-color: #208C5B
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="Tags">
+                        
+                        <a class="tag" href="/Tags/#文件" title="文件">文件</a>
+                        
+                        <a class="tag" href="/Tags/#下载" title="下载">下载</a>
+                        
+                        <a class="tag" href="/Tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                    <h1>使用 JavaScript 创建并下载文件</h1>
+                    
+                    <span class="meta">Posted by HyG on November 22, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <ul id="markdown-toc">
+  <li><a href="#先上代码" id="markdown-toc-先上代码">先上代码</a></li>
+  <li><a href="#blob-对象" id="markdown-toc-blob-对象">Blob 对象</a></li>
+  <li><a href="#blob-urls" id="markdown-toc-blob-urls">Blob URLs</a></li>
+  <li><a href="#模拟-click" id="markdown-toc-模拟-click">模拟 click</a></li>
+  <li><a href="#小结" id="markdown-toc-小结">小结</a></li>
+  <li><a href="#参考" id="markdown-toc-参考">参考</a></li>
+</ul>
+
+<p>本文将介绍如何使用 JavaScript 创建文件，并自动/手动将文件下载。这在导出原始数据时会比较方便。</p>
+
+<h2 id="先上代码">先上代码</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * 创建并下载文件
+ * @param  {String} fileName 文件名
+ * @param  {String} content  文件内容
+ */</span>
+<span class="kd">function</span> <span class="nx">createAndDownloadFile</span><span class="p">(</span><span class="nx">fileName</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">aTag</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">blob</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Blob</span><span class="p">([</span><span class="nx">content</span><span class="p">]);</span>
+    <span class="nx">aTag</span><span class="p">.</span><span class="nx">download</span> <span class="o">=</span> <span class="nx">fileName</span><span class="p">;</span>
+    <span class="nx">aTag</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">blob</span><span class="p">);</span>
+    <span class="nx">aTag</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span>
+    <span class="nx">URL</span><span class="p">.</span><span class="nx">revokeObjectURL</span><span class="p">(</span><span class="nx">blob</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>很简单对吧，直接调用这个方法，传入文件名和文件内容，程序新建 a 标签，新建 Blob 对象，将文件名赋给 a 标签，同时将 Blob 对象作为 Url 也赋给 a 标签，模拟点击事件，自动下载成功，最后再回收内存。下面我们来看看具体是怎么操作的。</p>
+
+<p><img src="https://img.alicdn.com/tfs/TB16.GnOpXXXXXdapXXXXXXXXXX-307-134.png" alt="" /></p>
+
+<h2 id="blob-对象">Blob 对象</h2>
+
+<p>Blob 对象是一个字节序列。拥有 <code class="highlighter-rouge">size</code> 和 <code class="highlighter-rouge">type</code> 等属性。</p>
+
+<p>拥有 2 个只读状态 <code class="highlighter-rouge">OPEND</code> 和 <code class="highlighter-rouge">CLOSED。</code></p>
+
+<p>Blob 对象属于 JavaScript Web APIs 中的 File API 规定的部分，可以参考 W3C 文档中的 <a href="https://www.w3.org/TR/2015/WD-FileAPI-20150421/#blob"> The Blob Interface and Binary Data</a></p>
+
+<p>再回来看看我们的代码里是这么写的，使用了 Blob 的构造函数：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">blob</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Blob</span><span class="p">([</span><span class="nx">content</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p>使用方括号的原因是，其构造函数的参数为以下4中：</p>
+
+<ul>
+  <li>ArrayBuffer [TypedArrays] elements.</li>
+  <li>ArrayBufferView [TypedArrays] elements.</li>
+  <li>Blob elements.</li>
+  <li>DOMString [WebIDL] elements.</li>
+</ul>
+
+<p>所谓 <code class="highlighter-rouge">ArrayBuffer</code> 是一种用于呈现通用、固定长度的二进制数据的类型。详情可以参考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer">ArrayBuffer -MDN</a> 以及 <a href="http://www.ecma-international.org/ecma-262/6.0/#sec-arraybuffer-objects">ECMAScript2015 标准中的 ArrayBuffer</a>。</p>
+
+<h2 id="blob-urls">Blob URLs</h2>
+
+<p>Blob URLs 被创建或注销是使用 <code class="highlighter-rouge">URL</code> 对象上的方法。这个 <code class="highlighter-rouge">URL</code> 对象被挂在 <code class="highlighter-rouge">Window</code> (HTML) 对象下，或者 <code class="highlighter-rouge">WorkerGlobalScope</code> (Web Workers)对象下。</p>
+
+<p>拥有以下静态方法 <code class="highlighter-rouge">createObjectURL</code> 和 <code class="highlighter-rouge">revokeObjectURL</code>，用于创建一个 blob 对象的 url 和注销这个 blob url。</p>
+
+<p>详情可查看 <a href="https://www.w3.org/TR/2015/WD-FileAPI-20150421/#creating-revoking">关于创建和注销 Blob URL 的 W3C 标准文档</a></p>
+
+<h2 id="模拟-click">模拟 click</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">element</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>在 W3C 中很早就有这个<a href="https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-2651361">规范</a>，不需要写繁琐的模拟事件触发的代码。</p>
+
+<h2 id="小结">小结</h2>
+
+<p>目前我将这个技术使用在 天猫双十一技术和UED庆功会 的摇火箭大屏游戏中。最后的游戏结果排名，在请求了接口后，在前端直接生成并下载到了本地，作为记录保存。主要也是因为服务端暂时没有提供这个一张表去记录游戏结果，于是采用了前端记录的解决方案。</p>
+
+<p>大家当时都玩的好开心啊，😁。你们的甘其食和全家卡的名单就是这样生成的！</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+  <li><a href="http://www.alloyteam.com/2014/01/use-js-file-download/">在浏览器端用JS创建和下载文件 -alloyteam</a></li>
+</ul>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/javascript/2016/10/16/shuffle-algorithm/" data-toggle="tooltip" data-placement="top" title="Fisher–Yates shuffle 洗牌算法">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/javascript/2016/11/25/how-to-write-a-count-down/" data-toggle="tooltip" data-placement="top" title="前端如何写一个精确的倒计时">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- Duoshuo Share start -->
+                <style>
+                    .ds-share{
+                        text-align: right;
+                    }
+                    
+                    @media only screen and (max-width: 700px) {
+                        .ds-share {
+
+                        }
+                    }
+                </style>
+
+                <div class="ds-share"
+                    data-thread-key="/javascript/2016/11/22/js-create-file-and-download" data-title="使用 JavaScript 创建并下载文件"
+                    data-images="http://0.0.0.0:4000/img/green.jpg"
+                    data-content="
+  先上代码
+  Blob 对象
+  Blob URLs
+  模拟 click
+  小结
+  参考
+
+
+本文将介绍如何使用 JavaScript 创建文... | Microdust:Azeril's blog"
+                    data-url="http://0.0.0.0:4000/javascript/2016/11/22/js-create-file-and-download/">
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- Duoshuo Share end-->
+
+
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread" data-thread-key="/javascript/2016/11/22/js-create-file-and-download" data-title="使用 JavaScript 创建并下载文件" data-url="http://0.0.0.0:4000/javascript/2016/11/22/js-create-file-and-download/"></div>
+                </div>
+                <!-- 多说评论框 end -->
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cnfeat"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer class="bs-docs-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ul class="list-inline text-center">
+                    <!-- kill the Facebook and Weibo -->
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    <!--
+                    
+                    -->
+
+                    <!--
+                    
+                    -->
+
+                    
+                    <!--
+                    
+                    -->
+
+                </ul>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <p class="copyright text-muted">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </p>
+                <p class="copyright text-muted">
+                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                <span>
+                    Theme modified by <a>Bear</a>.
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+
+<!-- Highlight.js -->
+<script>
+    async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js",function(){
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+<link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+
+
+</body>
+
+</html>

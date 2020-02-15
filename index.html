@@ -1,41 +1,116 @@
 ---
 layout: page
-description: "陈素封"
+description: "诸君，武运昌隆"
 ---
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">            
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:150 }}
-        </div>
-    </a>
-    <p class="post-meta">Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</p>
+
+<div class="col-md-2 col-xl-2 bd-sidebar">
 </div>
 
-<hr>
-{% endfor %}
+<main class="col-md-7 col-xl-6 py-md-3 pl-md-5 bd-content" role="main">
+    {% for post in paginator.posts %}
+    <div class="post-preview">
+        <a href="{{ post.url | prepend: site.baseurl }}">
+            <h2 class="post-title">            
+                {{ post.title }}
+            </h2>
+            {% if post.subtitle %}
+            <h3 class="post-subtitle">
+                {{ post.subtitle }}
+            </h3>
+            {% endif %}
+            <div class="post-content-preview">
+                {{ post.content | strip_html | truncate:150 }}
+            </div>
+        </a>
+        <p class="post-meta">Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</p>
+    </div>
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
+    <hr>
+    {% endfor %}
+
+    <!-- Pager -->
+    {% if paginator.total_pages > 1 %}
+    <ul class="pager list-unstyled ml-md-auto" style="padding-top: 20px;">
+        {% if paginator.previous_page %}
+        <li class="previous">
+            <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
+        </li>
+        {% endif %}
+        {% if paginator.next_page %}
+        <li class="next">
+            <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
+        </li>
+        {% endif %}
+    </ul>
+    <div class="clear"></div>
     {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+
+</main>
+<nav id="sidebar">
+    
+    <div class="p-4 pt-5">
+        <div class="mb-5">
+            <h5><i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-right: 10px;"></i>Recent Posts</h5>
+            <ul class="list-unstyled content-ul">
+                {% for post in site.posts offset: 0 limit: 10  %}
+                    <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mb-5">
+            <h5><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>Categories</h5>
+            <div class="tagcloud">
+                {% for category in site.categories %}
+                <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
+                    {{ category | first }}
+
+                <span class="badge">--{{ category | last | size }}</span>
+                </a> 
+                {% endfor %}
+
+            </div>
+        </div>
+    <div class="mb-5">
+        <h5><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>Tag Cloud</h5>
+        <div class="tagcloud">
+            {% assign first = site.tags.first %}
+            {% assign max = first[1].size %}
+            {% assign min = max %}
+            {% for tag in site.tags offset:1 %}
+            {% if tag[1].size > max %}
+                {% assign max = tag[1].size %}
+            {% elsif tag[1].size < min %}
+                {% assign min = tag[1].size %}
+            {% endif %}
+            {% endfor %}
+
+            {% if max == min %}
+                {% assign diff = 1 %}
+            {% else %}
+                {% assign diff = max | minus: min %}
+            {% endif %}
+
+            {% for tag in site.tags %}
+            {% assign temp = tag[1].size | minus: min | times: 36 | divided_by: diff %}
+            {% assign base = temp | divided_by: 4 %}
+            {% assign remain = temp | modulo: 4 %}
+            {% if remain == 0 %}
+                {% assign size = base | plus: 9 %}
+            {% elsif remain == 1 or remain == 2 %}
+                {% assign size = base | plus: 9 | append: '.5' %}
+            {% else %}
+                {% assign size = base | plus: 10 %}
+            {% endif %}
+            {% if remain == 0 or remain == 1 %}
+                {% assign color = 9 | minus: base %}
+            {% else %}
+                {% assign color = 8 | minus: base %}
+            {% endif %}
+            <a href="{{ root_url }}/{{ site.tag_dir }}#{{ tag[0] }}" class="tag-cloud-link">{{ tag[0] }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    
+  </div>
+</nav>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="诸君，武运昌隆">
+
+    <title>这是徐代龙进行的第二篇文章 - Mr Wind</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/">
+
+    <!-- Icons -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <!--
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Documentation extras -->
+   <!-- <link rel="stylesheet" href="/css/docs.min.css">
+   -->
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+
+
+<body ontouchstart="">
+
+    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
+    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+        <img alt="Brand" src="/img/favicon.png">
+    </a>
+    <ul class="navbar ml-md-auto nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/" >Home</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/about/">About</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/archive/">Archive</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/milestone/">milestone</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+          
+    </ul>
+</header>
+
+
+
+    <!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-color: #208C5B
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="Tags">
+                        
+                        <a class="tag" href="/Tags/#hexo" title="hexo">hexo</a>
+                        
+                        <a class="tag" href="/Tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                    </div>
+                    <h1>这是徐代龙进行的第二篇文章</h1>
+                    
+                    <span class="meta">Posted by SnakeSon on December 7, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <ul id="markdown-toc">
+  <li><a href="#目的" id="markdown-toc-目的">目的：</a></li>
+  <li><a href="#操作步骤" id="markdown-toc-操作步骤">操作步骤：</a></li>
+</ul>
+
+<h2 id="目的">目的：</h2>
+
+<p>写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章</p>
+
+<h2 id="操作步骤">操作步骤：</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nx">spencer</span><span class="p">@</span><span class="nd">spencer</span><span class="o">-</span><span class="nx">it1</span> <span class="nx">MINGW64</span> <span class="o">/</span><span class="nx">f</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span> <span class="p">(</span><span class="nx">master</span><span class="p">)</span>
+<span class="nx">$</span> <span class="nx">gem</span> <span class="nx">install</span> <span class="nx">jekyll</span>
+<span class="nx">Successfully</span> <span class="nx">installed</span> <span class="nx">jekyll</span><span class="o">-</span><span class="mf">3.6</span><span class="p">.</span><span class="mi">2</span>
+<span class="nx">Parsing</span> <span class="nx">documentation</span> <span class="k">for</span> <span class="nx">jekyll</span><span class="o">-</span><span class="mf">3.6</span><span class="p">.</span><span class="mi">2</span>
+<span class="nx">Done</span> <span class="nx">installing</span> <span class="nx">documentation</span> <span class="k">for</span> <span class="nx">jekyll</span> <span class="nx">after</span> <span class="mi">2</span> <span class="nx">seconds</span>
+<span class="mi">1</span> <span class="nx">gem</span> <span class="nx">installed</span>
+
+<span class="nx">spencer</span><span class="p">@</span><span class="nd">spencer</span><span class="o">-</span><span class="nx">it1</span> <span class="nx">MINGW64</span> <span class="o">/</span><span class="nx">f</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span> <span class="p">(</span><span class="nx">master</span><span class="p">)</span>
+<span class="nx">$</span> <span class="nx">jekyll</span> <span class="nx">s</span>
+<span class="nx">Configuration</span> <span class="nx">file</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">_config</span><span class="p">.</span><span class="nx">yml</span>
+            <span class="nx">Source</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span>
+       <span class="nx">Destination</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">_site</span>
+ <span class="nx">Incremental</span> <span class="nx">build</span><span class="p">:</span> <span class="nx">disabled</span><span class="p">.</span> <span class="nx">Enable</span> <span class="kd">with</span> <span class="o">--</span><span class="nx">incremental</span>
+      <span class="nx">Generating</span><span class="p">...</span>
+                    <span class="nx">done</span> <span class="k">in</span> <span class="mf">5.499</span> <span class="nx">seconds</span><span class="p">.</span>
+  <span class="nx">Please</span> <span class="nx">add</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">Gemfile</span> <span class="nx">to</span> <span class="nx">avoid</span> <span class="nx">polling</span> <span class="k">for</span> <span class="nx">changes</span><span class="p">:</span>
+    <span class="nx">gem</span> <span class="dl">'</span><span class="s1">wdm</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">&gt;= 0.1.0</span><span class="dl">'</span> <span class="k">if</span> <span class="nx">Gem</span><span class="p">.</span><span class="nx">win_platform</span><span class="p">?</span>
+ <span class="nx">Auto</span><span class="o">-</span><span class="nx">regeneration</span><span class="p">:</span> <span class="nx">enabled</span> <span class="k">for</span> <span class="dl">'</span><span class="s1">F:/myself/643435675.github.io</span><span class="dl">'</span>
+    <span class="nx">Server</span> <span class="nx">address</span><span class="p">:</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//127.0.0.1:4001/</span>
+  <span class="nx">Server</span> <span class="nx">running</span><span class="p">...</span> <span class="nx">press</span> <span class="nx">ctrl</span><span class="o">-</span><span class="nx">c</span> <span class="nx">to</span> <span class="nx">stop</span><span class="p">.</span>
+
+
+<span class="nx">spencer</span><span class="p">@</span><span class="nd">spencer</span><span class="o">-</span><span class="nx">it1</span> <span class="nx">MINGW64</span> <span class="o">/</span><span class="nx">f</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span> <span class="p">(</span><span class="nx">master</span><span class="p">)</span>
+<span class="nx">$</span> <span class="nx">jekyll</span> <span class="nx">serve</span>
+<span class="nx">Configuration</span> <span class="nx">file</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">_config</span><span class="p">.</span><span class="nx">yml</span>
+            <span class="nx">Source</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span>
+       <span class="nx">Destination</span><span class="p">:</span> <span class="nx">F</span><span class="p">:</span><span class="o">/</span><span class="nx">myself</span><span class="o">/</span><span class="mi">643435675</span><span class="p">.</span><span class="nx">github</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">_site</span>
+ <span class="nx">Incremental</span> <span class="nx">build</span><span class="p">:</span> <span class="nx">disabled</span><span class="p">.</span> <span class="nx">Enable</span> <span class="kd">with</span> <span class="o">--</span><span class="nx">incremental</span>
+      <span class="nx">Generating</span><span class="p">...</span>
+                    <span class="nx">done</span> <span class="k">in</span> <span class="mf">2.859</span> <span class="nx">seconds</span><span class="p">.</span>
+  <span class="nx">Please</span> <span class="nx">add</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">to</span> <span class="nx">your</span> <span class="nx">Gemfile</span> <span class="nx">to</span> <span class="nx">avoid</span> <span class="nx">polling</span> <span class="k">for</span> <span class="nx">changes</span><span class="p">:</span>
+    <span class="nx">gem</span> <span class="dl">'</span><span class="s1">wdm</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">&gt;= 0.1.0</span><span class="dl">'</span> <span class="k">if</span> <span class="nx">Gem</span><span class="p">.</span><span class="nx">win_platform</span><span class="p">?</span>
+ <span class="nx">Auto</span><span class="o">-</span><span class="nx">regeneration</span><span class="p">:</span> <span class="nx">enabled</span> <span class="k">for</span> <span class="dl">'</span><span class="s1">F:/myself/643435675.github.io</span><span class="dl">'</span>
+    <span class="nx">Server</span> <span class="nx">address</span><span class="p">:</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//127.0.0.1:4001/</span>
+  <span class="nx">Server</span> <span class="nx">running</span><span class="p">...</span> <span class="nx">press</span> <span class="nx">ctrl</span><span class="o">-</span><span class="nx">c</span> <span class="nx">to</span> <span class="nx">stop</span><span class="p">.</span>
+
+</code></pre></div></div>
+
+<p>主要进行了以上操作：
+cd 643435675.github.io  文件夹下</p>
+
+<p>执行命令：</p>
+
+<p><code class="highlighter-rouge">gem install jekyll </code></p>
+
+<p>下一步：
+<code class="highlighter-rouge">jekyll s</code></p>
+
+<p>接下来：
+<code class="highlighter-rouge">jekyll serve</code></p>
+
+<p>然后这样就可以在浏览器中输入：http://127.0.0.1:4001/ 进行刚刚文章的访问了。</p>
+
+<p>补充：</p>
+
+<p>因为首页与详情页显示某篇文章的内容是不一样的，在首页中进行文章的裁剪显示：
+需要进行加入四个空行：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gu">## 目的：</span>
+
+写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章<span class="sb">
+
+
+
+
+</span><span class="gu">## 操作步骤：</span>
+</code></pre></div></div>
+
+<p>不进行添加的话，首页会把整篇文章完全展示出来，添加了四个空行之后就只会显示部分了，当然了，这篇文章在首页是显示的部分，也就是<strong>目的下的内容</strong></p>
+
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/snakeson/2017/12/07/git-push-github/" data-toggle="tooltip" data-placement="top" title="这是徐代龙进行的第二篇文章">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/snakeson/2017/12/13/Ubuntu16.04-pycharm-icon-setting/" data-toggle="tooltip" data-placement="top" title="Ubuntu16.04设置Pycharm桌面快捷键">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- Duoshuo Share start -->
+                <style>
+                    .ds-share{
+                        text-align: right;
+                    }
+                    
+                    @media only screen and (max-width: 700px) {
+                        .ds-share {
+
+                        }
+                    }
+                </style>
+
+                <div class="ds-share"
+                    data-thread-key="/snakeson/2017/12/07/test-my-webapp" data-title="这是徐代龙进行的第二篇文章"
+                    data-images="http://0.0.0.0:4000/img/green.jpg"
+                    data-content="
+  目的：
+  操作步骤：
+
+
+目的：
+
+写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到githu... | Microdust:Azeril's blog"
+                    data-url="http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/">
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- Duoshuo Share end-->
+
+
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread" data-thread-key="/snakeson/2017/12/07/test-my-webapp" data-title="这是徐代龙进行的第二篇文章" data-url="http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/"></div>
+                </div>
+                <!-- 多说评论框 end -->
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cnfeat"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer class="bs-docs-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ul class="list-inline text-center">
+                    <!-- kill the Facebook and Weibo -->
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    <!--
+                    
+                    -->
+
+                    <!--
+                    
+                    -->
+
+                    
+                    <!--
+                    
+                    -->
+
+                </ul>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <p class="copyright text-muted">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </p>
+                <p class="copyright text-muted">
+                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                <span>
+                    Theme modified by <a>Bear</a>.
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+
+<!-- Highlight.js -->
+<script>
+    async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js",function(){
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+<link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+
+
+</body>
+
+</html>

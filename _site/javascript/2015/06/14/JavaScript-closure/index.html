@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="诸君，武运昌隆">
+
+    <title>JavaScript 中的闭包 - Mr Wind</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/javascript/2015/06/14/JavaScript-closure/">
+
+    <!-- Icons -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <!--
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Documentation extras -->
+   <!-- <link rel="stylesheet" href="/css/docs.min.css">
+   -->
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+
+
+<body ontouchstart="">
+
+    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
+    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+        <img alt="Brand" src="/img/favicon.png">
+    </a>
+    <ul class="navbar ml-md-auto nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/" >Home</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/about/">About</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/archive/">Archive</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/milestone/">milestone</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+          
+    </ul>
+</header>
+
+
+
+    <!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-color: #208C5B
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="Tags">
+                        
+                        <a class="tag" href="/Tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                        <a class="tag" href="/Tags/#闭包" title="闭包">闭包</a>
+                        
+                        <a class="tag" href="/Tags/#慕课网" title="慕课网">慕课网</a>
+                        
+                        <a class="tag" href="/Tags/#ife" title="ife">ife</a>
+                        
+                    </div>
+                    <h1>JavaScript 中的闭包</h1>
+                    
+                    <span class="meta">Posted by CnFeat on June 14, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <ul id="markdown-toc">
+  <li><a href="#闭包的例子" id="markdown-toc-闭包的例子">闭包的例子</a></li>
+  <li><a href="#应用" id="markdown-toc-应用">应用</a></li>
+  <li><a href="#常见错误之循环闭包" id="markdown-toc-常见错误之循环闭包">常见错误之循环闭包</a></li>
+  <li><a href="#封装" id="markdown-toc-封装">封装</a></li>
+  <li><a href="#总结" id="markdown-toc-总结">总结</a></li>
+</ul>
+
+<p>本文为慕课网 <a href="http://www.imooc.com/learn/277">JavaScript深入浅出</a> JavaScript 中的闭包笔记。</p>
+
+<h2 id="闭包的例子">闭包的例子</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function outer() {
+    var localVal = 30;
+    return localVal;
+}
+
+console.log(outer()); //30
+
+function outer2() {
+    var localVal = 30;
+    return function() {
+        return localVal;
+    };
+}
+
+var func = outer2();
+console.log(func()); //30
+</code></pre></div></div>
+
+<p>对于第一个普通的函数，在执行过之后，它的局部变量就可以被释放。</p>
+
+<p>对于第二个函数，<code class="highlighter-rouge">localVal</code> 是不能被释放的。因为调用 <code class="highlighter-rouge">outer2()</code> 后，返回的是匿名函数，匿名函数可以访问外部的 <code class="highlighter-rouge">outer2()</code> 中的局部变量，并返回了这个局部变量 localVal。当 <code class="highlighter-rouge">outer2()</code> 赋值给 <code class="highlighter-rouge">func</code> 后，再次调用 <code class="highlighter-rouge">func()</code>，仍能访问到局部变量 <code class="highlighter-rouge">localVal</code>。这种情况就是闭包。</p>
+
+<hr />
+
+<h2 id="应用">应用</h2>
+
+<ul>
+  <li>
+    <p><strong>所谓闭包就是：子函数可以使用父函数中的局部变量。</strong></p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ! function() {
+      var localData = "localData here";
+      document.addEventListener('click',
+          function() {
+              console.log(localData); //这里访问外部数据
+          });
+  }();
+
+  ! function() {
+      var localData = "localData here";
+      var url = "http://www.baidu.com/";
+      $.ajax({
+          url: url,
+          success: function() {
+              // do sth...
+              console.log(localData); //这里访问外部数据
+          }
+      });
+  }()
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="常见错误之循环闭包">常见错误之循环闭包</h2>
+
+<p>比如我们想循环绑定点击事件</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>document.body.innerHTML = "&lt;div id=div1&gt;aaa&lt;/div&gt;&lt;div id=div2&gt;bbb&lt;/div&gt;&lt;div id=div3&gt;ccc&lt;/div&gt;";
+for (var i = 1; i &lt; 4; i++) {
+    document.getElementById('div' + i).
+    addEventListener('click', function() {
+        alert(i); // all are 4!
+    });
+}
+</code></pre></div></div>
+
+<p>上面的代码，我们点击任何一个 div，弹出的都是 4</p>
+
+<p>这是因为，for 循环中的 i 是一个全局变量。这里内函数的点击事件，访问到的是循环后的 i 值，所以是 4</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>document.body.innerHTML = "&lt;div id=div1&gt;aaa&lt;/div&gt;&lt;div id=div2&gt;bbb&lt;/div&gt;&lt;div id=div3&gt;ccc&lt;/div&gt;";
+for (var i = 1; i &lt; 4; i++) {
+    ! function(i) {
+        document.getElementById('div' + i).
+        addEventListener('click', function() {
+            alert(i); // 1, 2, 3
+        });
+    }(i);
+}
+</code></pre></div></div>
+
+<p>这里使用了立即执行函数，并给匿名函数赋值 i，这样点击事件每一次就会访问到相应的 i。</p>
+
+<hr />
+
+<h2 id="封装">封装</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(function() {
+    var _userId = 9527;
+    var _typeId = "item";
+    var exp = {};
+
+    function converter(userId) {
+        return +userId;
+    }
+
+    exp.getUserId = function() {
+        return converter(_userId);
+    };
+
+    exp.getTypeId = function() {
+        return _typeId;
+    };
+
+    window.a = exp;
+})();
+
+console.log(a.getUserId()); //9527
+console.log(a.getTypeId()); //item
+
+console.log(a._userId); //undefined
+console.log(a._typeId); //undefined
+console.log(converter); //Uncaught ReferenceError: converter is not defined
+</code></pre></div></div>
+
+<p>上面的代码通过闭包实现了一个封装。</p>
+
+<hr />
+
+<h2 id="总结">总结</h2>
+
+<blockquote>
+  <ul>
+    <li>
+      <p>在计算机科学中，闭包（也称词法闭包或函数闭包）是指一个函数或函数的引用，与一个引用环境绑定在一起。这个引用环境是一个存储该函数每个非局部变量（也叫自由变量）的表。</p>
+    </li>
+    <li>
+      <p>闭包，不同于一般的函数，它允许一个函数在立即词法作用域外调用时，仍可访问非本地变量。</p>
+    </li>
+  </ul>
+
+  <p>from 维基百科</p>
+</blockquote>
+
+<ul>
+  <li>闭包的优点
+    <ul>
+      <li>灵活和方便</li>
+      <li>封装</li>
+    </ul>
+  </li>
+  <li>缺点
+    <ul>
+      <li>空间浪费</li>
+      <li>内存泄露</li>
+      <li>性能消耗</li>
+    </ul>
+  </li>
+</ul>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/javascript/2015/06/12/JavaScript-this/" data-toggle="tooltip" data-placement="top" title="JavaScript 中的 this">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/javascript/2015/06/15/JavaScript-Object-Oriented/" data-toggle="tooltip" data-placement="top" title="JavaScript 面向对象">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- Duoshuo Share start -->
+                <style>
+                    .ds-share{
+                        text-align: right;
+                    }
+                    
+                    @media only screen and (max-width: 700px) {
+                        .ds-share {
+
+                        }
+                    }
+                </style>
+
+                <div class="ds-share"
+                    data-thread-key="/javascript/2015/06/14/JavaScript-closure" data-title="JavaScript 中的闭包"
+                    data-images="http://0.0.0.0:4000/img/green.jpg"
+                    data-content="
+  闭包的例子
+  应用
+  常见错误之循环闭包
+  封装
+  总结
+
+
+本文为慕课网 JavaScript深入浅出 JavaScript 中的闭包笔记... | Microdust:Azeril's blog"
+                    data-url="http://0.0.0.0:4000/javascript/2015/06/14/JavaScript-closure/">
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- Duoshuo Share end-->
+
+
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread" data-thread-key="/javascript/2015/06/14/JavaScript-closure" data-title="JavaScript 中的闭包" data-url="http://0.0.0.0:4000/javascript/2015/06/14/JavaScript-closure/"></div>
+                </div>
+                <!-- 多说评论框 end -->
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cnfeat"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer class="bs-docs-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ul class="list-inline text-center">
+                    <!-- kill the Facebook and Weibo -->
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    <!--
+                    
+                    -->
+
+                    <!--
+                    
+                    -->
+
+                    
+                    <!--
+                    
+                    -->
+
+                </ul>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <p class="copyright text-muted">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </p>
+                <p class="copyright text-muted">
+                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                <span>
+                    Theme modified by <a>Bear</a>.
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+
+<!-- Highlight.js -->
+<script>
+    async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js",function(){
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+<link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+
+
+</body>
+
+</html>

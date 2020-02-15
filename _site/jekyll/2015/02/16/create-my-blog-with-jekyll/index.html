@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="诸君，武运昌隆">
+
+    <title>Jekyll 搭建静态博客 - Mr Wind</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/jekyll/2015/02/16/create-my-blog-with-jekyll/">
+
+    <!-- Icons -->
+  <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <!--
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Documentation extras -->
+   <!-- <link rel="stylesheet" href="/css/docs.min.css">
+   -->
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+
+
+
+
+<body ontouchstart="">
+
+    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
+    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+        <img alt="Brand" src="/img/favicon.png">
+    </a>
+    <ul class="navbar ml-md-auto nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/" >Home</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/about/">About</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/archive/">Archive</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/milestone/">milestone</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+          
+    </ul>
+</header>
+
+
+
+    <!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-color: #208C5B
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="Tags">
+                        
+                        <a class="tag" href="/Tags/#jekyll" title="jekyll">jekyll</a>
+                        
+                        <a class="tag" href="/Tags/#RubyGems" title="RubyGems">RubyGems</a>
+                        
+                    </div>
+                    <h1>Jekyll 搭建静态博客</h1>
+                    
+                    <span class="meta">Posted by CnFeat on February 16, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
+
+                <ul id="markdown-toc">
+  <li><a href="#搭建过程" id="markdown-toc-搭建过程">搭建过程</a>    <ul>
+      <li><a href="#安装ruby" id="markdown-toc-安装ruby">安装Ruby</a></li>
+      <li><a href="#安装rubygems" id="markdown-toc-安装rubygems">安装RubyGems</a></li>
+      <li><a href="#用rubygems安装jekyll" id="markdown-toc-用rubygems安装jekyll">用RubyGems安装Jekyll</a></li>
+      <li><a href="#创建博客" id="markdown-toc-创建博客">创建博客</a></li>
+    </ul>
+  </li>
+  <li><a href="#后续" id="markdown-toc-后续">后续</a></li>
+  <li><a href="#可能出现的问题" id="markdown-toc-可能出现的问题">可能出现的问题</a>    <ul>
+      <li><a href="#hitimeshitimes-loaderror" id="markdown-toc-hitimeshitimes-loaderror"><code class="highlighter-rouge">hitimes/hitimes (LoadError)</code></a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>一直以来都想搭建一个自己的博客，但是近半年做项目太忙，再加上教研室的网络很坑爹，所以也一直没顾得上。之前用过 WordPress 托管在免费的京东云擎上，但是速度太慢。在知乎上看到一些相关的内容，于是选择了在github上用jekyll搭建博客。</p>
+
+<h2 id="搭建过程">搭建过程</h2>
+
+<p>在jekyll的官网上 <a href="http://jekyllrb.com/">http://jekyllrb.com/</a> 其实已经说得比较明白了，我在这里还是简单的说一下吧。我用的是Windows系统。  <br />
+主要环节有：安装Ruby，安装RubyGems，安装jekyll，安装代码高亮插件，安装node.js</p>
+
+<h3 id="安装ruby">安装Ruby</h3>
+
+<p>ruby官网下载安装：<a href="https://www.ruby-lang.org/en/downloads/">https://www.ruby-lang.org/en/downloads/</a></p>
+
+<p>安装完成后配置环境变量</p>
+
+<p>在命令提示符中，得到ruby版本号，如下图，即安装成功</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7011d6cfjw1f2ue0e393vj20cu00t748.jpg" alt="" /></p>
+
+<h3 id="安装rubygems">安装RubyGems</h3>
+
+<p>官网下载 <a href="http://rubygems.org/pages/download">http://rubygems.org/pages/download</a> rubygems-2.4.5.zip</p>
+
+<p>cd到RubyGems目录</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7011d6cfjw1f2ue1l2yscj20gk02amxj.jpg" alt="" /></p>
+
+<p>执行安装</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7011d6cfjw1f2ue1w8eqnj20bx00hglg.jpg" alt="" /></p>
+
+<h3 id="用rubygems安装jekyll">用RubyGems安装Jekyll</h3>
+
+<p>执行下面的语句安装</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7011d6cfjw1f2ue2g2p3uj207x00ft8j.jpg" alt="" /></p>
+
+<p>安装结束画面</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7011d6cfjw1f2ue32drwhj20hv09xq5m.jpg" alt="" /></p>
+
+<p>至此jekyll就已经安装完毕了，后续就是个性化的自己设定了。</p>
+
+<h3 id="创建博客">创建博客</h3>
+
+<p>在d盘新建一个工作区jekyllWorkspace</p>
+
+<p>cd到jekyllWorkspace</p>
+
+<p>执行jekyll new name创建新的工作区</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/7011d6cfjw1f2ue3lt31nj20cj02nt8u.jpg" alt="" /></p>
+
+<p>文件结构如下：</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7011d6cfjw1f2ue3ujsybj20ek06wabh.jpg" alt="" /></p>
+
+<p>cd到博客文件夹，开启服务器</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7011d6cfjw1f2ue47y9lgj20ao00f0sl.jpg" alt="" /></p>
+
+<p>watch为了检测文件夹内的变化，即修改后不需要重新启动jekyll</p>
+
+<p>我的环境下启动报错(你的可能没有)，再安装yajl-ruby和rouge</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7011d6cfjw1f2ue4nelnxj20dd077q49.jpg" alt="" /></p>
+
+<p>再次启动服务器成功</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7011d6cfjw1f2ue4v42koj20g505bdgy.jpg" alt="" /></p>
+
+<p>访问 http://localhost:4000/</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/7011d6cfjw1f2ue56ckwoj20je0eumz3.jpg" alt="" /></p>
+
+<p>详细文章页面</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/7011d6cfjw1f2ue5f3j9cj20je0gyq7a.jpg" alt="" /></p>
+
+<h2 id="后续">后续</h2>
+
+<ul>
+  <li>整个安装过程参考了jekyll官网，注意jekyll还有一个简体中文官网，不过比较坑（我就被坑了），有些内容没有翻译过来，有可能会走弯路，建议如果想看中文的相关资料，也要中英对照着阅读。<a href="http://jekyllcn.com">jekyll中文网 http://jekyllcn.com</a>, <a href="http://jekyllrb.com">jekyll英文网 http://jekyllrb.com</a></li>
+  <li>jekyll中的css是用sass写的，当然直接在<code class="highlighter-rouge">_sass/_layout.scss</code>中添加css也是可以的。</li>
+  <li>本文是用Markdown格式来写的，相关语法可参考： <a href="http://wowubuntu.com/markdown/">Markdown 语法说明 (简体中文版) http://wowubuntu.com/markdown/</a></li>
+  <li>按照本文的说明搭建完博客后，用<code class="highlighter-rouge">github Pages</code>托管就可以看到了。注意，在github上面好像不支持rouge，所以要push到github上时，我将配置文件_config.yml中的代码高亮改变为<code class="highlighter-rouge">highlighter: pygments</code>就可以了</li>
+  <li>博客默认是没有评论系统的，本文的评论系统使用了多说，详细安装办法可访问<a href="http://duoshuo.com/">多说官网 http://duoshuo.com/</a>，当然也可以使用<a href="http://changyan.sohu.com/">搜狐畅言 http://changyan.sohu.com/</a>作为评论系统。</li>
+  <li>也可以绑定自己的域名，如果没有域名，可以在<a href="http://www.godaddy.com/">godaddy http://www.godaddy.com/</a>上将域名放入购物车等待降价，买之。</li>
+  <li>祝各位新年快乐！</li>
+</ul>
+
+<hr />
+
+<h2 id="可能出现的问题">可能出现的问题</h2>
+
+<h3 id="hitimeshitimes-loaderror"><code class="highlighter-rouge">hitimes/hitimes (LoadError)</code></h3>
+
+<p><strong>错误代码：</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:/Ruby22/lib/ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require': cannot load such file -- hitimes/hitimes (LoadError)
+</code></pre></div></div>
+
+<p><strong>解决方法：</strong></p>
+
+<p>在stackoverflow上又一个很好的解决方法。<a href="http://stackoverflow.com/questions/28985481/hitimes-require-error-when-running-jekyll-serve-on-windows-8-1">hitimes require error when running jekyll serve on windows 8.1</a> 虽然上面的题主问的是 win 8.1 系统下的情况，但是同样适用于 win7。下面我简单翻译一下错误原因和解决方法。</p>
+
+<blockquote>
+  <p>可能是 Ruby 2.2 和 hitimes-1.2.2-x86-mingw32 中有一些 ABI 变化，少了一些相关的类库。</p>
+
+  <p>所以卸载 hitimes 并通过 <code class="highlighter-rouge">--platform ruby</code> 重装即可。代码如下：</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem uni hitimes
+**Remove ALL versions**
+gem ins hitimes -v 1.2.1 --platform ruby
+</code></pre></div></div>
+
+<blockquote>
+  <p>然后将自动重新编译 hitimes 并适用于 Ruby 2.2</p>
+</blockquote>
+
+<p>下面是我自己的卸载和安装过程：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>E:\GitWorkSpace\gaohaoyang.github.io&gt;gem uni hitimes
+
+You have requested to uninstall the gem:
+        hitimes-1.2.2-x86-mingw32
+
+timers-4.0.1 depends on hitimes (&gt;= 0)
+If you remove this gem, these dependencies will not be met.
+Continue with Uninstall? [yN]  y
+Successfully uninstalled hitimes-1.2.2-x86-mingw32
+
+E:\GitWorkSpace\gaohaoyang.github.io&gt;gem ins hitimes -v 1.2.1 --platform ruby
+Fetching: hitimes-1.2.1.gem (100%)
+Temporarily enhancing PATH to include DevKit...
+Building native extensions.  This could take a while...
+Successfully installed hitimes-1.2.1
+Parsing documentation for hitimes-1.2.1
+Installing ri documentation for hitimes-1.2.1
+Done installing documentation for hitimes after 1 seconds
+1 gem installed
+</code></pre></div></div>
+
+<p>关于，<a href="https://rubygems.org/gems/hitimes/versions/1.2.2">hitimes</a> 是一个快速的高效的定时器解决方案库，详情可以去官网查看。</p>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/jekyll/2015/02/10/welcome-to-jekyll/" data-toggle="tooltip" data-placement="top" title="hello jekyll!">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/blog/2015/03/02/how-to-write/" data-toggle="tooltip" data-placement="top" title="如何正确地练习写作">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- Duoshuo Share start -->
+                <style>
+                    .ds-share{
+                        text-align: right;
+                    }
+                    
+                    @media only screen and (max-width: 700px) {
+                        .ds-share {
+
+                        }
+                    }
+                </style>
+
+                <div class="ds-share"
+                    data-thread-key="/jekyll/2015/02/16/create-my-blog-with-jekyll" data-title="Jekyll 搭建静态博客"
+                    data-images="http://0.0.0.0:4000/img/green.jpg"
+                    data-content="
+  搭建过程    
+      安装Ruby
+      安装RubyGems
+      用RubyGems安装Jekyll
+      创建博客
+... | Microdust:Azeril's blog"
+                    data-url="http://0.0.0.0:4000/jekyll/2015/02/16/create-my-blog-with-jekyll/">
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- Duoshuo Share end-->
+
+
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread" data-thread-key="/jekyll/2015/02/16/create-my-blog-with-jekyll" data-title="Jekyll 搭建静态博客" data-url="http://0.0.0.0:4000/jekyll/2015/02/16/create-my-blog-with-jekyll/"></div>
+                </div>
+                <!-- 多说评论框 end -->
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cnfeat"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer class="bs-docs-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ul class="list-inline text-center">
+                    <!-- kill the Facebook and Weibo -->
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    <!--
+                    
+                    -->
+
+                    <!--
+                    
+                    -->
+
+                    
+                    <!--
+                    
+                    -->
+
+                </ul>
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                <p class="copyright text-muted">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </p>
+                <p class="copyright text-muted">
+                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                <span>
+                    Theme modified by <a>Bear</a>.
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+
+<!-- Highlight.js -->
+<script>
+    async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js",function(){
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+<link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+
+
+</body>
+
+</html>
