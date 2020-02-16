@@ -1,5 +1,6 @@
 <!-- Footer -->
-<footer class="bs-docs-footer">
+
+<footer class="bs-docs-footer bg-dark">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12">
@@ -24,7 +25,7 @@
                     </li>
                     {% endif %}
 
-                    {% if site.github_username %}
+                    {% if site.github_username %} 
                     <li>
                         <a href="https://github.com/{{ site.github_username }}">
                             <span class="fa-stack fa-lg">
@@ -90,7 +91,7 @@
                     本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
                 </p>
                 <p class="copyright text-muted">
-                &copy; {{ site.time | date: '%Y' }} {{ site.owner.name }} ❖ Powered by Jekyll.
+                &copy; {{ site.time | date: '%Y' }} {{ site.owner.name }} ❖ Powered by <a href="https://jekyllrb.com/">Jekyll</a>.
                 <span>
                     Theme modified by <a>Bear</a>.
                 </span>
@@ -109,6 +110,13 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{ "/js/clean-blog.min.js " | prepend: site.baseurl }}"></script>
 
+
+<link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
 
 
 <!-- Highlight.js -->

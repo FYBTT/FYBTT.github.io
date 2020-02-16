@@ -1,16 +1,23 @@
-<header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
-    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+<header>
+<nav class="navbar navbar-expand-md fixed-top navbar-custom" style="padding: 0px;">
+    <a class="navbar-brand" href="#" style="padding: 1rem 15px;">           
         <img alt="Brand" src="/img/favicon.png">
     </a>
-    <ul class="navbar ml-md-auto nav">
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+    </button>
+  
+    <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav ml-md-auto nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ site.baseurl }}/" style="padding: 20px;">Home</a>
+        </li>
+        {% for page in site.pages %}{% if page.title %}
         <li class="nav-item">
-            <a class="nav-link" href="{{ site.baseurl }}/" >Home</a>
-          </li>
-          {% for page in site.pages %}{% if page.title %}
-          <li class="nav-item">
-              <a class="nav-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          </li>
-          {% endif %}{% endfor %}
-    </ul>
+            <a class="nav-link" href="{{ page.url | prepend: site.baseurl }}" style="padding: 20px;">{{ page.title }}</a>
+        </li>
+        {% endif %}{% endfor %}
+      </ul>
+    </div>
+  </nav>
 </header>
-

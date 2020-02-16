@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="description" content="诸君，武运昌隆">
 
     <title>News_scrapy_redis 框架系统 - Mr Wind</title>
@@ -27,9 +27,9 @@
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
-    <!-- Documentation extras -->
-   <!-- <link rel="stylesheet" href="/css/docs.min.css">
-   -->
+    
+
+
     <!-- Custom Fonts -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -51,34 +51,41 @@
 
 <body ontouchstart="">
 
-    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
-    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+    <header>
+<nav class="navbar navbar-expand-md fixed-top navbar-custom" style="padding: 0px;">
+    <a class="navbar-brand" href="#" style="padding: 1rem 15px;">           
         <img alt="Brand" src="/img/favicon.png">
     </a>
-    <ul class="navbar ml-md-auto nav">
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+    </button>
+  
+    <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav ml-md-auto nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/" style="padding: 20px;">Home</a>
+        </li>
+        
         <li class="nav-item">
-            <a class="nav-link" href="/" >Home</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/about/">About</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/archive/">Archive</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/milestone/">milestone</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/tags/">Tags</a>
-          </li>
-          
-    </ul>
+            <a class="nav-link" href="/page/about/" style="padding: 20px;">About</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/archive/" style="padding: 20px;">Archive</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/categories/" style="padding: 20px;">Categories</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/tags/" style="padding: 20px;">Tags</a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
 </header>
-
 
 
     <!-- Post Header -->
@@ -87,21 +94,35 @@
         background-color: #208C5B
     }
 </style>
-<header class="intro-header" >
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="Tags">
-                        
-                        <a class="tag" href="/Tags/#scrapy_redis" title="scrapy_redis">scrapy_redis</a>
-                        
-                        <a class="tag" href="/Tags/#爬虫" title="爬虫">爬虫</a>
-                        
-                    </div>
+
+<!-- Documentation extras -->
+<link rel="stylesheet" href="/css/docs.min.css">
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<header class="intro-header">
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+            <div class="col-lg-12 col-md-12">
+                <div class="post-heading offset-md-2 offset-xl-2 pl-md-5">
+                    
                     <h1>News_scrapy_redis 框架系统</h1>
                     
-                    <span class="meta">Posted by SnakeSon on January 9, 2018</span>
+                    <div class="Tags" style="padding-bottom: 10px;">
+                    <div>
+                        
+                        <a href="/Tags/#爬虫" title="爬虫" style="color: aliceblue;"><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>爬虫</a>
+                        
+                    </div>
+                        
+                        <a href="/Tags/#scrapy_redis" title="scrapy_redis" style="color: aliceblue;"><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>scrapy_redis</a>
+                        
+                        <a href="/Tags/#爬虫" title="爬虫" style="color: aliceblue;"><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>爬虫</a>
+                        
+                    </div>
+                    <span class="meta">Posted by SnakeSon on January 9, 2018
+                         and Readed <span id="busuanzi_value_page_pv"></span> times
+                    </span>
                 </div>
             </div>
         </div>
@@ -110,11 +131,20 @@
 
 
 <!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 post-container">
-
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+            <div class="col-md-2 offset-md-1 col-xl-2 offset-xl-1 bd-sidebar" style="padding: 1rem 15px;">
+                <div class="d-flex align-items-center">
+                    <span class="algolia-autocomplete meta" style=""><h3>CONTENTS</h3></span>
+                    <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#bd-docs-nav" aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+                    </button>
+                </div>
+                <nav class="collapse bd-links" id="bd-docs-nav" aria-label="Main navigation">
+                </nav>
+              </div>
+            <article>
+            <main class="col-md-9  col-xl-9 py-md-3 pl-md-5" role="main">
                 <ul id="markdown-toc">
   <li><a href="#前言" id="markdown-toc-前言">前言</a></li>
   <li><a href="#设计目标" id="markdown-toc-设计目标">设计目标</a></li>
@@ -262,10 +292,9 @@
 </ol>
 
 
-
                 <hr>
-
-                <ul class="pager">
+            <!-- Pager -->
+                <ul class="pager list-unstyled ml-md-auto" style="padding-top: 20px;">
                     
                     <li class="previous">
                         <a href="/%E7%88%AC%E8%99%AB/2018/01/04/scrapy-setup-in-win/" data-toggle="tooltip" data-placement="top" title="window下python3环境安装scrapy">&larr; Previous Post</a>
@@ -277,119 +306,16 @@
                     </li>
                     
                 </ul>
-
-                <!-- Duoshuo Share start -->
-                <style>
-                    .ds-share{
-                        text-align: right;
-                    }
-                    
-                    @media only screen and (max-width: 700px) {
-                        .ds-share {
-
-                        }
-                    }
-                </style>
-
-                <div class="ds-share"
-                    data-thread-key="/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words" data-title="News_scrapy_redis 框架系统"
-                    data-images="http://0.0.0.0:4000/img/green.jpg"
-                    data-content="
-  前言
-  设计目标
-  框架使用说明
-  框架环境
-  框架完善
-
-
-前言
-
-该文档针对爬虫系统设计目标中相应的场景给出技术方案
-
-设计目标
-
-1、... | Microdust:Azeril's blog"
-                    data-url="http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/">
-                    <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
-
-                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
-                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
-                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
-                      </ul>
-                      <div class="ds-share-icons-more">
-                      </div>
-                    </div>
-                <hr>
-                </div>
-                <!-- Duoshuo Share end-->
-
-
-                <!-- 多说评论框 start -->
-                <div class="comment">
-                    <div class="ds-thread" data-thread-key="/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words" data-title="News_scrapy_redis 框架系统" data-url="http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/"></div>
-                </div>
-                <!-- 多说评论框 end -->
-            </div>
+                <div class="clear" style="padding-bottom: 10px;"></div>
+            </main>
+        </article>
         </div>
     </div>
-</article>
-
-
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"cnfeat"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-</script>
-<!-- 多说公共JS代码 end -->
-
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
-    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'always',
-          placement: 'right',
-          icon: '#'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading');
-    })
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
 
 
     <!-- Footer -->
-<footer class="bs-docs-footer">
+
+<footer class="bs-docs-footer bg-dark">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12">
@@ -426,7 +352,7 @@ var duoshuoQuery = {short_name:"cnfeat"};
                     本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
                 </p>
                 <p class="copyright text-muted">
-                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                &copy; 2020  Bear ❖ Powered by <a href="https://jekyllrb.com/">Jekyll</a>.
                 <span>
                     Theme modified by <a>Bear</a>.
                 </span>
@@ -445,6 +371,13 @@ var duoshuoQuery = {short_name:"cnfeat"};
 <!-- Custom Theme JavaScript -->
 <script src="/js/clean-blog.min.js "></script>
 
+
+<link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
 
 
 <!-- Highlight.js -->

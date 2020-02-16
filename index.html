@@ -62,10 +62,10 @@ description: "诸君，武运昌隆"
             <h5><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>Categories</h5>
             <div class="tagcloud">
                 {% for category in site.categories %}
-                <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
+                <a href="/page/categories/#{{ category | first }}" cate="{{ category | first }}">
                     {{ category | first }}
 
-                <span class="badge">--{{ category | last | size }}</span>
+                <span>({{ category | last | size }})</span>
                 </a> 
                 {% endfor %}
 
@@ -107,7 +107,7 @@ description: "诸君，武运昌隆"
             {% else %}
                 {% assign color = 8 | minus: base %}
             {% endif %}
-            <a href="{{ root_url }}/{{ site.tag_dir }}#{{ tag[0] }}" class="tag-cloud-link">{{ tag[0] }}</a>
+            <a href="/page/tags/#{{ tag[0] }}" class="tag-cloud-link">{{ tag[0] }}</a>
             {% endfor %}
         </div>
     </div>

@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     // hide #back-top first
     $("#back-top").hide();
-
+    $("#bd-docs-nav").append($("#markdown-toc"));
     // fade in #back-top
     $(function() {
         $(window).scroll(function() {

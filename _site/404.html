@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <meta name="description" content="诸君，武运昌隆">
 
     <title>Mr Wind</title>
@@ -27,9 +27,9 @@
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
-    <!-- Documentation extras -->
-   <!-- <link rel="stylesheet" href="/css/docs.min.css">
-   -->
+    
+
+
     <!-- Custom Fonts -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -51,34 +51,41 @@
 
 <body ontouchstart="">
 
-    <header class="nav navbar-expand navbar-default navbar-custom flex-column flex-md-row">
-    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+    <header>
+<nav class="navbar navbar-expand-md fixed-top navbar-custom" style="padding: 0px;">
+    <a class="navbar-brand" href="#" style="padding: 1rem 15px;">           
         <img alt="Brand" src="/img/favicon.png">
     </a>
-    <ul class="navbar ml-md-auto nav">
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
+    </button>
+  
+    <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav ml-md-auto nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/" style="padding: 20px;">Home</a>
+        </li>
+        
         <li class="nav-item">
-            <a class="nav-link" href="/" >Home</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/about/">About</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/archive/">Archive</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/milestone/">milestone</a>
-          </li>
-          
-          <li class="nav-item">
-              <a class="nav-link" href="/tags/">Tags</a>
-          </li>
-          
-    </ul>
+            <a class="nav-link" href="/page/about/" style="padding: 20px;">About</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/archive/" style="padding: 20px;">Archive</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/categories/" style="padding: 20px;">Categories</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/page/tags/" style="padding: 20px;">Tags</a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
 </header>
-
 
 
     <!-- Page Header -->
@@ -95,14 +102,6 @@
         </div>
     </div>
 </div>
-
-<link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
-<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
-
-<div id="back-top">
-  <a href="#top" title="回到顶部"></a>
-</div>
-
 <!-- Main Content -->
 <div class="container-fluid">
 	<div class="row flex-xl-nowrap">
@@ -171,7 +170,8 @@
 
 
     <!-- Footer -->
-<footer class="bs-docs-footer">
+
+<footer class="bs-docs-footer bg-dark">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12">
@@ -208,7 +208,7 @@
                     本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次
                 </p>
                 <p class="copyright text-muted">
-                &copy; 2020  CnFeat ❖ Powered by Jekyll.
+                &copy; 2020  Bear ❖ Powered by <a href="https://jekyllrb.com/">Jekyll</a>.
                 <span>
                     Theme modified by <a>Bear</a>.
                 </span>
@@ -227,6 +227,13 @@
 <!-- Custom Theme JavaScript -->
 <script src="/js/clean-blog.min.js "></script>
 
+
+<link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
 
 
 <!-- Highlight.js -->
