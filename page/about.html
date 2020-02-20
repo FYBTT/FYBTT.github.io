@@ -1,69 +1,301 @@
 ---
 layout: page
 title: "About"
-description: "不定时更新"
+profile_img: "/img/profile.png"
+description: "Mr Wind."
+post: "OS Kernel Developer"
 ---
 
-<main class="col-md-8 offset-md-2 col-xl-8 offset-xl-2 py-md-3 pl-md-5 bd-content" role="main">
+<!-- Documentation extras -->
+<link rel="stylesheet" href="{{ "/css/docs.min.css" | prepend: site.baseurl }}">
+<style type="text/css">
+.resume-timeline {
+  padding-left: 2rem;
+}
 
-我是陈素封，每天千字践行者，践行时间：2014年02月10日至2015年02月23日，感谢这段经历，让我成为了现在的我。
+.resume-timeline:before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 100%;
+  background: #aab4c3;
+  left: 6px;
+  top: 4px;
+  position: absolute;
+}
 
-现在研习 **认知写作学** 。
+.resume-timeline-item:before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: -32px;
+  top: 3px;
+  width: 15px;
+  height: 15px;
+  border: 4px solid #58677c;
+  background: white;
+  border-radius: 50%;
+}
 
-###坚信
+.resume-company-name {
+    color: #58677c;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+</style>
 
+<main class="resume-body p-5 col-md-8 offset-md-2 col-xl-8 offset-xl-2 py-md-6 pl-md-6">
+    <section class="resume-section summary-section mb-5">
+        <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Career Summary</h2>
+        <div class="resume-section-content">
+            <p class="mb-0">Summarise your career here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. You can download this free resume/CV template here. Aenean commodo ligula eget dolor aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget.</p>
+        </div>
+    </section><!--//summary-section-->
+    
+    <div class="row">
+        <div class="col-lg-9">
+            <section class="resume-section experience-section mb-5">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Work Experience</h2>
+                <div class="resume-section-content">
+                    <div class="resume-timeline position-relative">
+                        <article class="resume-timeline-item position-relative pb-5">
+                            
+                            <div class="resume-timeline-item-header mb-2">
+                                <div class="d-flex flex-column flex-md-row">
+                                    <h3 class="resume-position-title font-weight-bold mb-1">Lead Developer</h3>
+                                </div><!--//row-->
+                                <hr>
+                                <div class="resume-position-time">2018 - Present</div>
+                            </div><!--//resume-timeline-item-header-->
+                            <div class="resume-timeline-item-desc">
+                                <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Donec pede justo, fringilla vel.</p>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Achievements:</h4>
+                                <p>Praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+                                <ul>
+                                    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
+                                    <li>At vero eos et accusamus et iusto odio dignissimos.</li>
+                                    <li>Blanditiis praesentium voluptatum deleniti atque corrupti.</li>
+                                    <li>Maecenas tempus tellus eget.</li>
+                                </ul>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Angular</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Python</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">jQuery</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Webpack</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">PostgresSQL</span></li>
+                                </ul>
+                            </div><!--//resume-timeline-item-desc-->
 
-- 元认知乃一切之源
-- 学苟知本，六经皆我注脚 
-- 一切技能皆可习得，包括写作
-- 「持续」并不是坚持，写就是最好的回报
+                        </article><!--//resume-timeline-item-->
+                        
+                        <article class="resume-timeline-item position-relative pb-5">
+                            
+                            <div class="resume-timeline-item-header mb-2">
+                                <div class="d-flex flex-column flex-md-row">
+                                    <h3 class="resume-position-title font-weight-bold mb-1">Senior Software Developer</h3>
+                                </div><!--//row-->
+                                <div class="resume-position-time">2014 - 2018</div>
+                            </div><!--//resume-timeline-item-header-->
+                            <div class="resume-timeline-item-desc">
+                                <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Donec pede justo, fringilla vel.</p>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Achievements</h4>
+                                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">React</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Redux</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Django</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Webpack</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">MySQL</span></li>
+                                </ul>
+                            </div><!--//resume-timeline-item-desc-->
 
+                        </article><!--//resume-timeline-item-->
+                        
+                        <article class="resume-timeline-item position-relative pb-5">
+                            
+                            <div class="resume-timeline-item-header mb-2">
+                                <div class="d-flex flex-column flex-md-row">
+                                    <h3 class="resume-position-title font-weight-bold mb-1">Co-Founder &amp; Lead Developer</h3>
+                                </div><!--//row-->
+                                <div class="resume-position-time">2012 - 2014</div>
+                            </div><!--//resume-timeline-item-header-->
+                            <div class="resume-timeline-item-desc">
+                                <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Django</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">JavaScript</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Node.js</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Require.js</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                </ul>
+                            </div><!--//resume-timeline-item-desc-->
 
-###关注：
+                        </article><!--//resume-timeline-item-->
+                        
+                        <article class="resume-timeline-item position-relative">
+                            
+                            <div class="resume-timeline-item-header mb-2">
+                                <div class="d-flex flex-column flex-md-row">
+                                    <h3 class="resume-position-title font-weight-bold mb-1">Web Developer <small class="text-muted">(Intern)</small></h3>
+                                </div><!--//row-->
+                                <div class="resume-position-time">2011 - 2012</div>
+                            </div><!--//resume-timeline-item-header-->
+                            <div class="resume-timeline-item-desc">
+                                <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum.</p>
+                                <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">Ruby on Rails</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">jQuery</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/LESS</span></li>
+                                    <li class="list-inline-item"><span class="badge badge-success badge-pill">MongoDB</span></li>
+                                </ul>
+                            </div><!--//resume-timeline-item-desc-->
 
+                        </article><!--//resume-timeline-item-->
+                        
+                        
+                    </div><!--//resume-timeline-->
+                    
+                    
+                    
+                    
+                    
+                    
+                </div>
+            </section><!--//experience-section-->
+        </div>
+        <div class="col-lg-3">
+            <section class="resume-section skills-section mb-5">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Skills &amp; Tools</h2>
+                <div class="resume-section-content">
+                    <div class="resume-skill-item">
+                        <h4 class="resume-skills-cat font-weight-bold">Frontend</h4>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2">
+                                <div class="resume-skill-name">Angular</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" style="width: 98%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">React</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 94%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">JavaScript</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 96%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            
+                            <li class="mb-2">
+                                <div class="resume-skill-name">Node.js</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 92%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">HTML/CSS/SASS/LESS</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 96%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div><!--//resume-skill-item-->
+                    
+                    <div class="resume-skill-item">
+                        <h4 class="resume-skills-cat font-weight-bold">Backend</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <div class="resume-skill-name">Python/Django</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 95%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">Ruby/Rails</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 92%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">PHP</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 86%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="resume-skill-name">WordPress/Shopify</div>
+                                <div class="progress resume-progress">
+                                    <div class="progress-bar theme-progress-bar-dark" role="progressbar" style="width: 82%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div><!--//resume-skill-item-->
+                    
+                    <div class="resume-skill-item">
+                        <h4 class="resume-skills-cat font-weight-bold">Others</h4>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><span class="badge badge-light">DevOps</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Code Review</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Git</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Unit Testing</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Wireframing</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Sketch</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Balsamiq</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">WordPress</span></li>
+                            <li class="list-inline-item"><span class="badge badge-light">Shopify</span></li>
+                        </ul>
+                    </div><!--//resume-skill-item-->
+                </div><!--resume-section-content-->
+            </section><!--//skills-section-->
+            <section class="resume-section education-section mb-5">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Education</h2>
+                <div class="resume-section-content">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <div class="resume-degree font-weight-bold">MSc in Computer Science</div>
+                            <div class="resume-degree-org">University College London</div>
+                            <div class="resume-degree-time">2010 - 2011</div>
+                        </li>
+                        <li>
+                            <div class="resume-degree font-weight-bold">BSc Maths and Physics</div>
+                            <div class="resume-degree-org">Imperial College London</div>
+                            <div class="resume-degree-time">2007 - 2010</div>
+                        </li>
+                    </ul>
+                </div>
+            </section><!--//education-section-->
 
-- [元认知](http://www.mesule.com/)
-- 写作
-- Python
-- [阳志平](http://www.yangzhiping.com/)
-- [ZoomQuiet](http://blog.zoomquiet.io/)
-
-
-
-
-###代表作：
-
-- [《24款最值得推荐的中文字体》](http://cnfeat.com/blog/2015/05/22/a-24-chinese-fonts/)
-
-- [《世界并非如你所见——用可供性来发现更大的世界》](http://cnfeat.com/blog/2015/05/01/affordance/)
-
-- [《如何正确地练习写作》](http://cnfeat.com/blog/2015/03/02/how-to-write/)
-
-
-###我的朋友们
-
-- [YiLee](http://yilee.me)
-- [Caos](http://caos.me)
-- [BuzhiNote](http://BuzhiNote.com)
-- [Azeril](http://azeril.me)
-
-###联系
-
-- [博客：www.cnfeat.com](www.cnfeat.com)
-
-- [微博@CnFeat](http://weibo.com/207775270)
-
-- [知乎@陈素封](http://www.zhihu.com/people/Feat)
-
-- [知乎专栏](http://zhuanlan.zhihu.com/cnfeat)
-
-- 公众号：cnfeat
-
-<center>
-    <p><img src="http://i173.photobucket.com/albums/w63/cnfeat/2015-08-29-2_zpsqj7po8eo.png" align="center"></p>
-</center>
-
-</main>
-
-
-
+            <section class="resume-section language-section mb-5">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Language</h2>
+                <div class="resume-section-content">
+                    <ul class="list-unstyled resume-lang-list">
+                        <li class="mb-2"><span class="resume-lang-name font-weight-bold">English</span> <small class="text-muted font-weight-normal">(Native)</small></li>
+                        <li class="mb-2 align-middle"><span class="resume-lang-name font-weight-bold">French</span> <small class="text-muted font-weight-normal">(Professional)</small></li>
+                        <li><span class="resume-lang-name font-weight-bold">Spanish</span> <small class="text-muted font-weight-normal">(Professional)</small></li>
+                    </ul>
+                </div>
+            </section><!--//language-section-->
+            <section class="resume-section interests-section mb-5">
+                <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Interests</h2>
+                <div class="resume-section-content">
+                    <ul class="list-unstyled">
+                        <li class="mb-1">Climbing</li>
+                        <li class="mb-1">Snowboarding</li>
+                        <li class="mb-1">Cooking</li>
+                    </ul>
+                </div>
+            </section><!--//interests-section-->
+            
+        </div>
+    </div><!--//row-->
+</main><!--//resume-body-->

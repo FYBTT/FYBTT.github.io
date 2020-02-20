@@ -36,9 +36,7 @@ a img:hover,
 a img:focus {
   cursor: zoom-in;
 }
-article {
-  overflow-x: hidden;
-}
+
 blockquote {
   color: #808080;
   font-style: italic;
@@ -174,7 +172,7 @@ hr.small {
   .navbar-custom.is-fixed {
     /* when the user scrolls down, we hide the header right above the viewport */
     position: fixed;
-    top: -78px;
+    top: -70px;
     background-color: rgba(255, 255, 255, 0.9);
     border-bottom: 1px solid #f2f2f2;
     -webkit-transition: -webkit-transform 0.3s;

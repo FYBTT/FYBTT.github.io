@@ -27,11 +27,11 @@ layout: default
                     <div class="Tags" style="padding-bottom: 10px;">
                     <div>
                         {% for tag in page.categories %}
-                        <a href="/Tags/#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
+                        <a href="/page/categories/#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
                         {% endfor %}
                     </div>
                         {% for tag in page.tags %}
-                        <a href="/Tags/#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
+                        <a href="/page/tags#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
                         {% endfor %}
                     </div>
                     <span class="meta">Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %} on {{ page.date | date: "%B %-d, %Y" }}

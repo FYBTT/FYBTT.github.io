@@ -43,7 +43,7 @@ description: "这个页不常开，tags估计还得整理"
       </button>
   </div>
   <nav class="collapse bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <ul id="markdown-toc">
+    <div class="tagcloud">
       {% capture tags %}
           {% for tag in site.tags %}
             {{ tag[0] }}
@@ -52,11 +52,9 @@ description: "这个页不常开，tags估计还得整理"
       {% assign sortedtags = tags | split:' ' | sort %}
 
       {% for tag in sortedtags %}
-      <li>
-        <a href="#{{ tag }}">{{ tag }} ({{ site.tags[tag].size }})</a>
-      </li>
+      <a href="#{{ tag }}" class="tag-cloud-link">{{ tag }} ({{ site.tags[tag].size }})</a>
       {% endfor %}
-    </ul>
+    </div>
   </nav>
 </div>
 

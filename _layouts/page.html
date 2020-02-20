@@ -9,9 +9,16 @@ pagetype: page
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="site-heading">
+                    {% if page.profile_img %}
+                    <img src="{{ page.profile_img }}" alt="..." style="border-radius: 50%;box-shadow: 0 0 10px #ffffff; border: 5px solid #ffffff; width: 140px; height: 140px;">
+                    <hr class="small">
+                    <h1 style="color: #ffffff;">{{ page.description }}</h1>
+                    <h3 style="color: #ffffff;">{{ page.post }}</h3>
+                    {% else %}
                     <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
                     <hr class="small">
                     <span class="subheading">{{ page.description }}</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
