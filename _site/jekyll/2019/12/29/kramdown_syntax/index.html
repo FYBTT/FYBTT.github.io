@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A personal blog website for recording what I think and what I do">
+    <meta name="keywords"  content="Blog, SLAM, robot">
+    <meta name="theme-color" content="#000000">
+    
+    <title>kramdown 语法 - Mr Wind的博客</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://0.0.0.0:4000/jekyll/2019/12/29/kramdown_syntax/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- body background -->
+    <!-- <style>
+    body {
+        background: url("/img/body-bg.gif") repeat
+    }
+    </style>
+     -->
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- 数学公式并自动编号 -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                displayMath: [['$$','$$']],
+                inlineMath: [['$','$']],
+            },
+            TeX: {equationNumbers: {autoNumber: "AMS"}},
+        });
+    </script>
+
+    <!-- line number for code block -->
+    <script src="/js/prism.js"></script>
+    <link rel="stylesheet" href="/css/prism.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- view and visit statistic -->
+    <script async src="/js/busuanzi.pure.mini.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img alt="Brand" src="/img/favicon.png"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right" style="text-shadow:4px 4px 10px #000000;">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/about/">Mr Wind</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/categories/">Categories</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/pages/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/sort.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/sort.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/pages/categories/#jekyll" title="jekyll" style="background-color: darkcyan;">jekyll</a>
+                        
+                        
+                        <a class="tag" href="/pages/tags/#markdown" title="markdown">markdown</a>
+                        
+                        <a class="tag" href="/pages/tags/#转载" title="转载">转载</a>
+                        
+                    </div>
+                    <h1>kramdown 语法</h1>
+                    
+                    
+                    <h2 class="subheading">使用 kramdown 中遇到的问题--公式和代码</h2>
+                    
+                    <span class="meta">Posted by bear on December 29, 2019
+                        &nbsp;&nbsp;&nbsp; <span id="busuanzi_container_page_pv">
+                        view: <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-9 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<blockquote>
+  <p>以下所有内容均基于 jekyll 中的 kramdown 做的测试。</p>
+</blockquote>
+
+<h2 id="1-公式">1 公式</h2>
+
+<p>按照官方文档，kramdown 中 <code>display</code> 公式用双美元符 <code>$$</code> 表示，并且前后需留空行（<a href="https://kramdown.gettalong.org/syntax.html#code-blocks">文档</a>中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为<code>inline</code>公式，另外若前后均有空行但想要解析为<code>inline</code>公式，则可以对第一个美元符号转义：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">\$</span><span class="p">$</span><span class="nb">...</span><span class="p">$$</span><span class="nb">
+</span></code></pre></div></div>
+<p>若不想解析为公式，则对前两个美元符号转义：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">\$\$</span>...<span class="p">$$</span><span class="nb">
+</span></code></pre></div></div>
+
+<p>下面我们来一个个尝试：</p>
+
+<h3 id="11-math-block">1.1 math block</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+
+</code></pre></div></div>
+<p>表现为：</p>
+
+<script type="math/tex; mode=display">y=ax+b</script>
+
+<h3 id="12-inline-math">1.2 inline math</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">\$</span><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">
+
+</span></code></pre></div></div>
+<p>表现为：</p>
+
+<p><script type="math/tex">y=ax+b</script></p>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这个公式
+<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+是行内吧！
+</code></pre></div></div>
+<p>表现为：<br />
+这个公式
+<script type="math/tex">y=ax+b</script>
+是行内吧！</p>
+
+<h3 id="13-no-math">1.3 no math</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">\$\$</span>y=ax+b<span class="p">$$</span><span class="nb">
+
+</span></code></pre></div></div>
+<p>表现为：</p>
+
+<p>$$y=ax+b$$</p>
+
+<font color="red">仍然是math block！</font>
+
+<p>注意：</p>
+<ol>
+  <li>kramdown 对于单个美元符号仍会解析为inline code</li>
+</ol>
+
+<h3 id="14-math-with-color">1.4 math with color</h3>
+
+<p>由于 markdown 不支持字体颜色，所以修改字体颜色要通过 html 直接修改，但带颜色的公式也会出问题。</p>
+
+<p>如：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>文字变为蓝色了。<span class="nt">&lt;/font&gt;</span>  
+正常公式：$$y=ax+b$$  
+蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>$$y=ax+b$$<span class="nt">&lt;/font&gt;</span>  
+蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span><span class="se">\$</span>$y=ax+b$$<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+
+<font color="blue">文字变为蓝色了。</font>
+<p>正常公式：<script type="math/tex">y=ax+b</script><br />
+蓝色公式：<font color="blue">$$y=ax+b$$</font>
+蓝色公式：<font color="blue">\$$y=ax+b$$</font></p>
+
+<font color="red">所以为公式修改颜色会使 inline math 变为 math code 。</font>
+
+<p>解决办法是不要使用双 <code class="highlighter-rouge">$</code>，使用单 <code class="highlighter-rouge">$</code>：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>$y=ax+b$<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+<p>蓝色公式：<font color="blue">$y=ax+b$</font></p>
+
+<p>所以 kramdown 其实支持单 <code class="highlighter-rouge">$</code>，但某些时候单 <code class="highlighter-rouge">$</code>公式会有问题，如面对<code class="highlighter-rouge">}_... _{</code>的时候：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>${a}_1-a_{2}$   
+</code></pre></div></div>
+<p>${a}<em>1-a</em>{2}$</p>
+
+<p>甚至不在一个公式域中也可以影响到：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>${a}_1$ and $a_{2}$
+</code></pre></div></div>
+<p>${a}<em>1$ and $a</em>{2}$</p>
+
+<p>原因在于在 kramdown 中，<code class="highlighter-rouge">__</code>的解析优先级要比<code class="highlighter-rouge">$</code>高，所以会先解析<code class="highlighter-rouge">__</code>。</p>
+
+<p><strong>综上，平时使用双 <code class="highlighter-rouge">$</code>，公式带颜色时使用单 <code class="highlighter-rouge">$</code>。</strong></p>
+
+<p>写上面这行话又发现了 inline code 带颜色的坑。</p>
+
+<p>如：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>综上，平时使用双 <span class="sb">`$`</span>，公式带颜色时使用单 <span class="sb">`$`</span>。<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+<p>变为了</p>
+<font color="blue">综上，平时使用双 `$`，公式带颜色时使用单 `$`。</font>
+
+<h2 id="2-代码">2 代码</h2>
+
+<p>markdown 中使用 <code>```</code>实现代码块，<code>`</code>实现行内代码。而 kramdown 中的代码块使用 <code>~~~</code>， 行内代码仍使用 <code>`</code>。指定代码类型方式相同，仍是在第一行的<code>~~~</code>后面加上类型。</p>
+
+<p>如：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~~~cpp
+int a = 1;
+int b = a;
+~~~
+</code></pre></div></div>
+<p>以上代码显示为：</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">这里有`</span><span class="kr">inline</span><span class="err">`代码。</span>
+</code></pre></div></div>
+<p>以上显示为：  <br />
+这里有<code class="highlighter-rouge">inline</code>代码。</p>
+
+<h3 id="注意">注意：</h3>
+
+<ol>
+  <li><code>```</code>一般也能正确解析，但是不推荐，下面代码即通过<code>```</code>生成。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="3-代码中包含公式">3 代码中包含公式</h2>
+
+<blockquote>
+  <p>挑战来了！</p>
+</blockquote>
+
+<p>code block 中包含公式是没有问题的，如第一节所示。而 inline code 中包含公式会有各种问题。</p>
+
+<h3 id="31-单--符号">3.1 单 $ 符号</h3>
+
+<p>如何在 inline code 中实现以下效果呢？</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$</span>
+</code></pre></div></div>
+
+<p>首先尝试</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`$y=ax+b$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">$y=ax+b$</code></p>
+<font color="red">公式被解析了！</font>
+
+<p>再尝试</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`\$y=ax+b$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">\$y=ax+b$</code></p>
+<font color="red">仍然被解析！</font>
+
+<p>当然，如果前后都转义呢？</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`\$y=ax+b\$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">\$y=ax+b\$</code></p>
+<font color="red">失败了！</font>
+
+<h3 id="32-双--符号">3.2 双 $ 符号</h3>
+
+<p>如何在 inline code 中实现以下效果呢？</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+</code></pre></div></div>
+
+<p>一次性展示：</p>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>`   
+`<span class="k">\$</span><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">`   
+`</span><span class="nv">\$\$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">`   
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">$$y=ax+b$$</code> <br />
+<code class="highlighter-rouge">\$$y=ax+b$$</code> <br />
+<code class="highlighter-rouge">\$\$y=ax+b$$</code></p>
+
+<font color="red">都没用！</font>
+<p>最后看来，最接近的方式还是分开写：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`<span class="p">$$</span><span class="nb">``y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b``</span><span class="p">$$</span>`
+</code></pre></div></div>
+<p><code class="highlighter-rouge">$$</code><code class="highlighter-rouge">y=ax+b</code><code class="highlighter-rouge">$$</code></p>
+
+<p>转载自：[https://hugueliu.github.io/2019/12/29/kramdown_syntax/][1]</p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/vscode/2019/12/16/vscode_mpe_equation_auto_number/" data-toggle="tooltip" data-placement="top" title="vscode配置mathjax">
+                        Previous<br>
+                        <span>vscode配置mathjax</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/" data-toggle="tooltip" data-placement="top" title="贝叶斯思维——chapter4(估计进阶)">
+                        Next<br>
+                        <span>贝叶斯思维——chapter4(估计进阶)</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+                
+                <!-- Gitalk end -->
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
+<!-- Footer -->
+<footer style="background-color: currentcolor;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-contao fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/HugueLiu">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mr Wind 2020
+                    <br>
+                    Theme on <a href="https://github.com/HugueLiu/HugueLiu.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=HugueLiu&repo=HugueLiu.github.io&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    <span id="busuanzi_container_site_uv">
+                        本站访客数<span id="busuanzi_value_site_uv" style="color:aliceblue"></span>人次
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'ad936e42d0b4fc7ee2b36bca1408a0b6';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+<!-- line number for code block -->
+<script>
+var pres = document.getElementsByTagName("pre");
+for(var i = 0; i < pres.length; i++){
+    var pre = pres[i];
+    if(pre.childNodes[0].nodeName == "CODE"){
+        pre.setAttribute("class","line-numbers");
+    }
+}
+</script>
+
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

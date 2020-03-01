@@ -1,0 +1,185 @@
+I"?N<p><strong>写在前面：</strong>
+库文件链接：<a href="https://code.csdn.net/snippets/1890933.git">thinkbayes.py</a></p>
+
+<h1 id="41-欧元问题">4.1 欧元问题</h1>
+<h2 id="问题">问题：</h2>
+<p>《信息论：推理和学习算法》中，有过这样一个问题：“当硬币以边缘转动250次,得到正面140次，反面110次。”，“统计学声明称：如果这是一个均匀的硬币，这样的结果出现的可能性小于7%。”</p>
+
+<hr />
+
+<p>上述结果是否对“硬币偏心而非均匀”提供了证据？</p>
+<h2 id="解">解：</h2>
+<p>我们将采取一下步骤来回答这个问题。</p>
+
+<ol>
+  <li>估计该硬币正面朝上的概率。</li>
+  <li>估计该数是否支持硬币偏心的假设。</li>
+</ol>
+
+<p>已知一个硬币，那么我们以其边缘转动，它正面朝上的概率都是确定的x。（取决于硬币的物理特性——重量分布）
+如果硬币的重量分布是均匀的，那么我们认为这里的x接近<script type="math/tex">50%</script>，但是作为一个不均匀的硬币，这个x应该会有较大差别。
+我们接下来要利用贝叶斯定理和观察到的数据来估计x。
+我们先定义假设<script type="math/tex">H_x</script>，表示正面朝上的概率为x％:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hypos</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+</code></pre></div></div>
+<p>说先从均匀的先验概率开始。后面我们在考虑其他的先验概率。
+likelihood的函数相对容易，若<script type="math/tex">H_x</script>为真，正面朝上概率为<script type="math/tex">x/100</script>，反面朝上概率为<script type="math/tex">(1 - x/100)</script>。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Euro</span><span class="p">(</span><span class="n">Suite</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypos</span><span class="p">):</span>
+        <span class="k">pass</span><span class="c1">#可以参考上一篇
+</span>        
+    <span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">hypo</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s">'H'</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mf">100.0</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">/</span><span class="mf">100.0</span>
+        
+    <span class="k">def</span> <span class="nf">Update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span><span class="c1">#可以参考上一篇
+</span></code></pre></div></div>
+<p>利用观察到的数据对x进行估计。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">suite</span>  <span class="o">=</span> <span class="n">Euro</span><span class="p">(</span><span class="n">hypos</span><span class="p">)</span>
+<span class="n">dataSet</span> <span class="o">=</span> <span class="s">'H'</span><span class="o">*</span><span class="mi">140</span><span class="o">+</span><span class="s">'T'</span><span class="o">*</span><span class="mi">110</span>
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span>
+    <span class="n">suite</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+<p><strong>总结：</strong>在均匀分布的先验概率前提下，后验分布会有一个较为明显的偏移。</p>
+<h1 id="42-后验概率的概述">4.2 后验概率的概述</h1>
+<p>总结一下，有几种方式来概括后验概率分布的特征。</p>
+
+<ol>
+  <li>找后验概率的最大似然。（你会发现这里的最大似然实际上就等于观察得到的百分比<script type="math/tex">140/250</script>）</li>
+  <li>计算平均数和中位数来概述后验概率。</li>
+  <li>计算置信区间来概述后验概率。</li>
+</ol>
+
+<p>回到原来的问题，我们想知道硬币是否是均匀的。当观察到的后验可信区间不包括50％，我们认为硬币的重量分布的确是不均匀的。
+但确切地说，这不是我们最开始的问题。之前的问题是“这些数据是否恰恰为——硬币偏心而非均匀——给出了证据？要回答这个问题，我们需要更加精确得理解‘数据为某假说提供证据’这句化的含义，这个放到下一章讲”。
+既然我们想要知道硬币是否是均匀的，很自然得想到是求x为50%的概率：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">suite</span><span class="o">.</span><span class="n">Prob</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span><span class="mf">0.021</span>
+</code></pre></div></div>
+<p>然而这个值几乎不能说明什么，这使得对假设的评估显得毫无意义。我们可以通过将范围区间划分为更多或者更少的细小区间。这样，对给定的假设的概率会更大或更小。</p>
+<h1 id="43-先验概率的湮没">4.3 先验概率的湮没</h1>
+<p>我们之前假设先验是均匀的，但这可能不是一个好的假设。如果硬币是偏心的，我们可以相信x会大幅度偏离<script type="math/tex">50％</script>，但如果偏心到<script type="math/tex">10%</script>或者<script type="math/tex">90%</script>就近乎不可能。
+更合理的方式，是为<script type="math/tex">50%</script>附近给出一个相对与<script type="math/tex">10%</script>或者<script type="math/tex">90%</script>更高的先验概率。
+我们可以构建一个三角先验分布的例子：
+<img src="http://img.blog.csdn.net/20160921115235274" alt="此处输入图片的描述" />
+ 只是给力一个先验分布的形状，还需要做归一化。
+ 下面的代码构成了所谓的三角先验分布：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">TrianglePrior</span><span class="p">():</span>
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">Euro</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">51</span><span class="p">):</span>
+        <span class="n">suite</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">101</span><span class="p">):</span>
+        <span class="n">suite</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">100</span><span class="o">-</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">suite</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
+</code></pre></div></div>
+<p>事实上，即使我们应用了不同的先验，后验分布也非常得相似。
+这就是先验湮没的一个例子：如果有足够的数据，计时在先验分布上持有不同的观点，我们也会得到趋于<strong>收敛的后验概率</strong>。</p>
+<h1 id="44-优化">4.4 优化</h1>
+<p>从上述的代码我们可以看到，对于每个得到的数据我们都会单独的应用一次Update,从上一章的Update的实现中我们可以看到在每次应用一次该函数，都需要进行一次归一化处理。
+所以，如果我们已知了一个数据的序列，就没有必要一个一个得进行训练，对所有数据都训练结束了，再进行归一化即可。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">UpdateSet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataSet</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">hypo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Values</span><span class="p">():</span>
+            <span class="n">like</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Likelihood</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Mult</span><span class="p">(</span><span class="n">hypo</span><span class="p">,</span> <span class="n">like</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
+</code></pre></div></div>
+<p>这样处理会在一定程度上优化我们的速度，但time依然与数据量成正比。我们可以通过改写Likelihood来处理整个数据集，而不是一次模拟运行一次。
+对于之前的硬币版本改动如下：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">hypo</span><span class="o">/</span><span class="mf">100.0</span>
+    <span class="n">heads</span><span class="p">,</span> <span class="n">tails</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="n">like</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="n">heads</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="n">tails</span>
+    <span class="k">return</span> <span class="n">like</span>
+</code></pre></div></div>
+<p>然后我们就可以用两个整数的元组来调用Update:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">heads</span><span class="p">,</span> <span class="n">tails</span> <span class="o">=</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">110</span>
+<span class="n">suite</span><span class="o">.</span><span class="n">Update</span><span class="p">((</span><span class="n">heads</span><span class="p">,</span> <span class="n">tails</span><span class="p">))</span>
+</code></pre></div></div>
+<p>我们用指数函数的计算取代了原来的乘法，这样对于任意次数的硬币模拟消耗的运行时间基本一致。</p>
+<h1 id="45-beta分布">4.5 Beta分布</h1>
+<p>还有一个优化可以让解法更快。
+到目前位置，我们的假设都是取的一组离散值。现在，我们将使用一个连续分布，确切得说，应该是<script type="math/tex">beta</script>分布。</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+f(x;\alpha,\beta) &= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\qquad \text{beta 分布} \\
+f(x;\alpha,\beta) &\propto x^{\alpha-1}(1-x)^{\beta-1}\\
+\Gamma(\alpha) &= \int_0^{\infty}t^{\alpha-1}e^{-t}\,dt\qquad \text{gamma 分布}
+\end{align} %]]></script>
+
+<p>这时候我们可以做积分变化<script type="math/tex">t = \beta x</script>,可得：</p>
+
+<script type="math/tex; mode=display">\Gamma(\alpha,\beta)=\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx,\text{从而}\\
+\frac{1}{\Gamma(\alpha,\beta)}\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx=1</script>
+
+<p><script type="math/tex">beta</script>分布定义在从0到1的闭区间上，用一句话来说，beta分布可以看做是一个概率的概率分布，当你不知道一个事件发生的概率是多少时，<script type="math/tex">beta</script>分布给出了所有概率的出现的可能性的大小。
+我们令：</p>
+
+<script type="math/tex; mode=display">\frac{1}{B(\alpha,\beta)}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}</script>
+
+<p>这里的B函数是一个标准化函数，它只是为了使得这个分布的概率密度积分等于1才加上的。
+##二项分布的似然函数</p>
+
+<script type="math/tex; mode=display">p(y|x)=C_n^k x^k(1-x)^{(n-k)} \propto x^k(1-x)^{(n-k)}</script>
+
+<p>##贝叶斯估计
+我们做贝叶斯估计的目的就是要在给定y的情况下求出x,所以我们的目的是求解如下的后验概率：</p>
+
+<script type="math/tex; mode=display">P(x|y)=\frac{P(y|x)P(x)}{P(y)}\propto P(y|x)P(x)</script>
+
+<p>注意，这里因为<script type="math/tex">P(y)</script>与我们所要估计的$x$是独立的，因此我们可以不考虑它。
+##共轭先验
+现在我们有了二项分布的似然函数和<script type="math/tex">beta</script>分布，现在我们要将<script type="math/tex">beta</script>分布代入到贝叶斯估计的<script type="math/tex">P(x)</script>中，将二项分布的似然函数代入到<script type="math/tex">P(y|x)</script>中，可以得到：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+P(x|y) & \propto x^k(1-x)^{(n-k)}*x^{\alpha-1}(1-x)^{\beta-1}\\
+& \propto x^{(\alpha + k - 1)}(1-x)^{(n+\beta-k-1)}\\
+\end{align} %]]></script>
+
+<p>我们假设<script type="math/tex">a\prime = a+k,b\prime = n+\beta-k</script>
+最后我们发现这个贝叶斯估计服从<script type="math/tex">beta(a\prime,b\prime)</script>分布的，我们只要用B函数将它标准化就得到我们的后验概率：</p>
+
+<script type="math/tex; mode=display">p(x|y)=\frac{1}{B(a\prime,b\prime)}x^{(a\prime-1)}(1-x)^{(b\prime-1)}</script>
+
+<p>这相当于如果我们的先验概率是带有参数的<script type="math/tex">a,b的beta</script>分布，我们看到h次正面和t次反面的数据，后验概率就是参数为<script type="math/tex">a+h,b+t的beta</script>分布。换句话来说，我们通过两个假发就实现了Update方法。
+这样的处理会大大简化我们的计算，只不过仅试用与先验概率的分布的确是<script type="math/tex">beta</script>分布的情况。幸运的是，在最低限度上，对许多实际的先验分布<script type="math/tex">beta</script>分布都可以进行良好的近似，同时也可以完美匹配均匀先验。参数a = 1和b = 1的<script type="math/tex">beta</script>分布就是从0到1的均匀分布。
+thinkbayes.py提供了一个类来表示beta分布：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Beta</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+</code></pre></div></div>
+<p>默认情况下，<code class="highlighter-rouge">__init__</code>使用均匀分布。Update进行贝叶斯更新：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">Update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">heads</span><span class="p">,</span> <span class="n">tails</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">+=</span> <span class="n">heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">+=</span> <span class="n">tails</span>
+</code></pre></div></div>
+<p>data是一对表示正面和反面的数量的整数。
+因此，我们的得到了另一种解决欧元问题的方法：</p>
+
+<pre><code class="language-TeX{.line-numbers}">\begin{equation}
+beta = thinkbayes.Beta()
+beta.Update((140, 110))
+print beta.Mean()
+\end{equation}
+</code></pre>
+
+<p>beta提供了Mean，计算期望的函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">Mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+</code></pre></div></div>
+<h1 id="46-讨论">4.6 讨论</h1>
+<p>我们可以看到，在较大数据集的情况下，先验之间的区别被掩盖了，这会减轻一些我们在前面一张关于客观性的担忧。甚至很对现实世界的问题，明显不同的先验概率最终会被矫正。
+但事实并不总是如此。首先，请记住，所有贝叶斯分析是基于模型决策的。如果两个人没有选择相同的模型，我们可能对数据进行不同的解读。因此，即使使用相同的数据，我们也可能得到不同的似然度，因而后验概率可能不会收敛。
+另外，请注意，在贝叶斯Update中，我们以一个似然度乘以每个先验概率，所以如果<script type="math/tex">p(H)</script>为0，则<script type="math/tex">p(H|D)</script>也为0。在欧元问题上，如果我们确定x小于50%，并指定大于50%的假设概率都为0，那么再多的数据都无法说服你。
+这种看法是<strong>克伦威尔法则</strong>的基础，建议是：应当避免设置任何一个假设的先验概率为0，哪怕的确存在这种可能性。</p>
+
+:ET

@@ -1,0 +1,194 @@
+I"�,<blockquote>
+  <p>以下所有内容均基于 jekyll 中的 kramdown 做的测试。</p>
+</blockquote>
+
+<h2 id="1-公式">1 公式</h2>
+
+<p>按照官方文档，kramdown 中 <code>display</code> 公式用双美元符 <code>$$</code> 表示，并且前后需留空行（<a href="https://kramdown.gettalong.org/syntax.html#code-blocks">文档</a>中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为<code>inline</code>公式，另外若前后均有空行但想要解析为<code>inline</code>公式，则可以对第一个美元符号转义：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">\$</span><span class="p">$</span><span class="nb">...</span><span class="p">$$</span><span class="nb">
+</span></code></pre></div></div>
+<p>若不想解析为公式，则对前两个美元符号转义：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">\$\$</span>...<span class="p">$$</span><span class="nb">
+</span></code></pre></div></div>
+
+<p>下面我们来一个个尝试：</p>
+
+<h3 id="11-math-block">1.1 math block</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+
+</code></pre></div></div>
+<p>表现为：</p>
+
+<script type="math/tex; mode=display">y=ax+b</script>
+
+<h3 id="12-inline-math">1.2 inline math</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">\$</span><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">
+
+</span></code></pre></div></div>
+<p>表现为：</p>
+
+<p><script type="math/tex">y=ax+b</script></p>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这个公式
+<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+是行内吧！
+</code></pre></div></div>
+<p>表现为：<br />
+这个公式
+<script type="math/tex">y=ax+b</script>
+是行内吧！</p>
+
+<h3 id="13-no-math">1.3 no math</h3>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">\$\$</span>y=ax+b<span class="p">$$</span><span class="nb">
+
+</span></code></pre></div></div>
+<p>表现为：</p>
+
+<p>$$y=ax+b$$</p>
+
+<font color="red">仍然是math block！</font>
+
+<p>注意：</p>
+<ol>
+  <li>kramdown 对于单个美元符号仍会解析为inline code</li>
+</ol>
+
+<h3 id="14-math-with-color">1.4 math with color</h3>
+
+<p>由于 markdown 不支持字体颜色，所以修改字体颜色要通过 html 直接修改，但带颜色的公式也会出问题。</p>
+
+<p>如：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>文字变为蓝色了。<span class="nt">&lt;/font&gt;</span>  
+正常公式：$$y=ax+b$$  
+蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>$$y=ax+b$$<span class="nt">&lt;/font&gt;</span>  
+蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span><span class="se">\$</span>$y=ax+b$$<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+
+<font color="blue">文字变为蓝色了。</font>
+<p>正常公式：<script type="math/tex">y=ax+b</script><br />
+蓝色公式：<font color="blue">$$y=ax+b$$</font>
+蓝色公式：<font color="blue">\$$y=ax+b$$</font></p>
+
+<font color="red">所以为公式修改颜色会使 inline math 变为 math code 。</font>
+
+<p>解决办法是不要使用双 <code class="highlighter-rouge">$</code>，使用单 <code class="highlighter-rouge">$</code>：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>蓝色公式：<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>$y=ax+b$<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+<p>蓝色公式：<font color="blue">$y=ax+b$</font></p>
+
+<p>所以 kramdown 其实支持单 <code class="highlighter-rouge">$</code>，但某些时候单 <code class="highlighter-rouge">$</code>公式会有问题，如面对<code class="highlighter-rouge">}_... _{</code>的时候：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>${a}_1-a_{2}$   
+</code></pre></div></div>
+<p>${a}<em>1-a</em>{2}$</p>
+
+<p>甚至不在一个公式域中也可以影响到：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>${a}_1$ and $a_{2}$
+</code></pre></div></div>
+<p>${a}<em>1$ and $a</em>{2}$</p>
+
+<p>原因在于在 kramdown 中，<code class="highlighter-rouge">__</code>的解析优先级要比<code class="highlighter-rouge">$</code>高，所以会先解析<code class="highlighter-rouge">__</code>。</p>
+
+<p><strong>综上，平时使用双 <code class="highlighter-rouge">$</code>，公式带颜色时使用单 <code class="highlighter-rouge">$</code>。</strong></p>
+
+<p>写上面这行话又发现了 inline code 带颜色的坑。</p>
+
+<p>如：</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">"blue"</span><span class="nt">&gt;</span>综上，平时使用双 <span class="sb">`$`</span>，公式带颜色时使用单 <span class="sb">`$`</span>。<span class="nt">&lt;/font&gt;</span>  
+</code></pre></div></div>
+<p>变为了</p>
+<font color="blue">综上，平时使用双 `$`，公式带颜色时使用单 `$`。</font>
+
+<h2 id="2-代码">2 代码</h2>
+
+<p>markdown 中使用 <code>```</code>实现代码块，<code>`</code>实现行内代码。而 kramdown 中的代码块使用 <code>~~~</code>， 行内代码仍使用 <code>`</code>。指定代码类型方式相同，仍是在第一行的<code>~~~</code>后面加上类型。</p>
+
+<p>如：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~~~cpp
+int a = 1;
+int b = a;
+~~~
+</code></pre></div></div>
+<p>以上代码显示为：</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">这里有`</span><span class="kr">inline</span><span class="err">`代码。</span>
+</code></pre></div></div>
+<p>以上显示为：  <br />
+这里有<code class="highlighter-rouge">inline</code>代码。</p>
+
+<h3 id="注意">注意：</h3>
+
+<ol>
+  <li><code>```</code>一般也能正确解析，但是不推荐，下面代码即通过<code>```</code>生成。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="3-代码中包含公式">3 代码中包含公式</h2>
+
+<blockquote>
+  <p>挑战来了！</p>
+</blockquote>
+
+<p>code block 中包含公式是没有问题的，如第一节所示。而 inline code 中包含公式会有各种问题。</p>
+
+<h3 id="31-单--符号">3.1 单 $ 符号</h3>
+
+<p>如何在 inline code 中实现以下效果呢？</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$</span>
+</code></pre></div></div>
+
+<p>首先尝试</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`$y=ax+b$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">$y=ax+b$</code></p>
+<font color="red">公式被解析了！</font>
+
+<p>再尝试</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`\$y=ax+b$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">\$y=ax+b$</code></p>
+<font color="red">仍然被解析！</font>
+
+<p>当然，如果前后都转义呢？</p>
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`\$y=ax+b\$`</span>
+</code></pre></div></div>
+<p>效果为：<br />
+<code class="highlighter-rouge">\$y=ax+b\$</code></p>
+<font color="red">失败了！</font>
+
+<h3 id="32-双--符号">3.2 双 $ 符号</h3>
+
+<p>如何在 inline code 中实现以下效果呢？</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>
+</code></pre></div></div>
+
+<p>一次性展示：</p>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`<span class="p">$$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span>`   
+`<span class="k">\$</span><span class="p">$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">`   
+`</span><span class="nv">\$\$</span><span class="nb">y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b</span><span class="p">$$</span><span class="nb">`   
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">$$y=ax+b$$</code> <br />
+<code class="highlighter-rouge">\$$y=ax+b$$</code> <br />
+<code class="highlighter-rouge">\$\$y=ax+b$$</code></p>
+
+<font color="red">都没用！</font>
+<p>最后看来，最接近的方式还是分开写：</p>
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`<span class="p">$$</span><span class="nb">``y</span><span class="o">=</span><span class="nb">ax</span><span class="o">+</span><span class="nb">b``</span><span class="p">$$</span>`
+</code></pre></div></div>
+<p><code class="highlighter-rouge">$$</code><code class="highlighter-rouge">y=ax+b</code><code class="highlighter-rouge">$$</code></p>
+:ET

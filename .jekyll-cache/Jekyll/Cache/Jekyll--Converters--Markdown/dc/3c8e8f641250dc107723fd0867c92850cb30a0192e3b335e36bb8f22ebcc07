@@ -1,0 +1,63 @@
+I"7<h1 id="latexmarkdown中多行公式共用一个编号">latex（markdown）中多行公式共用一个编号</h1>
+
+<hr />
+
+<p>在latex中，对于多行公式，<code class="highlighter-rouge">equation</code>只有第一行有编号，而<code class="highlighter-rouge">align</code>每一行都有一个不同编号。如：</p>
+
+<pre><code class="language-tex{.line-numbers}">$$
+\begin{equation}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{equation}
+$$
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{equation}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{equation}</script>
+
+<pre><code class="language-tex{.line-numbers}">$$
+\begin{align}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{align}
+$$
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{align}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{align}</script>
+
+<p>要实现多行公式共用一个编号，且编号居中，可以使用<code class="highlighter-rouge">equation</code>+<code class="highlighter-rouge">aligned</code>。</p>
+
+<pre><code class="language-tex{.line-numbers}">$$
+\begin{equation}
+\begin{aligned}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{aligned}
+\end{equation}
+$$
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{equation}
+\begin{aligned}
+y_1=a_1x_2+b_1 \\
+y_2=a_2x_2+b_2 \\
+y_3=a_3x_3+b_3
+\end{aligned}
+\end{equation}</script>
+
+<h2 id="参考文章">参考文章</h2>
+
+<ol>
+  <li><a href="http://blog.sina.com.cn/s/blog_5e36b06101015s3w.html">[fw]Latex:多个公式使用同一个编号（右对齐）</a></li>
+</ol>
+:ET

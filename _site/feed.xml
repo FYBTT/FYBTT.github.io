@@ -2,1003 +2,936 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mr Wind</title>
-    <description>诸君，武运昌隆</description>
+    <description>A personal blog website for recording what I think and what I do</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 21 Feb 2020 01:20:43 +0800</pubDate>
-    <lastBuildDate>Fri, 21 Feb 2020 01:20:43 +0800</lastBuildDate>
+    <pubDate>Sun, 01 Mar 2020 00:51:22 -0600</pubDate>
+    <lastBuildDate>Sun, 01 Mar 2020 00:51:22 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
-        <title>CentOS7定时任务详解</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#crontab&quot; id=&quot;markdown-toc-crontab&quot;&gt;crontab&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#1crontab命令&quot; id=&quot;markdown-toc-1crontab命令&quot;&gt;1，crontab命令&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2crontab-格式&quot; id=&quot;markdown-toc-2crontab-格式&quot;&gt;2，crontab 格式&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3crontab文件的一些例子&quot; id=&quot;markdown-toc-3crontab文件的一些例子&quot;&gt;3，crontab文件的一些例子：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-创建cron脚本&quot; id=&quot;markdown-toc-4-创建cron脚本&quot;&gt;4 创建cron脚本&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#将脚本改为可执行针对shellsh文件&quot; id=&quot;markdown-toc-将脚本改为可执行针对shellsh文件&quot;&gt;将脚本改为可执行（针对shell，.sh文件）&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+        <title>《贫穷的本质》</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1000.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+&lt;h1 id=&quot;诺贝尔经济学家得主&quot;&gt;诺贝尔经济学家得主&lt;/h1&gt;
 
-&lt;p&gt;工作中需要开启一个定时任务：每天晚上2点进行爬虫代码的运行，这不得不去学习一下linux 下的定时任务crontab&lt;/p&gt;
+&lt;p&gt;据诺贝尔奖官网消息，瑞典斯德哥尔摩当地时间14日中午，2019年度诺贝尔奖项中的最后一项，诺贝尔奖经济学奖于瑞典揭晓。&lt;/p&gt;
 
-&lt;h2 id=&quot;crontab&quot;&gt;crontab&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1001.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;yum install crontabs&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;阿比吉特·班纳吉（Abhijit Banerjee）&lt;/strong&gt;，1961年出生，现任美国麻省理工学院福特基金会国际经济学教授。&lt;/p&gt;
 
-&lt;p&gt;说明：
-/sbin/service crond start //启动服务
-/sbin/service crond stop //关闭服务
-/sbin/service crond restart //重启服务
-/sbin/service crond reload //重新载入配置
-查看crontab服务状态：service crond status
-手动启动crontab服务：service crond start
-查看crontab服务是否已设置为开机启动，执行命令：ntsysv
-加入开机自动启动:
-chkconfig crond on&lt;/p&gt;
+&lt;p&gt;2003年，他与爱人一起创建了Abdul Latif Jameel贫困行动实验室（J-PAL）。&lt;/p&gt;
 
-&lt;h2 id=&quot;1crontab命令&quot;&gt;1，crontab命令&lt;/h2&gt;
+&lt;p&gt;2009年，JPAL获得了BBVA基金会“知识前沿”发展合作类奖。&lt;/p&gt;
 
-&lt;p&gt;功能说明：设置计时器。
-语　　法：crontab [-u &lt;用户名称&gt;][配置文件] 或 crontab [-u &lt;用户名称&gt;][-elr]&lt;/用户名称&gt;&lt;/用户名称&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;埃丝特·迪弗洛(Esther Duflo)&lt;/strong&gt;，1972年出生，现任美国麻省理工学院阿卜杜勒·拉蒂夫·贾米尔扶贫与发展经济学教授。曾是美国前总统奥巴马经济顾问。没错，楼上的班纳吉的爱人就是迪弗洛。&lt;/p&gt;
 
-&lt;p&gt;补充说明：cron是一个常驻服务，它提供计时器的功能，让用户在特定的时间得以执行预设的指令或程序。只要用户会编辑计时器的配置文件，就可以使 用计时器的功能。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;迈克尔·克雷默(Michael Kremer)&lt;/strong&gt;，1964年出生，现任职于美国哈佛大学。是美国艺术和科学院院士，麦克阿瑟奖学金和总统学院奖学金的获得者，并被世界经济论坛任命为全球青年领袖。&lt;/p&gt;
 
-&lt;p&gt;其配置文件格式如下：
-Minute Hour Day Month DayOFWeek Command&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;获奖插曲——经济学者的高冷&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;参　　数：
--e 　编辑该用户的计时器设置。
--l 　列出该用户的计时器设置。
--r 　删除该用户的计时器设置。
--u&lt;用户名称&gt; 　指定要设定计时器的用户名称。&lt;/用户名称&gt;&lt;/p&gt;
+&lt;p&gt;据说通知当事人获奖事宜时还闹出了不少小插曲，奖项宣布之际是美国时间凌晨，埃斯特·迪弗洛回忆称，收到评委会电话时，自己还未睡醒，“对方念了诺贝尔经济学奖的全称，很长的名字。”埃斯特·迪弗洛笑称，“然后，评委会建议我喝点咖啡醒一醒，他们需要我在不久之后通过电话，接入新闻发布会，回答问题。”&lt;/p&gt;
 
-&lt;h2 id=&quot;2crontab-格式&quot;&gt;2，crontab 格式&lt;/h2&gt;
+&lt;p&gt;同期获奖的迪弗洛的老公班纳吉当获悉新闻发布会上只需要一名获奖人出席就可以时，自己就扭头回去补觉了。
+而另一位获奖人克雷默平获奖时正在伦敦出差。他先是收到一条Skype短信，称有位瑞典同行急着找自己，一度以为是欺诈短信，后来才发现是瑞典皇家学院发来获奖的贺电。&lt;/p&gt;
 
-&lt;p&gt;基本格式 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;　 *　 *　 *　　command
-分　时　日　月　周　 命令
-第1列表示分钟1～59 每分钟用&lt;/em&gt;或者 */1表示
-第2列表示小时1～23（0表示0点）
-第3列表示日期1～31
-第4列 表示月份1～12
-第5列标识号星期0～6（0表示星期天）
-第6列要运行的命令&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;这就是经济学家们口中说的“理性人”了吧，感觉高冷的经济学家对这些奖项没有丝毫感觉。&lt;/p&gt;
 
-&lt;h2 id=&quot;3crontab文件的一些例子&quot;&gt;3，crontab文件的一些例子：&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;获奖原因&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;而他们的获奖原因确实也非常重大，诺贝尔奖官方表示：&lt;/p&gt;
+
+&lt;p&gt;三位获奖人研究的如何减贫的主题，是关乎人类命运的重要议题；&lt;/p&gt;
+
+&lt;p&gt;获奖人用试验性的研究方法来寻找可靠解决方案，包括贫困的根源是否被掩盖，如何能够找到更有效的减贫方法；&lt;/p&gt;
+
+&lt;p&gt;三位获奖人的研究经过时间检验，通过干预措施，对减贫起到了实际的效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1003.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;贫穷的本质&quot;&gt;贫穷的本质&lt;/h1&gt;
+
+&lt;p&gt;《贫穷的本质：我们为什么摆脱不了贫穷》便是诺贝尔经济学奖得主阿比吉特·班纳吉和埃斯特·迪弗洛合写的研究成果之一。&lt;/p&gt;
+
+&lt;p&gt;这本书已经被看成是研究“贫穷”的巅峰之作。据了解，班纳吉和杜弗洛用了15年的时间踏遍了五大洲、18个国家和地区最贫穷的地方做调研，才有了这本“大成之作”，从而通过贫穷的人的生活、教育、健康等生活的多个维度来探究贫穷产生的真正原因。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1002.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;他们发现处在贫穷状态中的人和普通人在欲望、弱点以及理性的层面上，实则差别不大。&lt;/p&gt;
+
+&lt;p&gt;区别在于，贫困的境遇，导致穷人接受信息的渠道受限，造成许多小错误，并产生恶性循环，&lt;/p&gt;
+
+&lt;p&gt;比如在健康方面，疾病预防工作即使再便宜，穷人也还是不会去做，因为穷人往往缺乏必要的医疗和卫生知识，而且他们更关心生病以后要花多少钱来治，所以往往要等到病发展到一定程度之后才去看医生。&lt;/p&gt;
+
+&lt;p&gt;而这种重视治疗轻预防的态度，不仅让他们一病回到解放前，身体也在饱受摧残。进而影响到了下一代的身体素质，同时根据研究，身体状况较差的孩子上学时间较短，毕业之后的薪水也相对较低，从而开始踏上父辈的老路。&lt;/p&gt;
+
+&lt;p&gt;贫穷，就如此循环往复无法摆脱。&lt;/p&gt;
+
+&lt;p&gt;同时穷人面临的真正问题不是吃不饱饭那么简单，而是没有办法获得全面的营养；没有收入来源自然没有退休计划；不识字于是无法看懂拗口的健康保险产品；没有社会保险、退休金、养老金，于是孩子是养老送终的唯一希望，越穷越生，恶性循环。&lt;/p&gt;
+
+&lt;p&gt;在《贫穷的本质》一书中，两位用了大量实例提出了一些实用性较强的建议，寻找那些经得起检验的扶贫方案，为政策制定者、慈善家、政治家及所有希望天下脱贫的人提供了重要指导。&lt;/p&gt;
+
+&lt;p&gt;愿世界没有贫穷&lt;/p&gt;
+
+&lt;p&gt;感谢他们对人类的所作出的贡献，感谢经济学奖得主进行的研究——减轻全球贫困，大大提高了人们抗击全球贫困的能力。&lt;/p&gt;
+
+&lt;p&gt;我们也希望世界没有贫穷，让更多的人能够拥有一个和谐幸福的生活。&lt;/p&gt;
+
+&lt;p&gt;同时也感谢国家，根据《改革开放40年中国人权事业的发展进步》白皮书，过去40多年中国共减少贫困人口8.5亿多人，对全球减贫贡献率超过70%。&lt;/p&gt;
+
+&lt;h1 id=&quot;什么样的人是真正的穷人呢&quot;&gt;什么样的人是真正的穷人呢？&lt;/h1&gt;
+&lt;p&gt;各个国家都有自己的贫困线。按照美国的标准来说，每天消费只能控制在99美分以下的人就是穷人。贫困人群在生活中遇到的困难比我们想象中的还要多，比如社会文化有贬低穷人的习惯，文学作品经常把穷人描绘成又懒又馋的人，这样的误解会带来各种各样的问题。&lt;strong&gt;最大的问题是，我们的许多脱贫政策也是建立在误解之上的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;本书的作者阿比吉特 班纳吉和埃斯特 迪弗洛，他们调查了贫困人群最集中的18个国家和地区，从一系列具体的问题出发，详细解读了我们过去对贫穷和穷人的误解，以及穷人在做选择的时候会遇到的不友善，并提出了解决贫穷问题的具体办法。&lt;/p&gt;
+
+&lt;h1 id=&quot;全书结构&quot;&gt;全书结构&lt;/h1&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;1 简单打印&lt;/p&gt;
+  &lt;p&gt;第一部分：慈善的误区。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;err&quot;&gt;每天早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Good morning.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/tmp/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//注意单纯echo，从屏幕上看不到任何输出，因为cron把任何输出都email到root的信箱了。&lt;/span&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;第二部分：贫困群体的困境。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;span class=&quot;err&quot;&gt;每两个小时&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/2 * * * echo &quot;Have a break now.&quot; &amp;gt;&amp;gt; /&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt;  
+&lt;blockquote&gt;
+  &lt;p&gt;第三部分：应对贫穷的具体方法。&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;span class=&quot;err&quot;&gt;晚上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点到早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点之间每两个小时和早上八点&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Have a good dream&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/tmp/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt;
+&lt;h2 id=&quot;第一部分慈善的误区&quot;&gt;第一部分：慈善的误区&lt;/h2&gt;
 
-&lt;span class=&quot;err&quot;&gt;每个月的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;号和每个礼拜的礼拜一到礼拜三的早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;line&lt;/span&gt;
+&lt;p&gt;穷人很难脱贫，主要是因为很多慈善组织的做法是建立在误解的基础上的，没有考虑到穷人真正面临的难题。我们将从饥饿、健康、教育、人口这四个方面来看穷人真正面临的难题，以及这些难题产生的原因。&lt;/p&gt;
 
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;月&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;日早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SHELL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/bin/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bash&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/sbin:/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sbin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MAILTO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//如果出现错误，或者有数据输出，数据作为邮件发给这个帐号 HOME=/ &lt;/span&gt;
+&lt;p&gt;首先，很多扶贫政策，往往将贫穷和饥饿这两个词挂钩，认为穷人就是吃不饱饭的人。所以，这些政策会主张直接发粮食。但是，绝大多数人穷人并不是吃不饱饭，穷人面临的真正问题是没有办法获得全面的营养。这会影响到他们下一代的智商和前途，世代无法摆脱贫穷。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每小时执行&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hourly&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;内的脚本&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;01&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hourly&lt;/span&gt;
+&lt;p&gt;其次，在健康方面，有观点认为只要我们在贫困国家加大公共领域的投资，预防疾病，就可以让穷人更健康。但真实的情况是，预防工作就算再便宜，穷人还是不会去做，他们只关心生病以后要花多少钱来治。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每天执行&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;daily&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;内的脚本&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;02&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;daily&lt;/span&gt; 
+&lt;p&gt;到了治病的时候，穷人更喜欢那些要价高但只会开抗生素的医生，而不是选择真正有帮助的免费医疗服务。因为大多数穷人都不具备最基本的生理知识，他们听不懂医生的解释，而注射抗生素会让他们立刻感到好转。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每星期执行&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;weekly&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;内的脚本&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;weekly&lt;/span&gt; 
+&lt;p&gt;第三，在教育问题上，我们一直以来都有一种错觉，认为穷人家的孩子不上学是因为没钱。事实上，在绝大多数国家，小学、甚至初中都是免费的，但还是有很多孩子不愿意上学。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每月去执行&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;monthly&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;内的脚本&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;monthly&lt;/span&gt; 
+&lt;p&gt;穷人的孩子不上学，原因一是学校教育质量低下，老师缺席，高年级的学生还读不懂低年级的课文，上学纯粹是浪费时间。原因二是很多家长不知道教育的好处，因为教育的回报往往是在十几年之后，这让很多家长看不到投资的价值，同时也不想放弃孩子现在能挣到的钱。原因三是我们的学校大多以培养精英为己任，很多孩子在起步阶段就因为赶不上进度而被放弃了，所以很多孩子不喜欢上学。所以，在教育问题上，光建立学校、聘用教师是远远不够的。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;注意&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;run-parts&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;这个参数了，如果去掉这个参数的话，后面就可以写要运行的某个脚本名，而不是文件夹名。&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;　&lt;/span&gt; 
+&lt;p&gt;最后，人口问题。有观点认为人口增长会让一个穷国变得更穷，因此，降低生育率会让穷人的境遇变好。很多发展中国家也有相关的人口政策，但是这并没能阻止穷人生更多的孩子。因为穷人一般都没有社会保险、退休金、养老金，对他们而言，孩子是养老送终的唯一希望。所以，他们会越穷越生，恶性循环。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每天的下午&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;35&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;时执行命令。&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;35&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;command&lt;/span&gt;
+&lt;h2 id=&quot;第二部分贫困群体的困境&quot;&gt;第二部分：贫困群体的困境&lt;/h2&gt;
 
-&lt;span class=&quot;err&quot;&gt;每周一，三，五的下午&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;系统进入维护状态，重新启动系统。&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shutdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+&lt;h3 id=&quot;1保险难&quot;&gt;1.保险难&lt;/h3&gt;
 
-&lt;span class=&quot;err&quot;&gt;每小时的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分执行用户目录下的&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bbslin&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;这个指令：&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;innd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bbslink&lt;/span&gt; 
+&lt;p&gt;贫穷人群在生活中总是面临很多风险，一次旱灾一场暴雨，生个病出个意外，就能让他们的生活陷于困境。但是他们很少买保险。同样，保险公司也很少给这个群体提供服务，原因有三。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每小时的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分执行用户目录下的&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;这个指令：&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;account&lt;/span&gt;
+&lt;p&gt;首先，他们很难对穷人进行监督。穷人有了失业保险，可能会故意不好好工作。其次，因为一般来说只有那些觉得自己有危险的人才会参保，所以保险公司为了自己的利益，只能将保费定高一点，这样一来，贫困群体就更犹豫不前。第三，保险公司很难预防那些明目张胆的欺诈行为，所以会倾向于把贫困群体排除在外。&lt;/p&gt;
 
-&lt;span class=&quot;err&quot;&gt;每天早晨三点二十分执行用户目录下如下所示的两个指令（每个指令以&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分隔）：&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;（&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;logins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expire$&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;62&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;）　　&lt;/span&gt;
+&lt;h3 id=&quot;2贷款难&quot;&gt;2.贷款难&lt;/h3&gt;
 
-&lt;span class=&quot;err&quot;&gt;每年的一月和四月，&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;号到&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;号的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分和&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分执行&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;st&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;这个指令，并把结果添加在&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;这个文件之后（&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;文件位于用户自己的目录位置）。&lt;/span&gt; 
-&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/bin/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expire&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;st$&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;62&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;62&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;txt&lt;/span&gt; 
+&lt;p&gt;贫困群体常常缺钱，但是他们在借钱的时候，很少选择银行，而是直接去找高利贷。因为银行也对这个群体很不友善。&lt;/p&gt;
+
+&lt;p&gt;银行之所以不愿意接待贫困群体，主要是因为他们贷款金额太小，而要做背景信息调查又要花很多钱，同时，他们违约的几率确实比较大，银行不愿意承担这样的风险。&lt;/p&gt;
+
+&lt;p&gt;于是，贫困群体不得不转向高利贷等非正规渠道去借款，他们的生活也经常因此被拖垮。&lt;/p&gt;
+
+&lt;p&gt;而现在，小额信贷机构看准了这个市场，正在试图通过给穷人提供贷款来解决贫困问题。不过，小额信贷也面临着一些问题，比如贷款的人少，违约率高，利率也高，而且负面新闻缠身。&lt;/p&gt;
+
+&lt;h3 id=&quot;3储蓄难&quot;&gt;3.储蓄难&lt;/h3&gt;
+
+&lt;p&gt;贫困群体有各种各样存钱的办法，比如成立互助小组，大家互相监督；将钱换成东西，为了盖房子，挣到一毛钱就换一块砖，等到攒够一堵墙，就砌起来，然后再用同样的方式攒够剩下的三堵墙和房顶。但是，他们不喜欢去银行存钱。&lt;/p&gt;
+
+&lt;p&gt;原因一，银行的取款手续费太贵了，就比如有些地方取100块就要收两块钱手续费，而利息可能只有一块钱。这样很不划算。&lt;/p&gt;
+
+&lt;p&gt;原因二是自控力的问题。我们的大脑对现在和未来的处理方式是不同的。我们总会觉得明天的自己要比今天的自己更理性，所以我们会在今天买下我们想要的东西，却认为明天我们就会把钱花在更合理的地方。这一点，所有人都一样，只是对穷人而言，自控力差的危害更大些。
+4.做生意难&lt;/p&gt;
+
+&lt;p&gt;首先，很难借到钱来扩大规模，又没有保险，风险很大。其次，因为缺少资金，所以只能做些小生意，勉强糊口，赚不了多少钱。第三，为了应对风险，贫困群体往往会从事很多种职业，做生意的同时可能还有别的工作要做，没有精力和愿望扩大生意的规模。&lt;/p&gt;
+&lt;h3 id=&quot;4做生意难&quot;&gt;4.做生意难&lt;/h3&gt;
+
+&lt;p&gt;首先，很难借到钱来扩大规模，又没有保险，风险很大。其次，因为缺少资金，所以只能做些小生意，勉强糊口，赚不了多少钱。第三，为了应对风险，贫困群体往往会从事很多种职业，做生意的同时可能还有别的工作要做，没有精力和愿望扩大生意的规模。&lt;/p&gt;
+
+&lt;h2 id=&quot;第三部分如何应对贫困&quot;&gt;第三部分：如何应对贫困&lt;/h2&gt;
+
+&lt;p&gt;要给贫困人群提供正确的信息，让他们做正确的事。比如让他们知道营养的重要，比直接发粮食要好；宣讲卫生健康常识，对他们的健康非常重要。&lt;/p&gt;
+
+&lt;p&gt;政府和慈善机构应当适当地助推，给贫困人群提供便利，比如政府补贴，银行降低取款收费，保险公司免费给穷人提供保险。&lt;/p&gt;
+
+&lt;p&gt;要推动小的社会变革，减少腐败和玩忽职守，让对贫困人群有益的政策能够落实下去。&lt;/p&gt;
+
+&lt;p&gt;最重要的一点是：要改变穷人的信念。有时候，人们之所以能做成一件事，就是因为他们相信自己能行。因此，对穷人而言，拥有脱贫的信念是很重要的，这会激发他们去做很多事，来让自己摆脱贫穷。&lt;/p&gt;
+
+&lt;p&gt;贫穷的问题已经存在了好几千年了，虽然政府和慈善机构都在为解决贫穷而努力，但是我们依然有很多问题需要解决。&lt;/p&gt;
+
+&lt;p&gt;要消除贫穷，就必须要倾听穷人的心声，理解穷人的生活方式，只有基于这样的理解，我们才能找到贫穷的原因，进而找到应对的方法。&lt;/p&gt;
+
+&lt;h1 id=&quot;贫穷或富裕是个长期投资问题&quot;&gt;贫穷或富裕，是个长期投资问题&lt;/h1&gt;
+
+&lt;p&gt;我们为何贫穷？相信很多人心里都有这个疑问，老感觉自己摆脱不了贫困，跨越不了阶级的鸿沟。尤其对年轻人来说，这种焦虑的情绪似乎更明显。我们抱怨父母没能创造很好的生活条件，责备自己的能力不足，导致怎么努力都没办法往上流。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;这本书恰恰给了我们答案——贫穷的本质在于：穷人不愿意投资未来。&lt;/strong&gt;什么叫投资未来？也就是你对自己的人生要有长期的规划。道理看似简单，但很多人都不乐意去做，因为“未来”对于他们来讲，太遥远而且无法预测，各种的不稳定导致他们感到害怕。而害怕导致他们不想去承担任何风险，所以止步于此。&lt;/p&gt;
+
+&lt;p&gt;现实生活中，相信大家会发现一个现象：贫者越贫，富者越富。为什么那些有钱人好像也没做什么，但是就是有钱？为什么我天天努力搬砖，精打细算地把钱存起来，但钱也没有变多，反而越来越少了？这到底为什么呢？就是因为我们的“穷人思维”。&lt;/p&gt;
+
+&lt;p&gt;认识很多朋友，情愿把钱花出去，也不愿意把钱存起来，或者拿去做任何投资。他们口头常挂一句：“船到桥头自然直”，甚至将自己的行为美化作：活在当下，享受眼前。但有趣的是，他们并非不在意自己的未来，并非愿意一直停留在这种阶段。&lt;/p&gt;
+
+&lt;p&gt;可他们就是害怕，所以&lt;strong&gt;不愿意牺牲一小部分的现在换取更多的未来。&lt;/strong&gt;关于健康，他们不愿意花费一点点的钱去做周年身体检查，也不愿意购买保健品，更不愿意购买保险。結果呢？一到生病了，就只能动用储蓄，严重者就是变卖资产或借高利贷去治病。到头来，不仅钱没了，健康也没了。越是富有的国家，保险系统发展越成熟。&lt;/p&gt;
+
+&lt;p&gt;关于教育，他们不愿意投资自己或者孩子教育，像很多时期，一些农村的人不愿意让自己的孩子上学，甚至逼迫孩子辍学打工赚钱，好快点养家糊口。結果呢？他们一辈子困在农村里，为了养老而生了一大堆孩子（别忘了养儿防老的观念怎么来），最后孩子却沦为工厂的打工仔打工妹。&lt;/p&gt;
+
+&lt;p&gt;为什么有钱人可以越来越有钱？就是他们会“投资”！君不见，有钱人一早就为孩子配置好各种保险，安排好升学路线，从一开始就赢在起跑线上。穷人呢？他们不是没钱，他们是一点钱都不愿意花在未来那里。&lt;/p&gt;
+
+&lt;p&gt;所以，&lt;strong&gt;穷人最大的问题就是“看”不到未来。&lt;/strong&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 25 Feb 2020 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/reading/2020/02/25/%E8%B4%AB%E7%A9%B7%E7%9A%84%E6%9C%AC%E8%B4%A8/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/reading/2020/02/25/%E8%B4%AB%E7%A9%B7%E7%9A%84%E6%9C%AC%E8%B4%A8/</guid>
+        
+        <category>book</category>
+        
+        <category>转载</category>
+        
+        
+        <category>reading</category>
+        
+      </item>
+    
+      <item>
+        <title>贝叶斯思维——chapter6（决策分析）</title>
+        <description>&lt;h1 id=&quot;63-概率密度函数&quot;&gt;6.3 概率密度函数&lt;/h1&gt;
+&lt;p&gt;到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射。Pmf对象提供了一个Prob方法获得值和概率。在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
+&lt;script type=&quot;math/tex&quot;&gt;f(x)=\frac{1}{\sqrt{2*PI}}exp(-x^2/2)&lt;/script&gt;
+对于一个给定的x值，这个函数可得概率密度。更高的密度说明可能性也高，这个意义上，密度和概率质量是相似的。
+但密度不是概率。密度$\in[0, \propto)$，概率$\in[0,1]$。如果你在一个连续区间内对密度进行积分，其结果是一个概率。&lt;/p&gt;
+&lt;h1 id=&quot;64-pdf的表示&quot;&gt;6.4 PDF的表示&lt;/h1&gt;
+&lt;p&gt;要在python中表示PDF，thinkbayes.py提供名为PDF的类。PDF是一个抽象的类，这意味着它定义了PDF接口，但不提供一个完整的实现。PDF接口包括两种方法，Destiny和MakePmf:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Pdf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Destiny&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UnimplementedMethodException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies6(%E5%86%B3%E7%AD%96%E5%88%86%E6%9E%90)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies6(%E5%86%B3%E7%AD%96%E5%88%86%E6%9E%90)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>贝叶斯思维——chapter5（胜率和加数）</title>
+        <description>&lt;h1 id=&quot;51-胜率&quot;&gt;5.1 胜率&lt;/h1&gt;
+&lt;p&gt;通常用[0,1]之间的数字来表示概率，不过这并非唯一的方法。也可用博彩业的另一种概率表示形式——胜率（odd）。
+胜率是一个事件可能发生的概率与不发生的概率比值。
+假如球队A同球队B比赛，获胜的概率为75%，我会说他们的胜率是3:1。
+但当概率较低，通常称之为赔率（odd against），而不是胜率（odds in  favor）。例子中球队B获胜的概率为25%，我会说他们的赔率为3:1。
+即胜率和概率是相同信息的不同表示形式。&lt;/p&gt;
+
+&lt;h1 id=&quot;52-贝叶斯定理的胜率形式&quot;&gt;5.2 贝叶斯定理的胜率形式&lt;/h1&gt;
+&lt;p&gt;已知贝叶斯定理的概率形式：
+&lt;script type=&quot;math/tex&quot;&gt;p(H|D)=\frac{P(H)P(D|H)}{P(D)}&lt;/script&gt;
+在相同观察数据的前提D下，如果我们有A和B两个假设，将后验概率相除的比值如下：
+&lt;script type=&quot;math/tex&quot;&gt;\frac{p(A|D)}{P(B|D)}=\frac{P(A)P(D|A)}{P(B)P(D|B)}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;请注意等式中出现的标准化常数p(D)。
+若A和B是互斥且穷尽的，就意味着P(A)=1-P(B)，因此我们可以将先验的比率、后验的比率重写成胜率。将A的胜率写成$o(A)$,得到：
+&lt;script type=&quot;math/tex&quot;&gt;o(A|D)=o(A)\frac{P(D|A)}{P(D|B)}&lt;/script&gt;
+从字面形式上，说明了后验胜率是先验胜率乘以似然比。这就是贝叶斯定理的胜率表示形式。
+&lt;strong&gt;例如：&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;有两个盒子，盒子1中有香草饼30个，巧克力饼10个。盒子2中的两种饼干各20个。
+现在假如你随意选择一个盒子，然后选择一个饼干。如果香草饼，则它来自盒子1的概率是多少？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;取到盒子1的先验概率为50%，所以盒子A的胜率为1。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;似然度的比值=\frac{P(D|A)}{P(D|B)}=\frac{P(香草饼|盒1)}{P(香草饼|盒2)}&lt;/script&gt;
+
+&lt;p&gt;所以后验概率为3:2，对应概率为3:5。&lt;/p&gt;
+
+&lt;h1 id=&quot;53-奥利弗的血迹&quot;&gt;5.3 奥利弗的血迹&lt;/h1&gt;
+&lt;p&gt;以下是来自麦凯的《信息理论、推理和学习》的另一个问题。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在一个犯罪现场，有两个人留下血迹，一个嫌犯奥利弗是O型血。现场发现的血迹分别为O型（当地有60%的人口血液类型）和AB型（仅1%的罕见类型）。
+那么这些数据是否支持奥利弗是嫌犯？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;要回答这个问题，我们需要想想”数据支持了假设“这到底意味着说明。直觉上，相比之前，如果某一假设随着数据的出现而呈现更大的可能性，我们就说”数据支持了假设“。
+在饼干的问题上，概率为3:5。因此我们说香草饼干这一个数据作为证据支持其来自盒子1。
+贝叶斯定理的胜率形式提供了一种方法，使这一直觉更加准确。
+回顾一下公式：
+&lt;script type=&quot;math/tex&quot;&gt;o(A|D)=o(A)\frac{P(D|A)}{P(D|B)}&lt;/script&gt;
+除以o(A):
+&lt;script type=&quot;math/tex&quot;&gt;\frac{o(A|D)}{o(A)}=\frac{P(A)P(D|A)}{P(B)P(D|B)}&lt;/script&gt;
+等式左边是后验胜率和前验胜率的比值。右边是似然比，也被称为&lt;strong&gt;贝叶斯因子&lt;/strong&gt;。
+如果贝叶斯因子的值大于1，则意味着数据更支持假设A而不支持假设B。
+现在，我们回到原来的问题。如果奥利弗是在嫌犯，就解释了样本O型血的来源，因此数据的概率就是在人群中挑中一个AB型血的人概率1%。
+如果奥利弗没有在现场留下血液，我们就要对连个样本及逆行解释。假设在人群中任意选取两人，有多大可能性找到O和AB型的人呢？
+&lt;script type=&quot;math/tex&quot;&gt;P=2(0.6)(0.01)=1.2%&lt;/script&gt;
+如果不是奥利弗的血液，数据的似然度还会高些，所以这个血液证据并没有支持奥利弗是嫌犯。&lt;/p&gt;
+
+&lt;h1 id=&quot;54-加数&quot;&gt;5.4 加数&lt;/h1&gt;
+&lt;p&gt;贝叶斯统计的基本操作是UPdate，这需要先验概率和一组数据，然后产生一个后验分布。但是，实际解决问题中通常涉及其他操作，包括缩放、加法和其他算数运算、最大值和最小值，还有混合运算。
+本章主要介绍加法和最大值。
+前提，我们对三个6面筛子的总和感兴趣，有两种方法可以计算其总和分布。&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;模拟：
+ 给定一个表示筛子面分布的Pmf，可以绘制随机样本，把他们都加起来，累加每次模拟求和的分布。&lt;/li&gt;
+  &lt;li&gt;枚举：
+ 给定两个Pmfs，可以枚举所有可能的数值对，并计算其和的分布。（后面会以连加的方式得到3个筛子的总体分布）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;thinkbays提供了这两个函数。首先定义一个类来表示单个骰子：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sides&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sides&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+			&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;现在，可以创建一个6面骰子:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后使用thinkbays.SampleSum产生1000次转动3个骰子的样本。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;three&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SampleSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;SampleSum以分布的列表（Pmf或$Cdf$对象）和样本大小n为参数。它产生n次随机样本的和（单次模拟的汇总——转动3次骰子），并将其分布作为一个Pmf对象返回。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SampleSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MakePmfFromList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RandomSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;SampleSum使用RandomSum，也在thinkbays.py中：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RandomSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;RandomSum在每个分布中调用Random然后汇总结果。
+模拟的缺点是得到的结果至少近似正确的，随着n的变大，结果会更准确，但运行时间也会增加。
+另一种方法是枚举所有大的值，并计算每对概率和总和。这在Pmf.__add__上实现：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__add__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;self是一个Pmf对象，other可以是Pmf或者其他提供条目的对象。
+下面是如何使用它：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;three_exact&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;当在Pmf中应用+操作符时，Python调用__add__函数。在这个例子中，__add__被调用了两次。&lt;/p&gt;
+
+&lt;h1 id=&quot;55-最大化&quot;&gt;5.5 最大化&lt;/h1&gt;
+&lt;p&gt;有三种方法计算最大值的分布。&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;模拟
+ 给定一个Pmf，代表单一选择的分布，可以生成随机样本，找到最大值和模拟最大值的累计分布。&lt;/li&gt;
+  &lt;li&gt;枚举
+ 给定两个Pmf，可以枚举所有可能的数值对，并计算分布的最大值。&lt;/li&gt;
+  &lt;li&gt;指数计算
+ 如果我们将一个Pmf转换为$Cdf$，有一个简单而有效的算法查找最大的$Cdf$。
+这里不对方法1和方法2多做解释，对于指数计算部分，如果我们转换Pmf到$Cdf$，这里首先给出累积分布函数的定义：
+&lt;script type=&quot;math/tex&quot;&gt;$CDF$(x) = p(X \leq x)&lt;/script&gt;
+如果我从$CDF$&lt;sub&gt;1&lt;/sub&gt;中取出X，从$CDF$&lt;sub&gt;2&lt;/sub&gt;中取出Y，计算最大值$Z = max(X,Y)$，则Z小于等于5的概率是多少？
+如果选择X和Y是独立行为&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;$CDF$&lt;sub&gt;3&lt;/sub&gt;(5) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(5)$CDF$&lt;sub&gt;2&lt;/sub&gt;(5)&lt;/p&gt;
+
+&lt;p&gt;其中$CDF$&lt;sub&gt;3&lt;/sub&gt;是Z的分布。
+我们可以一般化5为任意值的情况：&lt;/p&gt;
+
+&lt;p&gt;$CDF$&lt;sub&gt;3&lt;/sub&gt;(z) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(z)$CDF$&lt;sub&gt;2&lt;/sub&gt;(z)&lt;/p&gt;
+
+&lt;p&gt;特例情况下是我们从同一分布中选择k值，&lt;/p&gt;
+
+&lt;p&gt;$CDF$&lt;sub&gt;k&lt;/sub&gt;(z) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(z)&lt;sup&gt;k&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;因此，为了求k的最大值的分布，我们可以枚举给定$Cdf$的概率再将其变化为k的次幂。$Cdf$提供了一种方法，该方法如下：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cdf&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ps&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h1 id=&quot;56-混合分布&quot;&gt;5.6 混合分布&lt;/h1&gt;
+&lt;p&gt;假设有一个骰子，清单如下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;5个——4面骰子 \\
+
+4个——6面骰子 \\
+
+3个——8面骰子 \\
+
+2个——12面骰子 \\
+
+1个——20面骰子&lt;/script&gt;
+
+&lt;p&gt;从盒子中选择一个骰子转动，如果确定骰子，很容易确定分布。n面骰子产生一个均匀从1到n的分布。
+若随机选择骰子，由此产生的分布测试有不同上界的均匀分布的混合分布。
+在一般情况下，这类混合量不适合任何简单的数学模型，但它可以从对$PMF$直接计算得到。跟之前的小节内容一样，一个选择是模拟，生成一个随机样本计算模拟样本的$PMF$。
+但为了得到一个确切的解法，让我们选从只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;d8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后创建一个$Pmf$来表示这一混合分布：
+只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalze&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;第一个循环枚举骰子，第二个循环枚举循环骰子结果和概率。在循环内部汇聚了两个分布的贡献。
+更一般的，假如事先知道选中每一个骰子的概率，就能对结果进行相应的加权。
+首先创建一个映射了骰子和骰子被讯中概率的$Pmf$对象：
+只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;于是，我们得到计算混合分布算法的一个更通用版本：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies5(%E8%83%9C%E7%8E%87%E5%92%8C%E5%8A%A0%E6%95%B0)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies5(%E8%83%9C%E7%8E%87%E5%92%8C%E5%8A%A0%E6%95%B0)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>贝叶斯思维——chapter4(估计进阶)</title>
+        <description>&lt;p&gt;&lt;strong&gt;写在前面：&lt;/strong&gt;
+库文件链接：&lt;a href=&quot;https://code.csdn.net/snippets/1890933.git&quot;&gt;thinkbayes.py&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;41-欧元问题&quot;&gt;4.1 欧元问题&lt;/h1&gt;
+&lt;h2 id=&quot;问题&quot;&gt;问题：&lt;/h2&gt;
+&lt;p&gt;《信息论：推理和学习算法》中，有过这样一个问题：“当硬币以边缘转动250次,得到正面140次，反面110次。”，“统计学声明称：如果这是一个均匀的硬币，这样的结果出现的可能性小于7%。”&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;上述结果是否对“硬币偏心而非均匀”提供了证据？&lt;/p&gt;
+&lt;h2 id=&quot;解&quot;&gt;解：&lt;/h2&gt;
+&lt;p&gt;我们将采取一下步骤来回答这个问题。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;估计该硬币正面朝上的概率。&lt;/li&gt;
+  &lt;li&gt;估计该数是否支持硬币偏心的假设。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;已知一个硬币，那么我们以其边缘转动，它正面朝上的概率都是确定的x。（取决于硬币的物理特性——重量分布）
+如果硬币的重量分布是均匀的，那么我们认为这里的x接近&lt;script type=&quot;math/tex&quot;&gt;50%&lt;/script&gt;，但是作为一个不均匀的硬币，这个x应该会有较大差别。
+我们接下来要利用贝叶斯定理和观察到的数据来估计x。
+我们先定义假设&lt;script type=&quot;math/tex&quot;&gt;H_x&lt;/script&gt;，表示正面朝上的概率为x％:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;说先从均匀的先验概率开始。后面我们在考虑其他的先验概率。
+likelihood的函数相对容易，若&lt;script type=&quot;math/tex&quot;&gt;H_x&lt;/script&gt;为真，正面朝上概率为&lt;script type=&quot;math/tex&quot;&gt;x/100&lt;/script&gt;，反面朝上概率为&lt;script type=&quot;math/tex&quot;&gt;(1 - x/100)&lt;/script&gt;。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Euro&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#可以参考上一篇
+&lt;/span&gt;        
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'H'&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
+        
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#可以参考上一篇
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;利用观察到的数据对x进行估计。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Euro&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'H'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;140&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'T'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;总结：&lt;/strong&gt;在均匀分布的先验概率前提下，后验分布会有一个较为明显的偏移。&lt;/p&gt;
+&lt;h1 id=&quot;42-后验概率的概述&quot;&gt;4.2 后验概率的概述&lt;/h1&gt;
+&lt;p&gt;总结一下，有几种方式来概括后验概率分布的特征。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;找后验概率的最大似然。（你会发现这里的最大似然实际上就等于观察得到的百分比$140/250$。&lt;/li&gt;
+  &lt;li&gt;计算平均数和中位数来概述后验概率。&lt;/li&gt;
+  &lt;li&gt;计算置信区间来概述后验概率。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;回到原来的问题，我们想知道硬币是否是均匀的。当观察到的后验可信区间不包括50％，我们认为硬币的重量分布的确是不均匀的。
+但确切地说，这不是我们最开始的问题。之前的问题是“这些数据是否恰恰为——硬币偏心而非均匀——给出了证据？要回答这个问题，我们需要更加精确得理解‘数据为某假说提供证据’这句化的含义，这个放到下一章讲”。
+既然我们想要知道硬币是否是均匀的，很自然得想到是求x为50%的概率：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.021&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然而这个值几乎不能说明什么，这使得对假设的评估显得毫无意义。我们可以通过将范围区间划分为更多或者更少的细小区间。这样，对给定的假设的概率会更大或更小。&lt;/p&gt;
+&lt;h1 id=&quot;43-先验概率的湮没&quot;&gt;4.3 先验概率的湮没&lt;/h1&gt;
+&lt;p&gt;我们之前假设先验是均匀的，但这可能不是一个好的假设。如果硬币是偏心的，我们可以相信x会大幅度偏离$50％$，但如果偏心到$10%$或者$90%$就近乎不可能。
+更合理的方式，是为$50%$附近给出一个相对与$10%$或者$90%$更高的先验概率。
+我们可以构建一个三角先验分布的例子：
+&lt;img src=&quot;http://img.blog.csdn.net/20160921115235274&quot; alt=&quot;此处输入图片的描述&quot; /&gt;
+ 只是给力一个先验分布的形状，还需要做归一化。
+ 下面的代码构成了所谓的三角先验分布：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;TrianglePrior&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Euro&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;事实上，即使我们应用了不同的先验，后验分布也非常得相似。
+这就是先验湮没的一个例子：如果有足够的数据，计时在先验分布上持有不同的观点，我们也会得到趋于&lt;strong&gt;收敛的后验概率&lt;/strong&gt;。&lt;/p&gt;
+&lt;h1 id=&quot;44-优化&quot;&gt;4.4 优化&lt;/h1&gt;
+&lt;p&gt;从上述的代码我们可以看到，对于每个得到的数据我们都会单独的应用一次Update,从上一章的Update的实现中我们可以看到在每次应用一次该函数，都需要进行一次归一化处理。
+所以，如果我们已知了一个数据的序列，就没有必要一个一个得进行训练，对所有数据都训练结束了，再进行归一化即可。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;这样处理会在一定程度上优化我们的速度，但time依然与数据量成正比。我们可以通过改写Likelihood来处理整个数据集，而不是一次模拟运行一次。
+对于之前的硬币版本改动如下：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后我们就可以用两个整数的元组来调用Update:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;140&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;我们用指数函数的计算取代了原来的乘法，这样对于任意次数的硬币模拟消耗的运行时间基本一致。&lt;/p&gt;
+&lt;h1 id=&quot;45-beta分布&quot;&gt;4.5 Beta分布&lt;/h1&gt;
+&lt;p&gt;还有一个优化可以让解法更快。
+到目前位置，我们的假设都是取的一组离散值。现在，我们将使用一个连续分布，确切得说，应该是&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+f(x;\alpha,\beta) &amp;= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\qquad \text{beta 分布} \\
+f(x;\alpha,\beta) &amp;\propto x^{\alpha-1}(1-x)^{\beta-1}\\
+\Gamma(\alpha) &amp;= \int_0^{\infty}t^{\alpha-1}e^{-t}\,dt\qquad \text{gamma 分布}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;这时候我们可以做积分变化&lt;script type=&quot;math/tex&quot;&gt;t = \beta x&lt;/script&gt;,可得：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Gamma(\alpha,\beta)=\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx,\text{从而}\\
+\frac{1}{\Gamma(\alpha,\beta)}\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx=1&lt;/script&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布定义在从0到1的闭区间上，用一句话来说，beta分布可以看做是一个概率的概率分布，当你不知道一个事件发生的概率是多少时，&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布给出了所有概率的出现的可能性的大小。
+我们令：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{B(\alpha,\beta)}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}&lt;/script&gt;
+
+&lt;p&gt;这里的B函数是一个标准化函数，它只是为了使得这个分布的概率密度积分等于1才加上的。
+##二项分布的似然函数&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(y|x)=C_n^k x^k(1-x)^{(n-k)} \propto x^k(1-x)^{(n-k)}&lt;/script&gt;
+
+&lt;p&gt;##贝叶斯估计
+我们做贝叶斯估计的目的就是要在给定y的情况下求出x,所以我们的目的是求解如下的后验概率：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x|y)=\frac{P(y|x)P(x)}{P(y)}\propto P(y|x)P(x)&lt;/script&gt;
+
+&lt;p&gt;注意，这里因为&lt;script type=&quot;math/tex&quot;&gt;P(y)&lt;/script&gt;与我们所要估计的$x$是独立的，因此我们可以不考虑它。
+##共轭先验
+现在我们有了二项分布的似然函数和&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布，现在我们要将&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布代入到贝叶斯估计的&lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt;中，将二项分布的似然函数代入到&lt;script type=&quot;math/tex&quot;&gt;P(y|x)&lt;/script&gt;中，可以得到：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+P(x|y) &amp; \propto x^k(1-x)^{(n-k)}*x^{\alpha-1}(1-x)^{\beta-1}\\
+&amp; \propto x^{(\alpha + k - 1)}(1-x)^{(n+\beta-k-1)}\\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;我们假设&lt;script type=&quot;math/tex&quot;&gt;a\prime = a+k,b\prime = n+\beta-k&lt;/script&gt;
+最后我们发现这个贝叶斯估计服从&lt;script type=&quot;math/tex&quot;&gt;beta(a\prime,b\prime)&lt;/script&gt;分布的，我们只要用B函数将它标准化就得到我们的后验概率：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(x|y)=\frac{1}{B(a\prime,b\prime)}x^{(a\prime-1)}(1-x)^{(b\prime-1)}&lt;/script&gt;
+
+&lt;p&gt;这相当于如果我们的先验概率是带有参数的&lt;script type=&quot;math/tex&quot;&gt;a,b的beta&lt;/script&gt;分布，我们看到h次正面和t次反面的数据，后验概率就是参数为&lt;script type=&quot;math/tex&quot;&gt;a+h,b+t的beta&lt;/script&gt;分布。换句话来说，我们通过两个假发就实现了Update方法。
+这样的处理会大大简化我们的计算，只不过仅试用与先验概率的分布的确是&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布的情况。幸运的是，在最低限度上，对许多实际的先验分布&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布都可以进行良好的近似，同时也可以完美匹配均匀先验。参数a = 1和b = 1的&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布就是从0到1的均匀分布。
+thinkbayes.py提供了一个类来表示beta分布：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;__init__&lt;/code&gt;使用均匀分布。Update进行贝叶斯更新：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;data是一对表示正面和反面的数量的整数。
+因此，我们的得到了另一种解决欧元问题的方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation}
+beta = thinkbayes.Beta()
+beta.Update((140, 110))
+print beta.Mean()
+\end{equation}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;beta提供了Mean，计算期望的函数：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h1 id=&quot;46-讨论&quot;&gt;4.6 讨论&lt;/h1&gt;
+&lt;p&gt;我们可以看到，在较大数据集的情况下，先验之间的区别被掩盖了，这会减轻一些我们在前面一张关于客观性的担忧。甚至很对现实世界的问题，明显不同的先验概率最终会被矫正。
+但事实并不总是如此。首先，请记住，所有贝叶斯分析是基于模型决策的。如果两个人没有选择相同的模型，我们可能对数据进行不同的解读。因此，即使使用相同的数据，我们也可能得到不同的似然度，因而后验概率可能不会收敛。
+另外，请注意，在贝叶斯Update中，我们以一个似然度乘以每个先验概率，所以如果&lt;script type=&quot;math/tex&quot;&gt;p(H)&lt;/script&gt;为0，则&lt;script type=&quot;math/tex&quot;&gt;p(H|D)&lt;/script&gt;也为0。在欧元问题上，如果我们确定x小于50%，并指定大于50%的假设概率都为0，那么再多的数据都无法说服你。
+这种看法是&lt;strong&gt;克伦威尔法则&lt;/strong&gt;的基础，建议是：应当避免设置任何一个假设的先验概率为0，哪怕的确存在这种可能性。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>kramdown 语法</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;以下所有内容均基于 jekyll 中的 kramdown 做的测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;1-公式&quot;&gt;1 公式&lt;/h2&gt;
+
+&lt;p&gt;按照官方文档，kramdown 中 &lt;code&gt;display&lt;/code&gt; 公式用双美元符 &lt;code&gt;$$&lt;/code&gt; 表示，并且前后需留空行（&lt;a href=&quot;https://kramdown.gettalong.org/syntax.html#code-blocks&quot;&gt;文档&lt;/a&gt;中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为&lt;code&gt;inline&lt;/code&gt;公式，另外若前后均有空行但想要解析为&lt;code&gt;inline&lt;/code&gt;公式，则可以对第一个美元符号转义：&lt;/p&gt;
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;若不想解析为公式，则对前两个美元符号转义：&lt;/p&gt;
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;\$\$&lt;/span&gt;...&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;下面我们来一个个尝试：&lt;/p&gt;
+
+&lt;h3 id=&quot;11-math-block&quot;&gt;1.1 math block&lt;/h3&gt;
+
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;表现为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;y=ax+b&lt;/script&gt;
+
+&lt;h3 id=&quot;12-inline-math&quot;&gt;1.2 inline math&lt;/h3&gt;
+
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;表现为：&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;这个公式
+&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
+是行内吧！
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;表现为：&lt;br /&gt;
+这个公式
+&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;
+是行内吧！&lt;/p&gt;
+
+&lt;h3 id=&quot;13-no-math&quot;&gt;1.3 no math&lt;/h3&gt;
+
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;\$\$&lt;/span&gt;y=ax+b&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;表现为：&lt;/p&gt;
+
+&lt;p&gt;$$y=ax+b$$&lt;/p&gt;
+
+&lt;font color=&quot;red&quot;&gt;仍然是math block！&lt;/font&gt;
+
+&lt;p&gt;注意：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;kramdown 对于单个美元符号仍会解析为inline code&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;14-math-with-color&quot;&gt;1.4 math with color&lt;/h3&gt;
+
+&lt;p&gt;由于 markdown 不支持字体颜色，所以修改字体颜色要通过 html 直接修改，但带颜色的公式也会出问题。&lt;/p&gt;
+
+&lt;p&gt;如：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;文字变为蓝色了。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
+正常公式：$$y=ax+b$$  
+蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;$$y=ax+b$$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
+蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;$y=ax+b$$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;font color=&quot;blue&quot;&gt;文字变为蓝色了。&lt;/font&gt;
+&lt;p&gt;正常公式：&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;&lt;br /&gt;
+蓝色公式：&lt;font color=&quot;blue&quot;&gt;$$y=ax+b$$&lt;/font&gt;
+蓝色公式：&lt;font color=&quot;blue&quot;&gt;\$$y=ax+b$$&lt;/font&gt;&lt;/p&gt;
+
+&lt;font color=&quot;red&quot;&gt;所以为公式修改颜色会使 inline math 变为 math code 。&lt;/font&gt;
+
+&lt;p&gt;解决办法是不要使用双 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，使用单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;$y=ax+b$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;蓝色公式：&lt;font color=&quot;blue&quot;&gt;$y=ax+b$&lt;/font&gt;&lt;/p&gt;
+
+&lt;p&gt;所以 kramdown 其实支持单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，但某些时候单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;公式会有问题，如面对&lt;code class=&quot;highlighter-rouge&quot;&gt;}_... _{&lt;/code&gt;的时候：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;${a}_1-a_{2}$   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;${a}&lt;em&gt;1-a&lt;/em&gt;{2}$&lt;/p&gt;
+
+&lt;p&gt;甚至不在一个公式域中也可以影响到：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;${a}_1$ and $a_{2}$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;${a}&lt;em&gt;1$ and $a&lt;/em&gt;{2}$&lt;/p&gt;
+
+&lt;p&gt;原因在于在 kramdown 中，&lt;code class=&quot;highlighter-rouge&quot;&gt;__&lt;/code&gt;的解析优先级要比&lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;高，所以会先解析&lt;code class=&quot;highlighter-rouge&quot;&gt;__&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;综上，平时使用双 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，公式带颜色时使用单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;写上面这行话又发现了 inline code 带颜色的坑。&lt;/p&gt;
+
+&lt;p&gt;如：&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;综上，平时使用双 &lt;span class=&quot;sb&quot;&gt;`$`&lt;/span&gt;，公式带颜色时使用单 &lt;span class=&quot;sb&quot;&gt;`$`&lt;/span&gt;。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;变为了&lt;/p&gt;
+&lt;font color=&quot;blue&quot;&gt;综上，平时使用双 `$`，公式带颜色时使用单 `$`。&lt;/font&gt;
+
+&lt;h2 id=&quot;2-代码&quot;&gt;2 代码&lt;/h2&gt;
+
+&lt;p&gt;markdown 中使用 &lt;code&gt;```&lt;/code&gt;实现代码块，&lt;code&gt;`&lt;/code&gt;实现行内代码。而 kramdown 中的代码块使用 &lt;code&gt;~~~&lt;/code&gt;， 行内代码仍使用 &lt;code&gt;`&lt;/code&gt;。指定代码类型方式相同，仍是在第一行的&lt;code&gt;~~~&lt;/code&gt;后面加上类型。&lt;/p&gt;
+
+&lt;p&gt;如：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~~~cpp
+int a = 1;
+int b = a;
+~~~
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;以上代码显示为：&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;这里有`&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`代码。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;以上显示为：  &lt;br /&gt;
+这里有&lt;code class=&quot;highlighter-rouge&quot;&gt;inline&lt;/code&gt;代码。&lt;/p&gt;
+
+&lt;h3 id=&quot;注意&quot;&gt;注意：&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;```&lt;/code&gt;一般也能正确解析，但是不推荐，下面代码即通过&lt;code&gt;```&lt;/code&gt;生成。
+    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;3-代码中包含公式&quot;&gt;3 代码中包含公式&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;挑战来了！&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;code block 中包含公式是没有问题的，如第一节所示。而 inline code 中包含公式会有各种问题。&lt;/p&gt;
+
+&lt;h3 id=&quot;31-单--符号&quot;&gt;3.1 单 $ 符号&lt;/h3&gt;
+
+&lt;p&gt;如何在 inline code 中实现以下效果呢？&lt;/p&gt;
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;首先尝试&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`$y=ax+b$`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;效果为：&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;$y=ax+b$&lt;/code&gt;&lt;/p&gt;
+&lt;font color=&quot;red&quot;&gt;公式被解析了！&lt;/font&gt;
+
+&lt;p&gt;再尝试&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`\$y=ax+b$`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;效果为：&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;\$y=ax+b$&lt;/code&gt;&lt;/p&gt;
+&lt;font color=&quot;red&quot;&gt;仍然被解析！&lt;/font&gt;
+
+&lt;p&gt;当然，如果前后都转义呢？&lt;/p&gt;
+&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`\$y=ax+b\$`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;效果为：&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;\$y=ax+b\$&lt;/code&gt;&lt;/p&gt;
+&lt;font color=&quot;red&quot;&gt;失败了！&lt;/font&gt;
+
+&lt;h3 id=&quot;32-双--符号&quot;&gt;3.2 双 $ 符号&lt;/h3&gt;
+
+&lt;p&gt;如何在 inline code 中实现以下效果呢？&lt;/p&gt;
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一次性展示：&lt;/p&gt;
+
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;`&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;`   
+`&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;`   
+`&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;\$\$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;`   
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$y=ax+b$$&lt;/code&gt; &lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;\$$y=ax+b$$&lt;/code&gt; &lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;\$\$y=ax+b$$&lt;/code&gt;&lt;/p&gt;
+
+&lt;font color=&quot;red&quot;&gt;都没用！&lt;/font&gt;
+&lt;p&gt;最后看来，最接近的方式还是分开写：&lt;/p&gt;
+&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;`&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;``y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b``&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;`
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;y=ax+b&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;转载自：[https://hugueliu.github.io/2019/12/29/kramdown_syntax/][1]&lt;/p&gt;
+</description>
+        <pubDate>Sun, 29 Dec 2019 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/jekyll/2019/12/29/kramdown_syntax/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/jekyll/2019/12/29/kramdown_syntax/</guid>
+        
+        <category>markdown</category>
+        
+        <category>转载</category>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>vscode配置mathjax</title>
+        <description>&lt;h1 id=&quot;vscode配置mathjax&quot;&gt;vscode配置mathjax&lt;/h1&gt;
 
 &lt;hr /&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;2 nginx示例&lt;/p&gt;
+  &lt;p&gt;vscode中markdown preview enhanced插件配置mathjax使其可以自动添加公式编号。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每晚的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+&lt;h2 id=&quot;1-修改公式渲染插件为mathjax&quot;&gt;1. 修改公式渲染插件为&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax&lt;/code&gt;&lt;/h2&gt;
 
-&lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每月&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;日的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+&lt;p&gt;按下&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+p&lt;/code&gt;，找到&lt;code class=&quot;highlighter-rouge&quot;&gt;Markdown-preview-enhanced: Math Rendering Option&lt;/code&gt;选项，修改为&lt;code class=&quot;highlighter-rouge&quot;&gt;MathJax&lt;/code&gt;
+或在setting.json文件添加&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;markdown-preview-enhanced.mathRenderingOption&quot;: &quot;MathJax&quot;&lt;/code&gt;&lt;/p&gt;
 
-&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每周六、周日的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+&lt;h2 id=&quot;2-开启公式自动编号&quot;&gt;2. 开启公式自动编号&lt;/h2&gt;
 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每天&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;至&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;之间每隔&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;分钟重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+&lt;p&gt;mathjax中公式自动编号功能默认是关闭的，需要手动打开&lt;/p&gt;
 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每星期六的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pm&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;。&lt;/span&gt;
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax_config.js&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;TeX&lt;/code&gt;中添加下面一行：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json{.line-numbers}&quot;&gt;equationNumbers: { autoNumber: &quot;AMS&quot; },
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/1 * * * /&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每一小时重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+&lt;p&gt;最终配置为：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-js{.line-numbers}&quot;&gt;module.exports = {
+  extensions: ['tex2jax.js'],
+  jax: ['input/TeX','output/HTML-CSS'],
+  messageStyle: 'none',
+  tex2jax: {
+    processEnvironments: false,
+    processEscapes: true
+  },
+  TeX: {
+    extensions: ['AMSmath.js', 'AMSsymbols.js', 'noErrors.js', 'noUndefined.js'],
+    equationNumbers: { autoNumber: &quot;AMS&quot; },
+  },
+  'HTML-CSS': { availableFonts: ['TeX'] }
+}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;晚上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点到早上&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点之间，每&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;隔一小时重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+&lt;h2 id=&quot;3-公式编写&quot;&gt;3. 公式编写&lt;/h2&gt;
 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;wed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每月的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;号与每周一到周三&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;equation&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align&lt;/code&gt;环境中的公式才会自动编号&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation}
+y = ax+b
+\end{equation}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\begin{align}
+y = ax+b
+\end{align}&lt;/script&gt;&lt;/p&gt;
 
-&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jan&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;restart&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;一月一号的&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;点重启&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align}
+y = ax+b
+\end{align}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\begin{align}
+y = ax+b
+\end{align}&lt;/script&gt;&lt;/p&gt;
 
-&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/30 * * * * /u&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sbin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ntpdate&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;210.72&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;145.20&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;每半小时同步一下时间&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;若想取消某个&lt;code class=&quot;highlighter-rouge&quot;&gt;equation&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align&lt;/code&gt;环境中公式的编号，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;equation*&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align*&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;4-创建cron脚本&quot;&gt;4 创建cron脚本&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation*}
+y = ax+b
+\end{equation*}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;第一步：写cron脚本文件,命名为crontest.cron。
-15,30,45,59 * * * * echo “xgmtest…..” » xgmtest.txt  表示，每隔15分钟，执行打印一次命令&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;第二步：添加定时任务。执行命令 “crontab crontest.cron”。搞定&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;第三步：”crontab -l” 查看定时任务是否成功或者检测/var/spool/cron下是否生成对应cron脚本&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation*}
+y = ax+b
+\end{equation*}&lt;/script&gt;
 
-&lt;h2 id=&quot;将脚本改为可执行针对shellsh文件&quot;&gt;将脚本改为可执行（针对shell，.sh文件）&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align*}
+y = ax+b
+\end{align*}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;chmod +x filename&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align*}
+y = ax+b
+\end{align*}&lt;/script&gt;
 
-&lt;p&gt;引用：&lt;/p&gt;
+&lt;p&gt;另外，还可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;tag&lt;/code&gt;自定义编号，按照顺序下面这个公式编号应为3，手动指定为4&lt;/p&gt;
 
-&lt;p&gt;http://blog.csdn.net/u012402276/article/details/51063269
-https://www.cnblogs.com/longjshz/p/5779215.html
-http://blog.csdn.net/edgdvcyz/article/details/53348832&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align}
+y = ax+b
+\tag{4}
+\end{align}
+&lt;/code&gt;&lt;/pre&gt;
 
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}
+y = ax+b
+\tag{4}
+\end{align}&lt;/script&gt;
+
+&lt;p&gt;转载自：[https://hugueliu.github.io/2019/12/16/vscode_mpe_equation_auto_number/][1]&lt;/p&gt;
 </description>
-        <pubDate>Sat, 10 Feb 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/linux/2018/02/10/centos-crontab/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2018/02/10/centos-crontab/</guid>
+        <pubDate>Mon, 16 Dec 2019 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/vscode/2019/12/16/vscode_mpe_equation_auto_number/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/vscode/2019/12/16/vscode_mpe_equation_auto_number/</guid>
         
-        <category>centos7</category>
+        <category>vscode</category>
         
-        <category>crontab</category>
+        <category>markdown</category>
         
-        <category>linux</category>
+        <category>mathjax</category>
         
-        <category>工具软件</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>工作填坑之内网与外网</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#概念&quot; id=&quot;markdown-toc-概念&quot;&gt;概念&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#坑&quot; id=&quot;markdown-toc-坑&quot;&gt;坑&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#场景&quot; id=&quot;markdown-toc-场景&quot;&gt;场景&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#解决&quot; id=&quot;markdown-toc-解决&quot;&gt;解决&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#总结&quot; id=&quot;markdown-toc-总结&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;概念&quot;&gt;概念&lt;/h2&gt;
-
-&lt;p&gt;内网：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;内网也就是局域网，内网的计算机以NAT（&lt;a href=&quot;https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2&quot;&gt;网络地址转换&lt;/a&gt;）协议，通过一个公共的&lt;a href=&quot;https://baike.baidu.com/item/%E7%BD%91%E5%85%B3&quot;&gt;网关&lt;/a&gt;访问Internet。内网的计算机可向Internet上的其他计算机发送连接请求，但Internet上其他的计算机无法向内网的计算机发送连接请求。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;最直观的就是像网吧，公司内部的电脑用交换机，HUB，路由连起来的&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;外网：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;外网IP包括：ADSL拨号的动态IP用动态&lt;a href=&quot;https://baike.baidu.com/item/%E8%A7%A3%E6%9E%90%E5%9F%9F%E5%90%8D&quot;&gt;解析域名&lt;/a&gt;来绑定IP，又叫&lt;a href=&quot;https://baike.baidu.com/item/%E5%8A%A8%E6%80%81%E5%9F%9F%E5%90%8D&quot;&gt;动态域名&lt;/a&gt;；固定的外网IP(这种多半为网吧的IP)即，整个网吧的那个主IP。外网IP指的是：打开ADSL&lt;a href=&quot;https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1&quot;&gt;路由&lt;/a&gt;功能的用户你的外网IP就应该是ADSL设备的IP，网吧里的外网IP是指整个网吧的主IP，校园网的外网IP就是整个校园网的那个主IP，小区网的外网IP与校园网同理，长宽的用户就要试下了，可以上论坛，看看你的IP是多少，那么那个IP就是你要绑定的，所有的内网用户都可以这样查的，论坛
-上的IP就是你要绑定的IP&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;坑&quot;&gt;坑&lt;/h2&gt;
-
-&lt;p&gt;第一次搭建服务器相关项目，因为第一次直接使用的是一台服务器，外网的ip，在自己的windows 是可以用mongodb 客户端与redis 客户端进行服务器上的mongodb服务端与redis服务端相连接的，并没有遇到什么困难&lt;/p&gt;
-
-&lt;h2 id=&quot;场景&quot;&gt;场景&lt;/h2&gt;
-
-&lt;p&gt;因为后台与爬虫用的同一个mongodb与redis，而那台服务器又是单核的，2g运行内存。导致mongodb老是因为连接池开得过多而被挂掉，后来就买了内网的mongodb与redis服务，一开始啥都不懂，也不知道这是一个坑，在自己本机上进行mongodb，redis测试，一直连接不上去，代码是改了又改，&lt;/p&gt;
-
-&lt;h2 id=&quot;解决&quot;&gt;解决&lt;/h2&gt;
-
-&lt;p&gt;后来老大过来了，你这是内网的，外网的当然连接不上去了，你得在腾讯云服务器上进行连接&lt;/p&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;后来就直接在腾讯云服务器上测试连接，然后就连好了。这个问题搞到我们三到晚上12点，确实菜，然后预料到的确实少，回过头来看下代码，一点毛病都没有啊！不知道有句mmp，该不该讲。&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 01 Feb 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/2018/02/01/about-inner-outer-ip/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/2018/02/01/about-inner-outer-ip/</guid>
-        
-        <category>MongoDB</category>
-        
-        <category>Redis</category>
-        
-        <category>工具软件</category>
+        <category>转载</category>
         
         
-        <category>工具软件</category>
-        
-      </item>
-    
-      <item>
-        <title>Ubuntu 16.04 下MySQL的安装</title>
-        <description>
-&lt;p&gt;1， 打开终端：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;sudo apt-get install mysql-server&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;2 ，接下来会让你选择y/n, 这里你选择y,&lt;/p&gt;
-
-&lt;p&gt;3 ，这里会出现一个让你输入mysql-server的密码，输入完后如果鼠标点击不了，可以使用Tab键+enter键继续下一步&lt;/p&gt;
-
-&lt;p&gt;4 ，接下来，会继续让我们输入一次密码&lt;/p&gt;
-
-&lt;p&gt;5， 密码输入完后，我们这里的mysql-server的用户名是：root ，密码是我们刚刚设置过的密码，&lt;/p&gt;
-
-&lt;p&gt;6， 这时候已经安装完成了，我们需要验证一下是否安装上了mysql-server&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;mysql -u root -p&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;按enter键后会让我们输入密码，当我们输入密码后，会出现：&lt;/p&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;nx&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Inspiron&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5421&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Enter&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; 
-&lt;span class=&quot;nx&quot;&gt;Welcome&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MySQL&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;monitor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;Commands&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MySQL&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ubuntu0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;16.04&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ubuntu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;Copyright&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;its&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;affiliates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;All&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rights&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reserved&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;registered&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trademark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Oracle&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Corporation&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;its&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;affiliates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Other&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;names&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;may&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;trademarks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;their&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;respective&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;owners&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;help;&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;help&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clear&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;current&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;statement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;7 ， 这样我们就在Ubuntu下安装好了mysql-server。&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 13 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/linux/2018/01/13/setup-mysql-inubuntu/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2018/01/13/setup-mysql-inubuntu/</guid>
-        
-        <category>linux</category>
-        
-        <category>ubuntu16.04</category>
-        
-        <category>工具软件</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>win10 关闭更新</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;因为自己的电脑装了双系统（win10 跟Ubuntu16.04），在win10下，有时候每次关机的时候都说要进行更新后进行关机，就是自动更新功能，现在的选项中没有关闭自动更新的选项了，这是一个bug，微软要强制更新。&lt;/p&gt;
-
-&lt;p&gt;我就忍受不了自动更新，会拉取网络，影响我们的上网体验，但是我们不要他自动更新，那怎么办呢，其实还是有解决方法的，下面就介绍怎么关闭自动更新功能！（ps：百度有些人写的其实是win8的自动更新，根本就不是win10的，我这个才是win10的处理方法）希望能帮到你们。&lt;/p&gt;
-
-&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤&lt;/h2&gt;
-
-&lt;p&gt;1 右键点击左下角微软按钮，找到“运行”   也可用键盘的win+R&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-07f3d54cc3ce1538.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;2 在运行处输入 “services.msc”   点击确定。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-2df616c88439415a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;3 在弹出来的服务中，找到“Windows Update”&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-403c9d7761ad60b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;4 选择禁用&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-1728ba13ad50acfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;5 点击确定或者启动就可以了，这时候我们可以看到：
-&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-8d901951002a4bc1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;会多出这两个位置，这样子就设置成功了。&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 13 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/win10/2018/01/13/close-win10-update/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/win10/2018/01/13/close-win10-update/</guid>
-        
-        <category>win10</category>
-        
-        <category>工具软件</category>
-        
-        
-        <category>win10</category>
-        
-      </item>
-    
-      <item>
-        <title>News_scrapy_redis 框架系统</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#设计目标&quot; id=&quot;markdown-toc-设计目标&quot;&gt;设计目标&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#框架使用说明&quot; id=&quot;markdown-toc-框架使用说明&quot;&gt;框架使用说明&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#框架环境&quot; id=&quot;markdown-toc-框架环境&quot;&gt;框架环境&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#框架完善&quot; id=&quot;markdown-toc-框架完善&quot;&gt;框架完善&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;该文档针对爬虫系统设计目标中相应的场景给出技术方案&lt;/p&gt;
-
-&lt;h2 id=&quot;设计目标&quot;&gt;设计目标&lt;/h2&gt;
-
-&lt;p&gt;1、代码复用，功能模块化。可以支持上千个网站的数据爬取；&lt;/p&gt;
-
-&lt;p&gt;2、易扩展。爬虫框架易扩展，爬取规则、解析规则、入库规则易扩展，支持框架切换；&lt;/p&gt;
-
-&lt;p&gt;3、健壮性、可维护性。对数据爬取过程中的各种异常，例如：断网、反爬升级、爬“脏数据”等，需要实时的监控，以及给出准确的定位。异常处理以及降级措施需要完善；&lt;/p&gt;
-
-&lt;p&gt;4、后续扩展为分布式结构；&lt;/p&gt;
-
-&lt;p&gt;5、支持功能模块的易调整；&lt;/p&gt;
-
-&lt;h2 id=&quot;框架使用说明&quot;&gt;框架使用说明&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;News_scrapy_redis4. &lt;a href=&quot;https://github.com/xudailong/News_scrapy_redis.git&quot;&gt;github地址&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;News_scrapy_redis&lt;/code&gt; 基于&lt;code class=&quot;highlighter-rouge&quot;&gt;scrapy_redis&lt;/code&gt;实现数据的增量爬取（含去重），支持分布式，支持异常日志等输出，功能模块化。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;树结构：&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;idea&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Daily_crawler&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ETL&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_scrapy&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;spiders&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__pycache__&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;│&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__pycache__&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;├─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_simhash&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;└─&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;News_statistics&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;各模块说明：&lt;/p&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;Daily_crawler：&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;daily_crawler.cron crontab&lt;/code&gt;的定时文件, 定时运行&lt;code class=&quot;highlighter-rouge&quot;&gt;start_crawl.sh&lt;/code&gt;脚本&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;start_crawl.sh&lt;/code&gt; 启动爬虫模块，并将每次爬取所花费的时间 写入 log/run_time.txt&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;push_urls.py&lt;/code&gt; 每次在爬虫之前运行，清空调度队列，并将start_url push到调度队列中&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_crawl.sh&lt;/code&gt; 执行爬虫模块（增量爬取）， 并自动进行相似文档去重，ETL, 存入mongodb&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;ETL:（暂时用不到）&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/Model&lt;/code&gt; 存放训练好的词典，语料，TF-IDF，LDA， word2vec模型&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding.py&lt;/code&gt; 新闻语料的清洗，以及自动化生成新闻的标题和内容embedding&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding_simhash.py&lt;/code&gt; 增加了自动化相似文档的去重&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stop_words&lt;/code&gt; 常用的中文停留词&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;train_step1&lt;/code&gt; 训练LDA模型&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;train_step2&lt;/code&gt; 训练LDA模型&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;log:&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;auto_embedding_simhash.log&lt;/code&gt; 执行auto_embedding_simhash.py的日志文件&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;crawler.log&lt;/code&gt; 执行scrapy-redis爬虫模块的日志文件&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_count.log&lt;/code&gt; 执行news_statistics.py的日志文件&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;run_time.txt&lt;/code&gt; 每次执行爬虫脚本的运行时间&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;News_data:&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;每个文件夹是抓每天从各个网站抓取到的新闻&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;News_scrapy:&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;基于scrapy-redis的爬虫模块，在scrapy的基础上修改得到&lt;/li&gt;
-      &lt;li&gt;各大网站数据的爬取解析工作主要在该文件中进行&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;News_simhash（此处只需要进行title的去重）:&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;实现相似文档的去重&lt;/li&gt;
-      &lt;li&gt;automatic_simhash.py 自动实现相似文档的去重（仅基于新闻内容）&lt;/li&gt;
-      &lt;li&gt;content_index.pkl 序列化的新闻内容SimhashIndex类，相当于所有新闻sinhash_value的一张表，并且随着抓取的新闻越来越多，该表会不断增大title_index.pkl 序列化的新闻标题SimhashIndex类， 未使用&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;generate_simhash_index.py&lt;/code&gt; 初始化这张Simhash_index，生成content和title的Simhash_index&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;near_duplicates.py&lt;/code&gt; 对初始化的Simhash_index进行相似新闻内容的去重&lt;/li&gt;
-      &lt;li&gt;test.py 测试content_index.pkl中content_index类新闻的数量&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;News_statistics:&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_count.json&lt;/code&gt; 每天从各个网站抓取的新闻数量&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;news_statistics.py&lt;/code&gt; 统计新闻增量的脚本&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;框架环境&quot;&gt;框架环境&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Redis环境环境&lt;/li&gt;
-  &lt;li&gt;scrapy框架环境&lt;/li&gt;
-  &lt;li&gt;python3环境环境&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;框架完善&quot;&gt;框架完善&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;IP代理池&lt;/li&gt;
-  &lt;li&gt;cookies池&lt;/li&gt;
-  &lt;li&gt;其他&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Tue, 09 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/09/python_crawl_words/</guid>
-        
-        <category>scrapy_redis</category>
-        
-        <category>爬虫</category>
-        
-        
-        <category>爬虫</category>
-        
-      </item>
-    
-      <item>
-        <title>window下python3环境安装scrapy</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#环境&quot; id=&quot;markdown-toc-环境&quot;&gt;环境：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#初次安装&quot; id=&quot;markdown-toc-初次安装&quot;&gt;初次安装：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#打开网站&quot; id=&quot;markdown-toc-打开网站&quot;&gt;打开网站&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#安装wheel&quot; id=&quot;markdown-toc-安装wheel&quot;&gt;安装wheel&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#安装whl文件&quot; id=&quot;markdown-toc-安装whl文件&quot;&gt;安装.whl文件&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#end&quot; id=&quot;markdown-toc-end&quot;&gt;end&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;目录：&lt;/p&gt;
-
-&lt;p&gt;[TOC]&lt;/p&gt;
-
-&lt;h2 id=&quot;环境&quot;&gt;环境：&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;python3  3.6.4， win7 64位&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;初次安装&quot;&gt;初次安装：&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pip install scrapy&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;使用这个命令，在win7 64位是怎么也安装不上去的，因为这已经是第二次了，&lt;/p&gt;
-
-&lt;p&gt;当这个命令输出完后，会出现一系列的问题。当然了，不用怕，这不是需要解决问题的方法来了嘛。&lt;/p&gt;
-
-&lt;p&gt;可能出现需要下载版本对应的visual studio,但是也太大了，或也可以说下载慢。。。。。。但是，我们可以不用去进行下载，只要进行下面几个文件的安装就可以了。&lt;/p&gt;
-
-&lt;h2 id=&quot;打开网站&quot;&gt;打开网站&lt;/h2&gt;
-
-&lt;p&gt;首先你打开这个网站（里面包含了各种编译好的库）：&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;a href=&quot;http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml&quot;&gt;http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;安装wheel&quot;&gt;安装wheel&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pip install wheel&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;安装成功的界面&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-93cab0d529ca1dba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;wheel—success.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;安装whl文件&quot;&gt;安装.whl文件&lt;/h2&gt;
-
-&lt;p&gt;这里需要安装三个.whl文件，而且是全名的安装，&lt;/p&gt;
-
-&lt;p&gt;以下三个文件：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/2577413-eaf16a31171cd6ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;.whl文件.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;中途可能会出现&lt;code class=&quot;highlighter-rouge&quot;&gt;Failed to build XXXX&lt;/code&gt; 或者是&lt;code class=&quot;highlighter-rouge&quot;&gt;twisted&lt;/code&gt;等相关的内容&lt;/p&gt;
-
-&lt;p&gt;因为scrapy是基于twisted框架的，所以，twisted框架也需要进行安装&lt;/p&gt;
-
-&lt;p&gt;当上面三个文件安装好了：&lt;/p&gt;
-
-&lt;p&gt;再次运行：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;scrapy&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;startproject&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pyjy&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这样就完成了scrapy在win下python3下的安装&lt;/p&gt;
-
-&lt;h2 id=&quot;end&quot;&gt;end&lt;/h2&gt;
-
-</description>
-        <pubDate>Thu, 04 Jan 2018 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/04/scrapy-setup-in-win/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/%E7%88%AC%E8%99%AB/2018/01/04/scrapy-setup-in-win/</guid>
-        
-        <category>scrapy</category>
-        
-        <category>爬虫</category>
-        
-        
-        <category>爬虫</category>
-        
-      </item>
-    
-      <item>
-        <title>Ubuntu16.04设置Pycharm桌面快捷键</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#ubuntu下所有的快捷方式都在&quot; id=&quot;markdown-toc-ubuntu下所有的快捷方式都在&quot;&gt;Ubuntu下所有的快捷方式都在：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#解压&quot; id=&quot;markdown-toc-解压&quot;&gt;解压&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#终端打开&quot; id=&quot;markdown-toc-终端打开&quot;&gt;终端打开&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#张贴&quot; id=&quot;markdown-toc-张贴&quot;&gt;张贴&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#添加可执行权限&quot; id=&quot;markdown-toc-添加可执行权限&quot;&gt;添加可执行权限&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#拷贝到桌面&quot; id=&quot;markdown-toc-拷贝到桌面&quot;&gt;拷贝到桌面&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;ubuntu下所有的快捷方式都在&quot;&gt;Ubuntu下所有的快捷方式都在：&lt;/h2&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;解压&quot;&gt;解压&lt;/h2&gt;
-
-&lt;p&gt;这里我将pycharm下载并解压到了/home/snakeson/developer文件夹下&lt;/p&gt;
-
-&lt;p&gt;这里的pycharm.sh是批处理执行文件，prcharm.png是快捷方式图标&lt;/p&gt;
-
-&lt;h2 id=&quot;终端打开&quot;&gt;终端打开&lt;/h2&gt;
-
-&lt;p&gt;使用Ubuntu终端进行打开：
-方法一（使用vim）：&lt;/p&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;vi&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;方法二（使用gedit）：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gedit&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;然后就会弹出一个新框：&lt;/p&gt;
-&lt;h2 id=&quot;张贴&quot;&gt;张贴&lt;/h2&gt;
-&lt;p&gt;我们将下面的内容贴上去：&lt;/p&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Desktop&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Application&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;GenericName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm3&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Comment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Python&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;IDE&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/home/snakeson/developer/pycharm-community-2017.2.3/bin/pycharm.sh&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Icon&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/home/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;snakeson&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;developer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;community&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2017.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;png&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Terminal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Categories&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;hr /&gt;
-&lt;p&gt;注意一定要将Desktop Entry复制进去，也就是上面的全部都要复制进去，这里我们需要替换掉两个地方：&lt;strong&gt;Exec=”xx”&lt;/strong&gt;和&lt;strong&gt;Icon=&lt;/strong&gt;,这里要替换掉我们的pycharm解压的目录，当然了，我已经替换好了，如果你的目录跟我的目录不一样的话，你得把路径给换了，不管你是pycharm2017还是pycharm2016,，例如Comment什么的都不要改变，只变上面提到的两个路径就可以了。&lt;/p&gt;
-
-&lt;h2 id=&quot;添加可执行权限&quot;&gt;添加可执行权限&lt;/h2&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;chmod&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;拷贝到桌面&quot;&gt;拷贝到桌面&lt;/h2&gt;
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;将&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;applications&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pycharm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;desktop&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;文件拷贝到桌面，双击即可运行。&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Wed, 13 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/snakeson/2017/12/13/Ubuntu16.04-pycharm-icon-setting/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/13/Ubuntu16.04-pycharm-icon-setting/</guid>
-        
-        <category>Ubuntu</category>
-        
-        <category>Pycharm</category>
-        
-        
-        <category>SnakeSon</category>
-        
-      </item>
-    
-      <item>
-        <title>这是徐代龙进行的第二篇文章</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#目的&quot; id=&quot;markdown-toc-目的&quot;&gt;目的：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤：&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;目的&quot;&gt;目的：&lt;/h2&gt;
-
-&lt;p&gt;写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;/p&gt;
-
-&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤：&lt;/h2&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Successfully&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installed&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Parsing&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;documentation&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Done&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installing&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;documentation&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;
-&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;installed&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Configuration&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;yml&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;
-       &lt;span class=&quot;nx&quot;&gt;Destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_site&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;Incremental&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;disabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Enable&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;incremental&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;Generating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5.499&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;Please&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;following&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gemfile&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;avoid&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;polling&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;wdm&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;gt;= 0.1.0&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;win_platform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;Auto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;regeneration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;F:/myself/643435675.github.io&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//127.0.0.1:4001/&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;running&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;press&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-
-&lt;span class=&quot;nx&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;spencer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;MINGW64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jekyll&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serve&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Configuration&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;yml&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;
-       &lt;span class=&quot;nx&quot;&gt;Destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;643435675&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_site&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;Incremental&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;disabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Enable&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;incremental&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;Generating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;done&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.859&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;Please&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;following&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;your&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gemfile&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;avoid&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;polling&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;changes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;wdm&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;gt;= 0.1.0&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Gem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;win_platform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;Auto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;regeneration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;F:/myself/643435675.github.io&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//127.0.0.1:4001/&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;running&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;press&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ctrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;主要进行了以上操作：
-cd 643435675.github.io  文件夹下&lt;/p&gt;
-
-&lt;p&gt;执行命令：&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll &lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;下一步：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll s&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;接下来：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;然后这样就可以在浏览器中输入：http://127.0.0.1:4001/ 进行刚刚文章的访问了。&lt;/p&gt;
-
-&lt;p&gt;补充：&lt;/p&gt;
-
-&lt;p&gt;因为首页与详情页显示某篇文章的内容是不一样的，在首页中进行文章的裁剪显示：
-需要进行加入四个空行：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gu&quot;&gt;## 目的：&lt;/span&gt;
-
-写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;span class=&quot;sb&quot;&gt;
-
-
-
-
-&lt;/span&gt;&lt;span class=&quot;gu&quot;&gt;## 操作步骤：&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;不进行添加的话，首页会把整篇文章完全展示出来，添加了四个空行之后就只会显示部分了，当然了，这篇文章在首页是显示的部分，也就是&lt;strong&gt;目的下的内容&lt;/strong&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 07 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/07/test-my-webapp/</guid>
-        
-        <category>hexo</category>
-        
-        <category>JavaScript</category>
-        
-        
-        <category>SnakeSon</category>
-        
-      </item>
-    
-      <item>
-        <title>这是徐代龙进行的第二篇文章</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#目的&quot; id=&quot;markdown-toc-目的&quot;&gt;目的：&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#操作步骤&quot; id=&quot;markdown-toc-操作步骤&quot;&gt;操作步骤：&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;目的&quot;&gt;目的：&lt;/h2&gt;
-
-&lt;p&gt;写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章&lt;/p&gt;
-
-&lt;h2 id=&quot;操作步骤&quot;&gt;操作步骤：&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
-$ gem install jekyll
-Successfully installed jekyll-3.6.2
-Parsing documentation for jekyll-3.6.2
-Done installing documentation for jekyll after 2 seconds
-1 gem installed
-
-spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
-$ jekyll s
-Configuration file: F:/myself/643435675.github.io/_config.yml
-            Source: F:/myself/643435675.github.io
-       Destination: F:/myself/643435675.github.io/_site
- Incremental build: disabled. Enable with --incremental
-      Generating...
-                    done in 5.499 seconds.
-  Please add the following to your Gemfile to avoid polling for changes:
-    gem 'wdm', '&amp;gt;= 0.1.0' if Gem.win_platform?
- Auto-regeneration: enabled for 'F:/myself/643435675.github.io'
-    Server address: http://127.0.0.1:4001/
-  Server running... press ctrl-c to stop.
-
-
-spencer@spencer-it1 MINGW64 /f/myself/643435675.github.io (master)
-$ jekyll serve
-Configuration file: F:/myself/643435675.github.io/_config.yml
-            Source: F:/myself/643435675.github.io
-       Destination: F:/myself/643435675.github.io/_site
- Incremental build: disabled. Enable with --incremental
-      Generating...
-                    done in 2.859 seconds.
-  Please add the following to your Gemfile to avoid polling for changes:
-    gem 'wdm', '&amp;gt;= 0.1.0' if Gem.win_platform?
- Auto-regeneration: enabled for 'F:/myself/643435675.github.io'
-    Server address: http://127.0.0.1:4001/
-  Server running... press ctrl-c to stop.
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;主要进行了以上操作：
-cd 643435675.github.io  文件夹下&lt;/p&gt;
-
-&lt;p&gt;执行命令：&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll &lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;下一步：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll s&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;接下来：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;然后这样就可以在浏览器中输入：http://127.0.0.1:4001/ 进行刚刚文章的访问了。&lt;/p&gt;
-
-&lt;p&gt;补充：&lt;/p&gt;
-
-&lt;p&gt;因为首页与详情页显示某篇文章的内容是不一样的，在首页中进行文章的裁剪显示：
-需要进行加入四个空行：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## 目的：
-
-写这篇文章的目的主要是为了测试在本地进行md文件的编写是否能使用hexo进行html生成，然后上传到github上，通过访问https://day21.top 这个网站查看能否看到最新的文章
-
-
-
-
-## 操作步骤：
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;不进行添加的话，首页会把整篇文章完全展示出来，添加了四个空行之后就只会显示部分了，当然了，这篇文章在首页是显示的部分，也就是&lt;strong&gt;目的下的内容&lt;/strong&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 07 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/snakeson/2017/12/07/git-push-github/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/snakeson/2017/12/07/git-push-github/</guid>
-        
-        <category>hexo</category>
-        
-        <category>JavaScript</category>
-        
-        
-        <category>SnakeSon</category>
-        
-      </item>
-    
-      <item>
-        <title>这是我自己来测试的md页面</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#原理&quot; id=&quot;markdown-toc-原理&quot;&gt;原理&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#代码&quot; id=&quot;markdown-toc-代码&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#补充&quot; id=&quot;markdown-toc-补充&quot;&gt;补充&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;关于写倒计时大家可能都都比较熟悉，使用 setTimeout 或 setInterval 就可以搞定。几秒钟或者几分钟的倒计时这样写没有问题，但是如果是长时间的倒计时，这样写就会不准确。如果用户修改了他的设备时间，这样的倒计时就没有意义了。今天就说说写一个精确的倒计时的方法。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://img.alicdn.com/tfs/TB18QnlOpXXXXcVXpXXXXXXXXXX-388-256.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;原理&quot;&gt;原理&lt;/h2&gt;
-
-&lt;p&gt;众所周知 setTimeout 或者 setInterval 调用的时候会有微小的误差。有人做了一个 &lt;a href=&quot;https://bl.ocks.org/kenpenn/raw/92ebaa71696b4c4c3acd672b1bb3f49a/&quot;&gt;demo&lt;/a&gt; 来观察这个现象并对其做了修正。短时间的误差倒也可以接受，但是作为一个长时间的倒计时，误差累计就会导致倒计时不准确。&lt;/p&gt;
-
-&lt;p&gt;因此我们可以在获取剩余时间的时候，每次 new 一个设备时间，因为设备时间的流逝相对是准确的，并且如果设备打开了网络时间同步，也会解决这个问题。&lt;/p&gt;
-
-&lt;p&gt;但是，如果用户修改了设备时间，那么整个倒计时就没有意义了，用户只要将设备时间修改为倒计时的 endTime 就可以轻易看到倒计时结束是页面的变化。因此一开始获取服务端时间就是很重要的。&lt;/p&gt;
-
-&lt;p&gt;简单的说，一个简单的精确倒计时原理如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;初始化时请求一次服务器时间 serverTime，再 new 一个设备时间 deviceTime&lt;/li&gt;
-  &lt;li&gt;deviceTime 与 serverTime 的差作为时间偏移修正&lt;/li&gt;
-  &lt;li&gt;每次递归时 new 一个系统时间，解决 setTimeout 不准确的问题&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;代码&quot;&gt;代码&lt;/h2&gt;
-
-&lt;p&gt;获取剩余时间的代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
- * 获取剩余时间
- * @param  {Number} endTime    截止时间
- * @param  {Number} deviceTime 设备时间
- * @param  {Number} serverTime 服务端时间
- * @return {Object}            剩余时间对象
- */&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getRemainTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minutes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hours&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;days&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;total&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;days&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;hours&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hours&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;minutes&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;seconds&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;seconds&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;del&gt;获取服务器时间可以使用 mtop 接口 &lt;code class=&quot;highlighter-rouge&quot;&gt;mtop.common.getTimestamp&lt;/code&gt; &lt;/del&gt;&lt;/p&gt;
-
-&lt;p&gt;然后可以通过下面的方式来使用：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 获取服务端时间（获取服务端时间代码略）&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;getServerTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//设置定时器&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;intervalTimer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// 得到剩余时间&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getRemainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;deviceTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// 倒计时到两个小时内&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7200000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// do something&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;//倒计时结束&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;remainTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;intervalTimer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// do something&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这样的的写法也可以做到准确倒计时，同时也比较简洁。不需要隔段时间再去同步一次服务端时间。&lt;/p&gt;
-
-&lt;h2 id=&quot;补充&quot;&gt;补充&lt;/h2&gt;
-
-&lt;p&gt;在写倒计时的时候遇到了一个坑这里记录一下。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;千万别在倒计时结束的时候请求接口&lt;/strong&gt;。会让服务端瞬间 QPS 峰值达到非常高。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://img.alicdn.com/tfs/TB1LBzjOpXXXXcnXpXXXXXXXXXX-154-71.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果在倒计时结束的时候要使用新的数据渲染页面，正确的做法是：&lt;/p&gt;
-
-&lt;p&gt;在倒计时结束前的一段时间里，先请求好数据，倒计时结束后，再渲染页面。&lt;/p&gt;
-
-&lt;p&gt;关于倒计时，如果你有什么更好的解决方案，欢迎评论交流。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 04 Dec 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/javascript/2017/12/04/test-my-webapp/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/javascript/2017/12/04/test-my-webapp/</guid>
-        
-        <category>countdown</category>
-        
-        <category>JavaScript</category>
-        
-        
-        <category>JavaScript</category>
+        <category>vscode</category>
         
       </item>
     

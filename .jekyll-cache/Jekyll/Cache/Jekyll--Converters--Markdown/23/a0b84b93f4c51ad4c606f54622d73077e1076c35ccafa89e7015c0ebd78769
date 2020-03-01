@@ -1,0 +1,37 @@
+I"\<h1 id="ubuntu1604下同步code-server与vscode的配置">ubuntu16.04下同步code-server与vscode的配置</h1>
+
+<hr />
+
+<p>在ubuntu16.04下安装了code-server后, 想要使用<code class="highlighter-rouge">setting sync</code>插件将vscode的配置和安装的插件同步过来, 但是问题在于code-server的配置文件路径和正常安装的vscode配置文件路径不同, 但setting sync会将同步时下载的文件放在vscode默认路径下, 因此无法实现同步.
+解决方案为: 
+在code-server和vscode之间建立一个链接, 使code-server的配置文件指向vscode的配置文件.</p>
+
+<p>具体方法为:</p>
+
+<ol>
+  <li>同步插件
+    <pre><code class="language-bash{.line-numbers}"> ln -s ~/.vscode/extensions ~/.local/share/code-server
+</code></pre>
+  </li>
+  <li>同步用户配置
+    <pre><code class="language-bash{.line-numbers}"> ln -s ~/.config/Code/User ~/.local/share/code-server
+</code></pre>
+  </li>
+  <li>同步启动时的默认路径
+    <pre><code class="language-bash{.line-numbers}">ln -s ~/.config/Code/Backups ~/.local/share/code-server
+</code></pre>
+  </li>
+</ol>
+
+<p>仍然存在的问题:</p>
+
+<ol>
+  <li>语言扩展不起作用, 无法配置为中文.</li>
+</ol>
+
+<p>相关内容：<br />
+    [1] <a href="https://github.com/codercom/code-server/releases">code-server下载</a><br />
+    [2] <a href="https://github.com/codercom/code-server/blob/master/doc/self-hosted/index.md">code-server文档</a><br />
+    [3] <a href="https://github.com/Microsoft/vscode">vscode</a>
+    [4] <a href="http://kaopubear.top/2017-12-21-frpbasic-md/">四步实现内网穿透</a></p>
+:ET

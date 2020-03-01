@@ -1,5 +1,0 @@
-green:"#208C5B"
-grey:"#4C4C4C"
-green_blue:"#14546D"
-blue:"#395692"
-orange:"#EF6855"

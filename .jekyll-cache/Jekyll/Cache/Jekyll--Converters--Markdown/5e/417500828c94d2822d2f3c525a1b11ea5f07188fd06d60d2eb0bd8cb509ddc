@@ -1,0 +1,48 @@
+I"	<h1 id="ubuntu开机后出现recovering-journal解决方案">ubuntu开机后出现recovering journal解决方案</h1>
+
+<hr />
+
+<h2 id="1-ubuntu1604开机后出现以下问题">1. ubuntu16.04开机后出现以下问题</h2>
+<pre><code class="language-bash{.line-numbers}">recovering journal
+clean xxx blocks
+...
+</code></pre>
+<p>问题原因： <br />
+    缺少NVIDIA显卡驱动 <br />
+解决方案： <br />
+    在ubuntu高级设置中，选中recovery mode，按e键进入编辑模式，将</p>
+
+<pre><code class="language-bash{.line-numbers}">ro recovery nomodeset
+</code></pre>
+<p>改为</p>
+<pre><code class="language-bash{.line-numbers}">rw single init=/bin/bash
+</code></pre>
+<p>按下F10或者ctrl+x，可以进入命令行，安装NVIDIA驱动后重启即可(我的情况是安装过NVIDIA驱动，但是偶尔电脑重启后会失效，需要重新安装，因此只需要安装NVIDIA-Linux-x86_64_xxx.run即可)。
+或在ubuntu高级设置中，选中recovery mode，回车，进入recovery模式，选中</p>
+
+<pre><code class="language-bash{.line-numbers}">root    Root Drop to root shell prompt
+</code></pre>
+
+<p>回车，也可以进入命令行。
+驱动安装可以参照文章[1]</p>
+
+<h2 id="2-进去开机启动界面后不显示鼠标和键盘按键也无反应">2. 进去开机启动界面后，不显示鼠标和键盘，按键也无反应</h2>
+<p>参考[3]可知缺少 xserver-xorg-input-all，只需按照上面方式，进入recovery模式后，首先选择</p>
+<pre><code class="language-bash{.line-numbers}">network   Enable Networking 
+</code></pre>
+<p>然后进入</p>
+<pre><code class="language-bash{.line-numbers}">root   Root Drop to root shell prompt
+</code></pre>
+<p>执行以下命令即可</p>
+<pre><code class="language-bash{.line-numbers}">sudo apt install xserver-xorg-input-all
+</code></pre>
+<p>重启后一切正常。</p>
+
+<h2 id="参考文章">参考文章</h2>
+
+<ol>
+  <li><a href="https://www.jianshu.com/p/b313625fbe61">ubuntu16.04安装NVIDIA显卡驱动</a></li>
+  <li><a href="https://blog.csdn.net/razor_et/article/details/80428100">Ubuntu启动之后显示Recovering journal ，clean block。。。。问题`</a></li>
+  <li><a href="http://forum.ubuntu.org.cn/viewtopic.php?t=487790">升级Ubuntu18.04LTS后,鼠标键盘均失灵,求助</a></li>
+</ol>
+:ET

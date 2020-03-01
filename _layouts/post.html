@@ -2,40 +2,51 @@
 layout: default
 ---
 
+<!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-color: {% if page.header-color %}{{ page.header-color }}{% else %}{{ site.header-color }}{% endif %}
+        position: relative;
+        background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')
     }
+
+    {% if page.header-mask %}
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, {{ page.header-mask }});
+    }
+    {% endif %}
 </style>
-
-<!-- Documentation extras -->
-<link rel="stylesheet" href="{{ "/css/docs.min.css" | prepend: site.baseurl }}">
-
-
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<header class="intro-header">
-    <div class="container-fluid">
-        <div class="row flex-xl-nowrap">
-            <div class="col-lg-12 col-md-12">
-                <div class="post-heading offset-md-2 offset-xl-2 pl-md-5">
-                    
-                    <h1>{{ page.title }}</h1>
-                    {% if page.subtitle %}
-                    <h2 class="subheading">{{ page.subtitle }}</h2>
-                    {% endif %}
-                    <div class="Tags" style="padding-bottom: 10px;">
-                    <div>
-                        {% for tag in page.categories %}
-                        <a href="/page/categories/#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-th" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        {% for category in page.categories %}
+                        <a class="tag" href="{{ site.baseurl }}/pages/categories/#{{ category }}" title="{{ category }}" style="background-color: darkcyan;">{{ category }}</a>
                         {% endfor %}
-                    </div>
                         {% for tag in page.tags %}
-                        <a href="/page/tags#{{ tag }}" title="{{ tag }}" style="color: aliceblue;"><i class="fa fa-tags" aria-hidden="true" style="margin-right: 10px;"></i>{{ tag }}</a>
+                        <a class="tag" href="{{ site.baseurl }}/pages/tags/#{{ tag }}" title="{{ tag }}">{{ tag }}</a>
                         {% endfor %}
                     </div>
+                    <h1>{{ page.title }}</h1>
+                    {% comment %}
+                        always create a h2 for keeping the margin , Hux
+                    {% endcomment %}
+                    {% comment %} if page.subtitle {% endcomment %}
+                    <h2 class="subheading">{{ page.subtitle }}</h2>
+                    {% comment %} endif {% endcomment %}
                     <span class="meta">Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %} on {{ page.date | date: "%B %-d, %Y" }}
-                         and Readed <span id="busuanzi_value_page_pv"></span> times
+                        &nbsp;&nbsp;&nbsp; <span id="busuanzi_container_page_pv">
+                        view: <span id="busuanzi_value_page_pv"></span>
+                        </span>
                     </span>
                 </div>
             </div>
@@ -43,39 +54,147 @@ layout: default
     </div>
 </header>
 
-
 <!-- Post Content -->
-    <div class="container-fluid">
-        <div class="row flex-xl-nowrap">
-            <div class="col-md-2 offset-md-1 col-xl-2 offset-xl-1 bd-sidebar" style="padding: 1rem 15px;">
-                <div class="d-flex align-items-center">
-                    <span class="algolia-autocomplete meta" style=""><h3>CONTENTS</h3></span>
-                    <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#bd-docs-nav" aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg>
-                    </button>
-                </div>
-                <nav class="collapse bd-links" id="bd-docs-nav" aria-label="Main navigation">
-                </nav>
-              </div>
-            <article>
-            <main class="col-md-9  col-xl-9 py-md-3 pl-md-5" role="main">
-                {{ content }}
-                <hr>
-            <!-- Pager -->
-                <ul class="pager list-unstyled ml-md-auto" style="padding-top: 20px;">
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-9 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+				{{ content }}
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
                     {% if page.previous.url %}
                     <li class="previous">
-                        <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
+                        <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">
+                        Previous<br>
+                        <span>{{page.previous.title}}</span>
+                        </a>
                     </li>
                     {% endif %}
                     {% if page.next.url %}
                     <li class="next">
-                        <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
+                        <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">
+                        Next<br>
+                        <span>{{page.next.title}}</span>
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
-                <div class="clear" style="padding-bottom: 10px;"></div>
-            </main>
-        </article>
+
+
+                <!--Gitalk评论start  -->
+                {% if site.gitalk.enable %}
+                <!-- 引入Gitalk评论插件  -->
+                <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+                <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+                <div id="gitalk-container"></div>
+                <!-- 引入一个生产md5的js，用于对id值进行处理，防止其过长 -->
+                <!-- Thank DF:https://github.com/NSDingFan/NSDingFan.github.io/issues/3#issuecomment-407496538 -->
+                <script src="{{ site.baseurl }}/js/md5.min.js"></script>
+                <script type="text/javascript">
+                    var gitalk = new Gitalk({
+                    clientID: '{{site.gitalk.clientID}}',
+                    clientSecret: '{{site.gitalk.clientSecret}}',
+                    repo: '{{site.gitalk.repo}}',
+                    owner: '{{site.gitalk.owner}}',
+                    admin: ['{{site.gitalk.admin}}'],
+                    distractionFreeMode: {{site.gitalk.distractionFreeMode}},
+                    id: md5(location.pathname),
+                    });
+                    gitalk.render('gitalk-container');
+                </script>
+                {% endif %}
+                <!-- Gitalk end -->
+
+                {% if site.disqus_username %}
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                {% endif %}
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        {% if page.catalog %}
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        {% endif %}
         </div>
     </div>
+</article>
+
+
+{% if site.disqus_username %}
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "{{site.disqus_username}}";
+    var disqus_identifier = "{{page.id}}";
+    var disqus_url = "{{site.url}}{{page.url}}";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+{% endif %}
+
+
+{% if site.anchorjs %}
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+{% endif %}

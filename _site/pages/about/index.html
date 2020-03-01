@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A personal blog website for recording what I think and what I do">
+    <meta name="keywords"  content="Blog, SLAM, robot">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Mr Wind - Mr Wind的博客</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://0.0.0.0:4000/pages/about/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- body background -->
+    <!-- <style>
+    body {
+        background: url("/img/body-bg.gif") repeat
+    }
+    </style>
+     -->
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- 数学公式并自动编号 -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                displayMath: [['$$','$$']],
+                inlineMath: [['$','$']],
+            },
+            TeX: {equationNumbers: {autoNumber: "AMS"}},
+        });
+    </script>
+
+    <!-- line number for code block -->
+    <script src="/js/prism.js"></script>
+    <link rel="stylesheet" href="/css/prism.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- view and visit statistic -->
+    <script async src="/js/busuanzi.pure.mini.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img alt="Brand" src="/img/favicon.png"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right" style="text-shadow:4px 4px 10px #000000;">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/about/">Mr Wind</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/categories/">Categories</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/pages/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="height:46vh; background-image: url('/img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading" style="text-shadow:4px 4px 10px #000000;">
+                    
+                    <img src="/img/profile.png" alt="..." style="border-radius: 50%;box-shadow: 0 0 10px #ffffff; border: 5px solid #ffffff; width: 140px; height: 140px;">
+                    
+                    <h1>Mr Wind</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading" style="font-weight: bolder;">占个坑，待填充</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+ 
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+        
+<!-- NO SIDEBAR -->
+    <!-- PostList Container -->
+            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 postlist-container">
+                <!-- Chinese Version -->
+<div class="zh post-container">
+    
+    <!-- Documentation extras -->
+    <link rel="stylesheet" href="/css/docs.min.css">
+    <style type="text/css">
+    .resume-timeline {
+      padding-left: 2rem;
+    }
+    
+    .resume-timeline:before {
+      content: "";
+      display: inline-block;
+      width: 3px;
+      height: 100%;
+      background: #aab4c3;
+      left: 6px;
+      top: 4px;
+      position: absolute;
+    }
+    
+    .resume-timeline-item:before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      left: 0px;
+      width: 15px;
+      height: 15px;
+      border: 4px solid #58677c;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .resume-company-name {
+        color: #58677c;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    </style>
+
+    <main class="resume-body">
+        <section class="resume-section summary-section mb-5">
+            <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Career Summary</h2>
+            <div class="resume-section-content">
+                <p class="mb-0">Summarise your career here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. You can download this free resume/CV template here. Aenean commodo ligula eget dolor aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget.</p>
+            </div>
+        </section><!--//summary-section-->
+        
+        <div class="row">
+            <div class="col-lg-9">
+                <section class="resume-section experience-section mb-5">
+                    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style="margin-bottom: 30px;">Work Experience</h2>
+                    <div class="resume-section-content">
+                        <div class="resume-timeline position-relative">
+                            <article class="resume-timeline-item position-relative pb-5">
+                                
+                                <div class="resume-timeline-item-header mb-2">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <h3 class="resume-position-title font-weight-bold mb-1" style="margin-top: 0px;">Lead Developer</h3>
+                                    </div><!--//row-->
+                                    <hr>
+                                    <div class="resume-position-time">2018 - Present</div>
+                                </div><!--//resume-timeline-item-header-->
+                                <div class="resume-timeline-item-desc">
+                                    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Donec pede justo, fringilla vel.</p>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Achievements:</h4>
+                                    <p>Praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+                                    <ul>
+                                        <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
+                                        <li>At vero eos et accusamus et iusto odio dignissimos.</li>
+                                        <li>Blanditiis praesentium voluptatum deleniti atque corrupti.</li>
+                                        <li>Maecenas tempus tellus eget.</li>
+                                    </ul>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Angular</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Python</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">jQuery</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Webpack</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">PostgresSQL</span></li>
+                                    </ul>
+                                </div><!--//resume-timeline-item-desc-->
+    
+                            </article><!--//resume-timeline-item-->
+                            
+                            <article class="resume-timeline-item position-relative pb-5">
+                                
+                                <div class="resume-timeline-item-header mb-2">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <h3 class="resume-position-title font-weight-bold mb-1"style="margin-top: 0px;">Senior Software Developer</h3>
+                                    </div><!--//row-->
+                                    <div class="resume-position-time">2014 - 2018</div>
+                                </div><!--//resume-timeline-item-header-->
+                                <div class="resume-timeline-item-desc">
+                                    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Donec pede justo, fringilla vel.</p>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Achievements</h4>
+                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">React</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Redux</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Django</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Webpack</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">MySQL</span></li>
+                                    </ul>
+                                </div><!--//resume-timeline-item-desc-->
+    
+                            </article><!--//resume-timeline-item-->
+                            
+                            <article class="resume-timeline-item position-relative pb-5">
+                                
+                                <div class="resume-timeline-item-header mb-2">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <h3 class="resume-position-title font-weight-bold mb-1" style="margin-top: 0px;">Co-Founder &amp; Lead Developer</h3>
+                                    </div><!--//row-->
+                                    <div class="resume-position-time">2012 - 2014</div>
+                                </div><!--//resume-timeline-item-header-->
+                                <div class="resume-timeline-item-desc">
+                                    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Django</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">JavaScript</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Node.js</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Require.js</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/SASS</span></li>
+                                    </ul>
+                                </div><!--//resume-timeline-item-desc-->
+    
+                            </article><!--//resume-timeline-item-->
+                            
+                            <article class="resume-timeline-item position-relative">
+                                
+                                <div class="resume-timeline-item-header mb-2">
+                                    <div class="d-flex flex-column flex-md-row">
+                                        <h3 class="resume-position-title font-weight-bold mb-1" style="margin-top: 0px;">Web Developer <small class="text-muted">(Intern)</small></h3>
+                                    </div><!--//row-->
+                                    <div class="resume-position-time">2011 - 2012</div>
+                                </div><!--//resume-timeline-item-header-->
+                                <div class="resume-timeline-item-desc">
+                                    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum.</p>
+                                    <h4 class="resume-timeline-item-desc-heading font-weight-bold">Technologies used:</h4>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">Ruby on Rails</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">jQuery</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">HTML/LESS</span></li>
+                                        <li class="list-inline-item"><span class="badge badge-success badge-pill">MongoDB</span></li>
+                                    </ul>
+                                </div><!--//resume-timeline-item-desc-->
+    
+                            </article><!--//resume-timeline-item-->
+                            
+                            
+                        </div><!--//resume-timeline-->
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section><!--//experience-section-->
+            </div>
+            <div class="col-lg-3">
+                <section class="resume-section education-section mb-5">
+                    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Education</h2>
+                    <div class="resume-section-content">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <div class="resume-degree font-weight-bold">MSc in Computer Science</div>
+                                <div class="resume-degree-org">University College London</div>
+                                <div class="resume-degree-time">2010 - 2011</div>
+                            </li>
+                            <li>
+                                <div class="resume-degree font-weight-bold">BSc Maths and Physics</div>
+                                <div class="resume-degree-org">Imperial College London</div>
+                                <div class="resume-degree-time">2007 - 2010</div>
+                            </li>
+                        </ul>
+                    </div>
+                </section><!--//education-section-->
+    
+                <section class="resume-section language-section mb-5">
+                    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Language</h2>
+                    <div class="resume-section-content">
+                        <ul class="list-unstyled resume-lang-list">
+                            <li class="mb-2"><span class="resume-lang-name font-weight-bold">English</span> <small class="text-muted font-weight-normal">(Native)</small></li>
+                            <li class="mb-2 align-middle"><span class="resume-lang-name font-weight-bold">French</span> <small class="text-muted font-weight-normal">(Professional)</small></li>
+                            <li><span class="resume-lang-name font-weight-bold">Spanish</span> <small class="text-muted font-weight-normal">(Professional)</small></li>
+                        </ul>
+                    </div>
+                </section><!--//language-section-->
+                <section class="resume-section interests-section mb-5">
+                    <h2 class="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Interests</h2>
+                    <div class="resume-section-content">
+                        <ul class="list-unstyled">
+                            <li class="mb-1">Climbing</li>
+                            <li class="mb-1">Snowboarding</li>
+                            <li class="mb-1">Cooking</li>
+                        </ul>
+                    </div>
+                </section><!--//interests-section-->
+                
+            </div>
+        </div><!--//row-->
+    </main><!--//resume-body-->
+
+</div>
+
+<!-- Handle Language Change -->
+<script type="text/javascript">
+    // get nodes
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    var $select = document.querySelector("select");
+
+    // bind hashchange event
+    window.addEventListener('hashchange', _render);
+
+    // handle render
+    function _render(){
+        var _hash = window.location.hash;
+        // en
+        if(_hash == "#en"){
+            $select.selectedIndex = 1;
+            $en.style.display = "block";
+            $zh.style.display = "none";
+        // zh by default
+        }else{
+            // not trigger onChange, otherwise cause a loop call.
+            $select.selectedIndex = 0;
+            $zh.style.display = "block";
+            $en.style.display = "none";
+        }
+    }
+
+    // handle select change
+    function onLanChange(index){
+        if(index == 0){
+            window.location.hash = "#zh"
+        }else{
+            window.location.hash = "#en"
+        }
+    }
+
+    // init
+    _render();
+</script>
+
+
+<!-- Gitalk 评论 start  -->
+
+<!-- Gitalk end -->
+
+ <!-- disqus 评论框 start  -->
+
+
+
+            </div>
+     <!-- Side Catalog Container -->
+            
+        
+
+	</div>
+</div>
+
+
+    <link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
+<!-- Footer -->
+<footer style="background-color: currentcolor;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-contao fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/HugueLiu">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mr Wind 2020
+                    <br>
+                    Theme on <a href="https://github.com/HugueLiu/HugueLiu.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=HugueLiu&repo=HugueLiu.github.io&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    <span id="busuanzi_container_site_uv">
+                        本站访客数<span id="busuanzi_value_site_uv" style="color:aliceblue"></span>人次
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'ad936e42d0b4fc7ee2b36bca1408a0b6';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+<!-- line number for code block -->
+<script>
+var pres = document.getElementsByTagName("pre");
+for(var i = 0; i < pres.length; i++){
+    var pre = pres[i];
+    if(pre.childNodes[0].nodeName == "CODE"){
+        pre.setAttribute("class","line-numbers");
+    }
+}
+</script>
+
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

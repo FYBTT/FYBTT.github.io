@@ -1,0 +1,58 @@
+I"�	<h1 id="latex符号1数学字体">LaTex符号（1）：数学字体</h1>
+
+<hr />
+
+<ol>
+  <li>
+    <p><code class="highlighter-rouge">\mathbb</code>(blackboard bold, 黑板粗体)</p>
+
+    <p>对于大写字母可以实现空心字体<br />
+ $\mathbb{ABCDEN}$(<code class="highlighter-rouge">\mathbb{ABCDEN}</code>)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">\mathcal</code>(calligraphy, 美术字)</p>
+
+    <p>花体字<br />
+ $\mathcal L$(<code class="highlighter-rouge">\mathcal L</code>): 常用来表示损失函数<br />
+ $\mathcal D$(<code class="highlighter-rouge">\mathcal D</code>): 表示样本集<br />
+ $\mathcal N$(<code class="highlighter-rouge">\mathcal N</code>): 常用来表示高斯分布</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">\mathrm</code>(math roman)</p>
+
+    <p>公式中的英文字母为正体，常用来表示计量单位、函数、常数、运算符等。<br />
+ $\mathrm{kg}$(<code class="highlighter-rouge">\mathrm{kg}</code>): 千克<br />
+ $\mathrm{sin}$(<code class="highlighter-rouge">\mathrm{sin}</code>): 正弦函数（latex中有专门表示正弦函数的符号<code class="highlighter-rouge">\sin</code>）<br />
+ $\mathrm{d}$(<code class="highlighter-rouge">\mathrm{d}</code>): 微分符号</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">mathbf</code>(math boldface)</p>
+
+    <p>粗体，可以用来表示矩阵或向量符号<br />
+ $\mathbf{Ax=b}$(<code class="highlighter-rouge">\mathbf{Ax=b}</code>)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">mathfrak</code>(math fraktur, 德文尖角体)</p>
+
+    <p>一种拉丁字母的书法，有较多棱角，李代数中使用该字体。<br />
+ $\mathfrak{se}(3)$(<code class="highlighter-rouge">\mathfrak{se}(3)</code>)</p>
+  </li>
+  <li>
+    <p>其他字体</p>
+
+    <p>以下分别为默认、<code class="highlighter-rouge">mathsf</code>、<code class="highlighter-rouge">\mathtt</code>、<code class="highlighter-rouge">\mathit</code></p>
+
+    <script type="math/tex; mode=display">{f(x,y) = 3(x+y)y / (2xy-7)}\\
+ \mathsf{f(x,y) = 3(x+y)y / (2xy-7)}\\
+ \mathtt{f(x,y) = 3(x+y)y / (2xy-7)}\\
+ \mathit{f(x,y) = 3(x+y)y / (2xy-7)}</script>
+  </li>
+</ol>
+
+<h2 id="参考文章">参考文章</h2>
+
+<ol>
+  <li><a href="https://blog.csdn.net/lanchunhui/article/details/54633576">LaTeX —— 特殊符号与数学字体</a></li>
+  <li><a href="https://zh.wikipedia.org/wiki/%E5%BE%B7%E6%96%87%E5%B0%96%E8%A7%92%E9%AB%94">德文尖角体</a></li>
+</ol>
+:ET

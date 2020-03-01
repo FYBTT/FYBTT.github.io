@@ -1,0 +1,75 @@
+---
+layout: page
+title: "Tags"
+description: "keep hungry keep foolish"
+catalog: true
+sidebar: false
+header-img: "img/bg.jpg"
+---
+<!-- Documentation extras -->
+<style type="text/css">
+	#listing {
+	  display: block;
+		list-style-type: disc;
+		margin-block-start: 1em;
+		margin-block-end: 1em;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+	  padding-inline-start: 0px;
+	}
+	.listing-item {
+	  list-style: none;
+	  padding-left: 25px;
+	  line-height: 1.8;
+	  color: #888888;
+	}
+	.title{
+	  font-weight: bold;
+	  color: #223253;
+	  transition: 0.3s ease;
+	  padding-left: 5px;
+	}
+	.categories {
+	  padding: 0 5px;
+  	  background-color: #c6cbe9;
+  	  border-radius: 4px;
+	  color: #fff;
+	  font-size: 90%;
+	  transition: 0.3s ease;
+	}
+	.tags {
+	  padding: 0 5px;
+	  border-radius: 4px;
+	  color: #fff;
+	  font-size: 90%;
+	  transition: 0.3s ease;
+	}
+</style>
+
+<!-- Main Content -->
+<div class="post-container">
+			<!-- 标签云 -->
+			<div id='tag_cloud' class="tags" style="padding-left: 40px;">
+				{% for tag in site.tags %}
+				<a href="#{{ tag[0] }}" title="{{ tag[0] }}" rel="{{ tag[1].size }}">{{ tag[0] }}</a>
+				{% endfor %}
+			</div>
+
+            <!-- 标签列表 -->
+			<ul class="listing">
+				{% for tag in site.tags %}
+					<h1 id="{{ tag[0] }}" style="padding-top: 25px;">{{ tag[0] }}</h1>
+					<hr>
+					{% for post in tag[1] %}
+					  <li class="listing-item">
+						  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }} {{ post.date | date: "%a" }}</time>
+
+						  <a class="title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+						  {% for tag in post.categories %}
+						  <i class="fa fa-th" aria-hidden="true" style="margin-right: 5px; margin-left: 5px;"></i><a href="/pages/categories/#{{ tag }}" class="categories" title="{{ tag }}">{{ tag }}</a>
+						  {% endfor %}
+					  </li>
+					{% endfor %}
+				  {% endfor %}
+			  </ul>
+</div>

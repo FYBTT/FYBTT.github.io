@@ -1,0 +1,92 @@
+I"C<h1 id="vscode配置mathjax">vscode配置mathjax</h1>
+
+<hr />
+
+<blockquote>
+  <p>vscode中markdown preview enhanced插件配置mathjax使其可以自动添加公式编号。</p>
+</blockquote>
+
+<h2 id="1-修改公式渲染插件为mathjax">1. 修改公式渲染插件为<code class="highlighter-rouge">mathjax</code></h2>
+
+<p>按下<code class="highlighter-rouge">ctrl+p</code>，找到<code class="highlighter-rouge">Markdown-preview-enhanced: Math Rendering Option</code>选项，修改为<code class="highlighter-rouge">MathJax</code>
+或在setting.json文件添加<code class="highlighter-rouge">"markdown-preview-enhanced.mathRenderingOption": "MathJax"</code></p>
+
+<h2 id="2-开启公式自动编号">2. 开启公式自动编号</h2>
+
+<p>mathjax中公式自动编号功能默认是关闭的，需要手动打开</p>
+
+<p>在<code class="highlighter-rouge">mathjax_config.js</code>的<code class="highlighter-rouge">TeX</code>中添加下面一行：</p>
+<pre><code class="language-json{.line-numbers}">equationNumbers: { autoNumber: "AMS" },
+</code></pre>
+
+<p>最终配置为：</p>
+<pre><code class="language-js{.line-numbers}">module.exports = {
+  extensions: ['tex2jax.js'],
+  jax: ['input/TeX','output/HTML-CSS'],
+  messageStyle: 'none',
+  tex2jax: {
+    processEnvironments: false,
+    processEscapes: true
+  },
+  TeX: {
+    extensions: ['AMSmath.js', 'AMSsymbols.js', 'noErrors.js', 'noUndefined.js'],
+    equationNumbers: { autoNumber: "AMS" },
+  },
+  'HTML-CSS': { availableFonts: ['TeX'] }
+}
+</code></pre>
+
+<h2 id="3-公式编写">3. 公式编写</h2>
+
+<p>在<code class="highlighter-rouge">equation</code>或<code class="highlighter-rouge">align</code>环境中的公式才会自动编号</p>
+<pre><code class="language-TeX{.line-numbers}">\begin{equation}
+y = ax+b
+\end{equation}
+</code></pre>
+<p><script type="math/tex">\begin{align}
+y = ax+b
+\end{align}</script></p>
+
+<pre><code class="language-TeX{.line-numbers}">\begin{align}
+y = ax+b
+\end{align}
+</code></pre>
+<p><script type="math/tex">\begin{align}
+y = ax+b
+\end{align}</script></p>
+
+<p>若想取消某个<code class="highlighter-rouge">equation</code>或<code class="highlighter-rouge">align</code>环境中公式的编号，可以使用<code class="highlighter-rouge">equation*</code>或<code class="highlighter-rouge">align*</code></p>
+
+<pre><code class="language-TeX{.line-numbers}">\begin{equation*}
+y = ax+b
+\end{equation*}
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{equation*}
+y = ax+b
+\end{equation*}</script>
+
+<pre><code class="language-TeX{.line-numbers}">\begin{align*}
+y = ax+b
+\end{align*}
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{align*}
+y = ax+b
+\end{align*}</script>
+
+<p>另外，还可以通过<code class="highlighter-rouge">tag</code>自定义编号，按照顺序下面这个公式编号应为3，手动指定为4</p>
+
+<pre><code class="language-TeX{.line-numbers}">\begin{align}
+y = ax+b
+\tag{4}
+\end{align}
+</code></pre>
+
+<script type="math/tex; mode=display">\begin{align}
+y = ax+b
+\tag{4}
+\end{align}</script>
+
+<p>转载自：[https://hugueliu.github.io/2019/12/16/vscode_mpe_equation_auto_number/][1]</p>
+:ET
