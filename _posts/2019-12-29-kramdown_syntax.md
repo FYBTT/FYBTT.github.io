@@ -5,13 +5,12 @@ subtitle:   使用 kramdown 中遇到的问题--公式和代码
 date:       2019-12-29
 author:     bear
 header-img: img/sort.jpg
-catalog: true
+catalog:    true
 categories: jekyll
-tags: markdown 转载
-    
-# kramdown 语法
+tags:       markdown 转载
+--- 
 
----
+# kramdown 语法
 
 > 以下所有内容均基于 jekyll 中的 kramdown 做的测试。
 

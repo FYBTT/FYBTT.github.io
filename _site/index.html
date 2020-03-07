@@ -7,7 +7,7 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A personal blog website for recording what I think and what I do">
-    <meta name="keywords"  content="Blog, SLAM, robot">
+    <meta name="keywords"  content="Blog，Feng">
     <meta name="theme-color" content="#000000">
     
     <title>Mr Wind的博客</title>
@@ -195,7 +195,7 @@
 
 
     <!-- Page Header -->
-<header class="intro-header" style="height:46vh; background-image: url('/img/bg.jpg')">
+<header class="intro-header" style="background-image: url('/img/bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
@@ -225,6 +225,29 @@
                 postlist-container
             ">
     			
+<div class="post-preview">
+    <a href="/linux/2020/03/01/iotop/">
+        <h2 class="post-title">            
+            iotop源码解析
+        </h2>
+        
+        <h3 class="post-subtitle">
+            对一个新系统进行的验证，不写一篇感觉亏了
+        </h3>
+        
+        <div class="post-content-preview">
+            iotop 运行在用户态，但io的管理是内核态完成的。iotop的数据统计本质就是不断从内核获取数据。
+背景知识
+Linux pid,tgid关系
+                        USER VIEW
+ &lt;-- PID 43 --&gt; &lt;-------------...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on March 1, 2020</p>
+</div>
+
+<hr>
+
 <div class="post-preview">
     <a href="/reading/2020/02/25/%E8%B4%AB%E7%A9%B7%E7%9A%84%E6%9C%AC%E8%B4%A8/">
         <h2 class="post-title">            
@@ -322,13 +345,15 @@
         </h3>
         
         <div class="post-content-preview">
-            
+            kramdown 语法
+
+
   以下所有内容均基于 jekyll 中的 kramdown 做的测试。
 
 
 1 公式
 
-按照官方文档，kramdown 中 display 公式用双美元符 $$ 表示，并且前后需留空行（文档中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为inline公式，另外若前后均有空行但...
+按照官方文档，kramdown 中 display 公式用双美元符 $$ 表示，并且前后需留空行（文档中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为inline...
         </div>
     </a>
     <p class="post-meta">Posted by bear on December 29, 2019</p>
@@ -402,6 +427,10 @@
                                     reading
                                 </a>
                         
+                                <a href="/pages/categories/#linux" title="linux" rel="1">
+                                    linux
+                                </a>
+                        
                     </div>
                 </section>
                 
@@ -436,6 +465,10 @@
                         
                             
                         
+                            
+                        
+                            
+                        
                     </div>
                 </section>
                 
@@ -448,7 +481,7 @@
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="https://blog.csdn.net/sinat_27342415">CSDN</a></li>
+                        <li><a href="https://blog.csdn.net/qq_30490125">CSDN</a></li>
                     
                 </ul>
                 
@@ -502,7 +535,7 @@
                     
                     
                     <li>
-                        <a target="_blank" href="https://github.com/HugueLiu">
+                        <a target="_blank" href="https://github.com/FYBTT">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -515,11 +548,11 @@
                 <p class="copyright text-muted">
                     Copyright &copy; Mr Wind 2020
                     <br>
-                    Theme on <a href="https://github.com/HugueLiu/HugueLiu.github.io.git">GitHub</a> |
+                    Theme on <a href="https://github.com/FYBTT/FYBTT.github.io">GitHub</a> |
                     <iframe
                         style="margin-left: 2px; margin-bottom:-5px;"
                         frameborder="0" scrolling="0" width="100px" height="20px"
-                        src="https://ghbtns.com/github-btn.html?user=HugueLiu&repo=HugueLiu.github.io&type=star&count=true" >
+                        src="https://ghbtns.com/github-btn.html?user=FYBTT&repo=FYBTT.github.io&type=star&count=true" >
                     </iframe>
                     <br>
                     <span id="busuanzi_container_site_uv">
