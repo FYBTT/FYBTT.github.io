@@ -5,9 +5,450 @@
     <description>A personal blog website for recording what I think and what I do</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 06 Mar 2020 21:13:19 -0600</pubDate>
-    <lastBuildDate>Fri, 06 Mar 2020 21:13:19 -0600</lastBuildDate>
+    <pubDate>Sat, 14 Mar 2020 22:25:42 -0500</pubDate>
+    <lastBuildDate>Sat, 14 Mar 2020 22:25:42 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>iostat源码解析</title>
+        <description>&lt;p&gt;iostat命令是报告cpu的统计信息和磁盘的i/o统计信息。iostat命令通过观察存储设备实际的工作时间和它们的平均传输率来监控系统的i/o负载。
+这个不需要root权限，数据来源可以直接通过访问procfs获取。&lt;/p&gt;
+&lt;h1 id=&quot;基本用法和输出的基本含义&quot;&gt;基本用法和输出的基本含义&lt;/h1&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iostat &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; 1#表示显示设备状态，显示扩展信息，每秒输出一次
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/iostat.png&quot; alt=&quot;iostat&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;iostat指标解读&quot;&gt;iostat指标解读&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;性能指标&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+      &lt;th&gt;提示&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Device&lt;/td&gt;
+      &lt;td&gt;显示设备或者分区的Name&lt;/td&gt;
+      &lt;td&gt;这些设备可以在/dev下找到&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;r/s&lt;/td&gt;
+      &lt;td&gt;每秒发送给磁盘的请求数&lt;/td&gt;
+      &lt;td&gt;合并后的请求数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;w/s&lt;/td&gt;
+      &lt;td&gt;每秒发送给磁盘的请求数&lt;/td&gt;
+      &lt;td&gt;合并后的请求数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;rkB/s&lt;/td&gt;
+      &lt;td&gt;每秒从磁盘读取的数据量&lt;/td&gt;
+      &lt;td&gt;单位为kB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;wkB/s&lt;/td&gt;
+      &lt;td&gt;每秒向磁盘写入的数据量&lt;/td&gt;
+      &lt;td&gt;单位为kB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;rrqm/s&lt;/td&gt;
+      &lt;td&gt;每秒合并的读请求数&lt;/td&gt;
+      &lt;td&gt;%rrqm表示合并读请求的百分比&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;wrqm/s&lt;/td&gt;
+      &lt;td&gt;每秒合并的写请求数&lt;/td&gt;
+      &lt;td&gt;%wrqm表示合并写请求的百分比&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;r_await&lt;/td&gt;
+      &lt;td&gt;读请求处理完成等待时间&lt;/td&gt;
+      &lt;td&gt;包括队列中的等待时间和设备实际处理的时间，单位ms&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;w_await&lt;/td&gt;
+      &lt;td&gt;写请求处理完成等待时间&lt;/td&gt;
+      &lt;td&gt;包括队列中的等待时间和设备实际处理的时间，单位ms&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;aqu-sz&lt;/td&gt;
+      &lt;td&gt;平均请求队列长度&lt;/td&gt;
+      &lt;td&gt;旧版本中为avgqu-sz&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;rareq-sz&lt;/td&gt;
+      &lt;td&gt;平均读请求大小&lt;/td&gt;
+      &lt;td&gt;单位为kB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;wareq-sz&lt;/td&gt;
+      &lt;td&gt;平均写请求大小&lt;/td&gt;
+      &lt;td&gt;单位为kB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;svctm&lt;/td&gt;
+      &lt;td&gt;处理IO请求所需的平均时间&lt;br /&gt;（不包括等待时间）&lt;/td&gt;
+      &lt;td&gt;单位为毫秒&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;%util&lt;/td&gt;
+      &lt;td&gt;磁盘处理IO的时间百分比&lt;/td&gt;
+      &lt;td&gt;即使用率，由于可能存在并行IO，100%不表明磁盘IO饱和&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;iostat数据来源diskstats&quot;&gt;iostat数据来源diskstats&lt;/h1&gt;
+&lt;p&gt;这里的数据来源指的是/proc/diskstats
+&lt;img src=&quot;/img/perf/diskstats.png&quot; alt=&quot;diskstats&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;iostat是以/proc/diskstats为基础计算出来的，这是前提。而且很多查IO的方法都是通过/proc/diskstats为基础计算出来的。&lt;/p&gt;
+
+&lt;p&gt;由于/proc/diskstats并未把队列等待时间和硬盘处理时间分开，所以凡是以它为基础的工具都不可能分别提供disk service time以及与queue有关的值。&lt;/p&gt;
+
+&lt;p&gt;这里举&lt;code class=&quot;highlighter-rouge&quot;&gt;sda&lt;/code&gt;为例&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;8 0 sda 63147 32179 3914580 61983 287312 216951 7881680 434138 0 190628 267912 0 0 0 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;每个参数对应的含义:
+前3个字段分别代表major, minor, device; 后面的15个字段含义如下：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;index&lt;/th&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;units&lt;/th&gt;
+      &lt;th&gt;description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;read I/Os&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of read I/Os processed&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;read merges&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of read I/Os merged with in-queue I/O&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;read sectors&lt;/td&gt;
+      &lt;td&gt;sectors&lt;/td&gt;
+      &lt;td&gt;number of sectors read&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;read ticks&lt;/td&gt;
+      &lt;td&gt;milliseconds&lt;/td&gt;
+      &lt;td&gt;total wait time for read requests&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;write I/Os&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of write I/Os processed&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;write merges&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of write I/Os merged with in-queue I/O&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;write sectors&lt;/td&gt;
+      &lt;td&gt;sectors&lt;/td&gt;
+      &lt;td&gt;number of sectors written&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;write ticks&lt;/td&gt;
+      &lt;td&gt;milliseconds&lt;/td&gt;
+      &lt;td&gt;total wait time for write requests&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;in_flight&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of I/Os currently in flight&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;io_ticks&lt;/td&gt;
+      &lt;td&gt;milliseconds&lt;/td&gt;
+      &lt;td&gt;total time this block device has been active&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;time_in_queue&lt;/td&gt;
+      &lt;td&gt;milliseconds&lt;/td&gt;
+      &lt;td&gt;total wait time for all requests&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;discard I/Os&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of discard I/Os processed&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;discard merges&lt;/td&gt;
+      &lt;td&gt;requests&lt;/td&gt;
+      &lt;td&gt;number of discard I/Os merged with in-queue I/O&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;discard sectors&lt;/td&gt;
+      &lt;td&gt;sectors&lt;/td&gt;
+      &lt;td&gt;number of sectors discarded&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;discard ticks&lt;/td&gt;
+      &lt;td&gt;milliseconds&lt;/td&gt;
+      &lt;td&gt;total wait time for discard requests&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;这里面大部分字段都是很容易理解的，稍微难理解的在于io_ticks。初看之下，明明已经有了rd_ticks和wr_ticks 为什么还需一个io_ticks。注意rd_ticks和wr_ticks是把每一个IO消耗时间累加起来，但是硬盘设备一般可以并行处理多个IO，因此，rd_ticks和wr_ticks之和一般会比自然时间（wall-clock time）要大。而io_ticks 不关心队列中有多少个IO在排队，它只关心设备有IO的时间。即不考虑IO有多少，只考虑IO有没有。在实际运算中，in_flight不是0的时候保持计时，而in_flight 等于0的时候，时间不累加到io_ticks。&lt;/p&gt;
+
+&lt;h2 id=&quot;内核中的数据结构&quot;&gt;内核中的数据结构&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;path: root/include/linux/blk_types.h
+enum stat_group {
+    STAT_READ,
+    STAT_WRITE,
+    STAT_DISCARD,
+
+    NR_STAT_GROUPS
+};
+
+path: root/include/linux/genhd.h
+struct disk_stats {
+    u64 nsecs[NR_STAT_GROUPS];
+    unsigned long sectors[NR_STAT_GROUPS];
+    unsigned long ios[NR_STAT_GROUPS];
+    unsigned long merges[NR_STAT_GROUPS];
+    unsigned long io_ticks;
+    unsigned long time_in_queue;
+    local_t in_flight[2];
+};
+
+path: root/block/genhd.c
+static int diskstats_show(struct seq_file *seqf, void *v)
+{
+    struct gendisk *gp = v;
+    struct disk_part_iter piter;
+    struct hd_struct *hd;
+    char buf[BDEVNAME_SIZE];
+    unsigned int inflight;
+ 
+    /*
+    if (&amp;amp;disk_to_dev(gp)-&amp;gt;kobj.entry == block_class.devices.next)
+        seq_puts(seqf,  &quot;major minor name&quot;
+                         &quot;     rio rmerge rsect ruse wio wmerge &quot;
+                         &quot;wsect wuse running use aveq&quot;
+                         &quot;\n\n&quot;);
+    */
+ 
+    disk_part_iter_init(&amp;amp;piter, gp, DISK_PITER_INCL_EMPTY_PART0);
+    while ((hd = disk_part_iter_next(&amp;amp;piter))) {
+        inflight = part_in_flight(gp-&amp;gt;queue, hd);
+        seq_printf(seqf, &quot;%4d %7d %s &quot;
+                    &quot;%lu %lu %lu %u &quot;
+                    &quot;%lu %lu %lu %u &quot;
+                    &quot;%u %u %u &quot;
+                    &quot;%lu %lu %lu %u\n&quot;,
+                    MAJOR(part_devt(hd)), MINOR(part_devt(hd)),
+                    disk_name(gp, hd-&amp;gt;partno, buf),
+                    part_stat_read(hd, ios[STAT_READ]),
+                    part_stat_read(hd, merges[STAT_READ]),
+                    part_stat_read(hd, sectors[STAT_READ]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_READ),
+                    part_stat_read(hd, ios[STAT_WRITE]),
+                    part_stat_read(hd, merges[STAT_WRITE]),
+                    part_stat_read(hd, sectors[STAT_WRITE]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_WRITE),
+                    inflight,
+                    jiffies_to_msecs(part_stat_read(hd, io_ticks)),
+                    jiffies_to_msecs(part_stat_read(hd, time_in_queue)),
+                    part_stat_read(hd, ios[STAT_DISCARD]),
+                    part_stat_read(hd, merges[STAT_DISCARD]),
+                    part_stat_read(hd, sectors[STAT_DISCARD]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_DISCARD),
+                );
+    }
+    disk_part_iter_exit(&amp;amp;piter);
+ 
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;用户态iostat的数据结构&quot;&gt;用户态iostat的数据结构&lt;/h2&gt;
+&lt;p&gt;用户态程序打开&lt;code class=&quot;highlighter-rouge&quot;&gt;/proc/diskstats&lt;/code&gt;文件，将数据填入到&lt;code class=&quot;highlighter-rouge&quot;&gt;struct io_stats&lt;/code&gt;的结构中。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;/*
+ * Structures for I/O stats.
+ * These are now dynamically allocated.
+ */
+struct io_stats {
+	/* # of sectors read */
+	unsigned long rd_sectors	__attribute__ ((aligned (8)));
+	/* # of sectors written */
+	unsigned long wr_sectors	__attribute__ ((packed));
+	/* # of sectors discarded */
+	unsigned long dc_sectors	__attribute__ ((packed));
+	/* # of read operations issued to the device */
+	unsigned long rd_ios		__attribute__ ((packed));
+	/* # of read requests merged */
+	unsigned long rd_merges		__attribute__ ((packed));
+	/* # of write operations issued to the device */
+	unsigned long wr_ios		__attribute__ ((packed));
+	/* # of write requests merged */
+	unsigned long wr_merges		__attribute__ ((packed));
+	/* # of discard operations issued to the device */
+	unsigned long dc_ios		__attribute__ ((packed));
+	/* # of discard requests merged */
+	unsigned long dc_merges		__attribute__ ((packed));
+	/* Time of read requests in queue */
+	unsigned int  rd_ticks		__attribute__ ((packed));
+	/* Time of write requests in queue */
+	unsigned int  wr_ticks		__attribute__ ((packed));
+	/* Time of discard requests in queue */
+	unsigned int  dc_ticks		__attribute__ ((packed));
+	/* # of I/Os in progress */
+	unsigned int  ios_pgr		__attribute__ ((packed));
+	/* # of ticks total (for this device) for I/O */
+	unsigned int  tot_ticks		__attribute__ ((packed));
+	/* # of ticks requests spent in queue */
+	unsigned int  rq_ticks		__attribute__ ((packed));
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;采集数据到显示数据的计算&quot;&gt;采集数据到显示数据的计算&lt;/h1&gt;
+&lt;p&gt;通过获取的数据，我们可以直接得到以下信息。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;r/s
+w/s
+rkB/s
+wkB/s
+rrqm/s
+wrqm/s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;这几项的计算是非常简单的，就是采样两次，后一次的值减去前一次的值，然后除以时间间隔，得到平均值即可。因为这些/proc/diskstats中对应的值都是累加的，后一次减去前一次，即得到采样时间间隔内的新增量。不赘述。&lt;/p&gt;
+&lt;h2 id=&quot;r_wait和w_wait的计算&quot;&gt;r_wait和w_wait的计算&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;xios.r_await = (ioi-&amp;gt;rd_ios - ioj-&amp;gt;rd_ios) ?
+				       (ioi-&amp;gt;rd_ticks - ioj-&amp;gt;rd_ticks) /
+				       ((double) (ioi-&amp;gt;rd_ios - ioj-&amp;gt;rd_ios)) : 0.0;
+
+xios.w_await = (ioi-&amp;gt;wr_ios - ioj-&amp;gt;wr_ios) ?
+				       (ioi-&amp;gt;wr_ticks - ioj-&amp;gt;wr_ticks) /
+				       ((double) (ioi-&amp;gt;wr_ios - ioj-&amp;gt;wr_ios)) : 0.0;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;r\_await = （间隔期间所有读IO花费的时间）/（间隔期间读请求的个数） \\
+w\_await = （间隔期间所有写IO花费的时间）/（间隔期间写请求的个数）&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;aqu-sz-平均队列深度的计算&quot;&gt;aqu-sz 平均队列深度的计算&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;//其中rq_ticks即diskstats中的time_in_queue，注意这里的1000是ms-&amp;gt;s
+#define S_VALUE(m,n,p)		(((double) ((n) - (m))) / (p) * 100)
+S_VALUE(ioj-&amp;gt;rq_ticks, ioi-&amp;gt;rq_ticks, itv) / 1000.0);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里看下内核的实现：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;path: root/drivers/md/dm-stats.c
+
+    difference = now - shared-&amp;gt;stamp;
+    if (!difference)
+        return;
+ 
+    in_flight_read = (unsigned)atomic_read(&amp;amp;shared-&amp;gt;in_flight[READ]);
+    in_flight_write = (unsigned)atomic_read(&amp;amp;shared-&amp;gt;in_flight[WRITE]);
+    if (in_flight_read)
+        p-&amp;gt;io_ticks[READ] += difference;
+    if (in_flight_write)
+        p-&amp;gt;io_ticks[WRITE] += difference;
+    if (in_flight_read + in_flight_write) {
+        p-&amp;gt;io_ticks_total += difference;
+        p-&amp;gt;time_in_queue += (in_flight_read + in_flight_write) * difference;
+    }
+    shared-&amp;gt;stamp = now;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;举个栗子&lt;/strong&gt;：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;当第一个IO完成的时候，队列中250个IO，250个IO都等了4ms，即time_in_queue + = (250 * 4) ，当第二个IO完成的时候，time_in_queue += (249 * 4)，当所有IO都完成的时候，time_in_queue = 4*(250+249+248….+1)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;根据$time_in_queue/1000$,得到了平均队列长度。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;time\_in\_queue += \Delta t_n * inflight_n \\
+
+aqu\_sz = 间隔时间内inflight的期望值 = \frac{\Delta t_i * inflight_i + ... + \Delta t_j * inflight_j}{\Delta t_i + ... + \Delta t_i}&lt;/script&gt;
+
+&lt;h2 id=&quot;rareq-sz--wareq-sz-平均请求的sector大小&quot;&gt;rareq-sz	&amp;amp; wareq-sz 平均请求的sector大小&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;xios.rarqsz = (ioi-&amp;gt;rd_ios - ioj-&amp;gt;rd_ios) ?
+			(ioi-&amp;gt;rd_sectors - ioj-&amp;gt;rd_sectors) / ((double) (ioi-&amp;gt;rd_ios - ioj-&amp;gt;rd_ios)) :
+				      0.0;
+xios.warqsz = (ioi-&amp;gt;wr_ios - ioj-&amp;gt;wr_ios) ?
+			(ioi-&amp;gt;wr_sectors - ioj-&amp;gt;wr_sectors) / ((double) (ioi-&amp;gt;wr_ios - ioj-&amp;gt;wr_ios)) :
+				      0.0;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;rareq\_sz = (间隔期间读取的sector增长量)/（间隔期间读请求的个数） \\
+wareq\_sz = (间隔期间写入的sector增长量)/（间隔期间写请求的个数）&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;util-磁盘设备饱和度数据不准确&quot;&gt;%util 磁盘设备饱和度(数据不准确)&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;path: root/drivers/md/dm-stats.c
+//其中的io_ticks_total即是队列非空的总时间
+    difference = now - shared-&amp;gt;stamp;
+    if (!difference)
+        return;
+ 
+    in_flight_read = (unsigned)atomic_read(&amp;amp;shared-&amp;gt;in_flight[READ]);
+    in_flight_write = (unsigned)atomic_read(&amp;amp;shared-&amp;gt;in_flight[WRITE]);
+    if (in_flight_read)
+        p-&amp;gt;io_ticks[READ] += difference;
+    if (in_flight_write)
+        p-&amp;gt;io_ticks[WRITE] += difference;
+    if (in_flight_read + in_flight_write) {
+        p-&amp;gt;io_ticks_total += difference;
+        p-&amp;gt;time_in_queue += (in_flight_read + in_flight_write) * difference;
+    }
+    shared-&amp;gt;stamp = now;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;最简单的例子是，某硬盘处理单个IO请求需要0.1秒，有能力同时处理10个。但是当10个请求依次提交的时候，需要1秒钟才能完成这10%的请求，，在1秒的采样周期里，%util达到了100%。但是如果10个请一次性提交的话， 硬盘可以在0.1秒内全部完成，这时候，%util只有10%。&lt;/p&gt;
+
+&lt;p&gt;在上面的例子中，一秒中10个IO，即IOPS=10的时候，%util就达到了100%，这并不能表明，该盘的IOPS就只能到10，事实上，纵使%util到了100%，硬盘可能仍然有很大的余力处理更多的请求，即并未达到饱和的状态。&lt;/p&gt;
+
+&lt;p&gt;那么有没有一个指标用来衡量硬盘设备的饱和程度呢。很遗憾，iostat没有一个指标可以衡量磁盘设备的饱和度。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;明明已经有了rd_ticks和wr_ticks 为什么还需一个io_ticks。注意rd_ticks和wr_ticks是把每一个IO消耗时间累加起来，但是硬盘设备一般可以并行处理多个IO，因此，rd_ticks和wr_ticks之和一般会比自然时间（wall-clock time）要大。而io_ticks 不关心队列中有多少个IO在排队，它只关心设备有IO的时间。即不考虑IO有多少，只考虑IO有没有。在实际运算中，in_flight不是0的时候保持计时，而in_flight 等于0的时候，时间不累加到io_ticks。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;svctm-处理io请求所需的平均时间&quot;&gt;svctm 处理IO请求所需的平均时间&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;    double tput = ((double) (sdc-&amp;gt;nr_ios - sdp-&amp;gt;nr_ios)) * HZ / itv; 
+                
+    xds-&amp;gt;util = S_VALUE(sdp-&amp;gt;tot_ticks, sdc-&amp;gt;tot_ticks, itv);
+    xds-&amp;gt;svctm = tput ? xds-&amp;gt;util / tput : 0.0; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于iostat这个功能而言，%util固然会给人带来一定的误解和苦扰，但是svctm给人带来的误解更多。一直以来，人们希望了解块设备处理单个IO的service time，这个指标直接地反应了硬盘的能力。
+但是service time和iostat无关，iostat没有任何一个参数能够提供这方面的信息。这个值其实并没有什么意义，事实上，这个值不是独立的，它是根据其他值计算出来的。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 08 Mar 2020 00:00:00 -0600</pubDate>
+        <link>http://0.0.0.0:4000/linux/2020/03/08/iostat/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2020/03/08/iostat/</guid>
+        
+        <category>iostat</category>
+        
+        <category>perf</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>iotop源码解析</title>
@@ -82,7 +523,7 @@
 │   ├── version.py&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;无内容，不涉及&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 │   └── vmstat.py
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/img/2020-03-01/iotop.png&quot; alt=&quot;iotop&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/iotop.png&quot; alt=&quot;iotop&quot; /&gt;&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;数据由taskstats获取,累加所有task得到。&lt;/li&gt;
   &lt;li&gt;数据由vmstat中读取。&lt;/li&gt;
@@ -114,7 +555,7 @@
 
 &lt;p&gt;&lt;strong&gt;netlink 16字节的协议头&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/2020-03-01/netlink.png&quot; alt=&quot;netlink协议头&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/netlink.png&quot; alt=&quot;netlink协议头&quot; /&gt;&lt;/p&gt;
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;err&quot;&gt;用&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;contents&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;创建&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Message&lt;/span&gt;
     &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg_type&lt;/span&gt;
@@ -203,7 +644,65 @@
 &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ioprio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;h2 id=&quot;data模块&quot;&gt;data模块&lt;/h2&gt;
-&lt;p&gt;向UI提供数据&lt;/p&gt;
+&lt;p&gt;向UI提供数据，这里对Stats需要一下说明：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;swapin_delay_total: 从发生page fault开始，到完成swapin结束的耗时&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;blkio_delay_total: 从提交同步IO开始，到同步IO返回结束的耗时；blkio_delay_total相关代码如下。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;path: linux/kernel/delayacct.c
+int __delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
+{
+    ...
+    tmp = d-&amp;gt;blkio_delay_total + tsk-&amp;gt;delays-&amp;gt;blkio_delay;
+    d-&amp;gt;blkio_delay_total = (tmp &amp;lt; d-&amp;gt;blkio_delay_total) ? 0 : tmp;
+    ... 
+    return 0;
+}
+
+path: linux/kernel/core.c(blkio_delay的更新)
+/*
+* This task is about to go to sleep on IO. Increment rq-&amp;gt;nr_iowait so
+* that process accounting knows that this is a task in IO wait state.
+*/
+long __sched io_schedule_timeout(long timeout)
+{
+    int old_iowait = current-&amp;gt;in_iowait;
+    struct rq *rq;
+    long ret;
+ 
+    current-&amp;gt;in_iowait = 1;
+    blk_schedule_flush_plug(current);
+ 
+    delayacct_blkio_start();
+    rq = raw_rq();
+    atomic_inc(&amp;amp;rq-&amp;gt;nr_iowait);
+    ret = schedule_timeout(timeout);
+    current-&amp;gt;in_iowait = old_iowait;
+    atomic_dec(&amp;amp;rq-&amp;gt;nr_iowait);
+    delayacct_blkio_end();
+ 
+    return ret;
+}
+EXPORT_SYMBOL(io_schedule_timeout);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;cancelled_write_bytes: 这里的数据由truncate引发，截短了cache中的文件，事实上就减少了原本要发生的写I/O&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;read_bytes: 进程读取的物理I/O字节数，包括mmap pagein，在submit_bio()中统计的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;write_bytes: 进程写出的物理I/O字节数，包括mmap pageout，在submit_bio()中统计的&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;现在来看下Stats代码。&lt;/p&gt;
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;#Stats主要负责从内核中不断获取以下的5个值
 &lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;members_offsets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
@@ -414,13 +913,13 @@
     
       <item>
         <title>《贫穷的本质》</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1000.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;/img/books/1000.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;诺贝尔经济学家得主&quot;&gt;诺贝尔经济学家得主&lt;/h1&gt;
 
 &lt;p&gt;据诺贝尔奖官网消息，瑞典斯德哥尔摩当地时间14日中午，2019年度诺贝尔奖项中的最后一项，诺贝尔奖经济学奖于瑞典揭晓。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1001.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/books/1001.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;阿比吉特·班纳吉（Abhijit Banerjee）&lt;/strong&gt;，1961年出生，现任美国麻省理工学院福特基金会国际经济学教授。&lt;/p&gt;
 
@@ -451,7 +950,7 @@
 
 &lt;p&gt;三位获奖人的研究经过时间检验，通过干预措施，对减贫起到了实际的效果。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1003.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/books/1003.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;贫穷的本质&quot;&gt;贫穷的本质&lt;/h1&gt;
 
@@ -459,7 +958,7 @@
 
 &lt;p&gt;这本书已经被看成是研究“贫穷”的巅峰之作。据了解，班纳吉和杜弗洛用了15年的时间踏遍了五大洲、18个国家和地区最贫穷的地方做调研，才有了这本“大成之作”，从而通过贫穷的人的生活、教育、健康等生活的多个维度来探究贫穷产生的真正原因。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/2020-02-25/1002.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/books/1002.jpeg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;他们发现处在贫穷状态中的人和普通人在欲望、弱点以及理性的层面上，实则差别不大。&lt;/p&gt;
 

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A personal blog website for recording what I think and what I do">
+    <meta name="keywords"  content="Blog，Feng">
+    <meta name="theme-color" content="#000000">
+    
+    <title>iostat源码解析 - Mr Wind的博客</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://0.0.0.0:4000/linux/2020/03/08/iostat/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- body background -->
+    <!-- <style>
+    body {
+        background: url("/img/body-bg.gif") repeat
+    }
+    </style>
+     -->
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- 数学公式并自动编号 -->
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                displayMath: [['$$','$$']],
+                inlineMath: [['$','$']],
+            },
+            TeX: {equationNumbers: {autoNumber: "AMS"}},
+        });
+    </script>
+
+    <!-- line number for code block -->
+    <script src="/js/prism.js"></script>
+    <link rel="stylesheet" href="/css/prism.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- view and visit statistic -->
+    <script async src="/js/busuanzi.pure.mini.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img alt="Brand" src="/img/favicon.png"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right" style="text-shadow:4px 4px 10px #000000;">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/about/">Mr Wind</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/archive/">Archive</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/pages/categories/">Categories</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/pages/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/computer.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/computer.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/pages/categories/#linux" title="linux" style="background-color: darkcyan;">linux</a>
+                        
+                        
+                        <a class="tag" href="/pages/tags/#iostat" title="iostat">iostat</a>
+                        
+                        <a class="tag" href="/pages/tags/#perf" title="perf">perf</a>
+                        
+                    </div>
+                    <h1>iostat源码解析</h1>
+                    
+                    
+                    <h2 class="subheading">kernel性能调优(kernel:5.3.0-28-generic)</h2>
+                    
+                    <span class="meta">Posted by bear on March 8, 2020
+                        &nbsp;&nbsp;&nbsp; <span id="busuanzi_container_page_pv">
+                        view: <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-9 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<p>iostat命令是报告cpu的统计信息和磁盘的i/o统计信息。iostat命令通过观察存储设备实际的工作时间和它们的平均传输率来监控系统的i/o负载。
+这个不需要root权限，数据来源可以直接通过访问procfs获取。</p>
+<h1 id="基本用法和输出的基本含义">基本用法和输出的基本含义</h1>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iostat <span class="nt">-d</span> <span class="nt">-x</span> 1#表示显示设备状态，显示扩展信息，每秒输出一次
+</code></pre></div></div>
+<p><img src="/img/perf/iostat.png" alt="iostat" /></p>
+<h2 id="iostat指标解读">iostat指标解读</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>性能指标</th>
+      <th>含义</th>
+      <th>提示</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Device</td>
+      <td>显示设备或者分区的Name</td>
+      <td>这些设备可以在/dev下找到</td>
+    </tr>
+    <tr>
+      <td>r/s</td>
+      <td>每秒发送给磁盘的请求数</td>
+      <td>合并后的请求数</td>
+    </tr>
+    <tr>
+      <td>w/s</td>
+      <td>每秒发送给磁盘的请求数</td>
+      <td>合并后的请求数</td>
+    </tr>
+    <tr>
+      <td>rkB/s</td>
+      <td>每秒从磁盘读取的数据量</td>
+      <td>单位为kB</td>
+    </tr>
+    <tr>
+      <td>wkB/s</td>
+      <td>每秒向磁盘写入的数据量</td>
+      <td>单位为kB</td>
+    </tr>
+    <tr>
+      <td>rrqm/s</td>
+      <td>每秒合并的读请求数</td>
+      <td>%rrqm表示合并读请求的百分比</td>
+    </tr>
+    <tr>
+      <td>wrqm/s</td>
+      <td>每秒合并的写请求数</td>
+      <td>%wrqm表示合并写请求的百分比</td>
+    </tr>
+    <tr>
+      <td>r_await</td>
+      <td>读请求处理完成等待时间</td>
+      <td>包括队列中的等待时间和设备实际处理的时间，单位ms</td>
+    </tr>
+    <tr>
+      <td>w_await</td>
+      <td>写请求处理完成等待时间</td>
+      <td>包括队列中的等待时间和设备实际处理的时间，单位ms</td>
+    </tr>
+    <tr>
+      <td>aqu-sz</td>
+      <td>平均请求队列长度</td>
+      <td>旧版本中为avgqu-sz</td>
+    </tr>
+    <tr>
+      <td>rareq-sz</td>
+      <td>平均读请求大小</td>
+      <td>单位为kB</td>
+    </tr>
+    <tr>
+      <td>wareq-sz</td>
+      <td>平均写请求大小</td>
+      <td>单位为kB</td>
+    </tr>
+    <tr>
+      <td>svctm</td>
+      <td>处理IO请求所需的平均时间<br />（不包括等待时间）</td>
+      <td>单位为毫秒</td>
+    </tr>
+    <tr>
+      <td>%util</td>
+      <td>磁盘处理IO的时间百分比</td>
+      <td>即使用率，由于可能存在并行IO，100%不表明磁盘IO饱和</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="iostat数据来源diskstats">iostat数据来源diskstats</h1>
+<p>这里的数据来源指的是/proc/diskstats
+<img src="/img/perf/diskstats.png" alt="diskstats" /></p>
+
+<p>iostat是以/proc/diskstats为基础计算出来的，这是前提。而且很多查IO的方法都是通过/proc/diskstats为基础计算出来的。</p>
+
+<p>由于/proc/diskstats并未把队列等待时间和硬盘处理时间分开，所以凡是以它为基础的工具都不可能分别提供disk service time以及与queue有关的值。</p>
+
+<p>这里举<code class="highlighter-rouge">sda</code>为例</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8 0 sda 63147 32179 3914580 61983 287312 216951 7881680 434138 0 190628 267912 0 0 0 0
+</code></pre></div></div>
+<p>每个参数对应的含义:
+前3个字段分别代表major, minor, device; 后面的15个字段含义如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>index</th>
+      <th>Name</th>
+      <th>units</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>read I/Os</td>
+      <td>requests</td>
+      <td>number of read I/Os processed</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>read merges</td>
+      <td>requests</td>
+      <td>number of read I/Os merged with in-queue I/O</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>read sectors</td>
+      <td>sectors</td>
+      <td>number of sectors read</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>read ticks</td>
+      <td>milliseconds</td>
+      <td>total wait time for read requests</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>write I/Os</td>
+      <td>requests</td>
+      <td>number of write I/Os processed</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>write merges</td>
+      <td>requests</td>
+      <td>number of write I/Os merged with in-queue I/O</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>write sectors</td>
+      <td>sectors</td>
+      <td>number of sectors written</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>write ticks</td>
+      <td>milliseconds</td>
+      <td>total wait time for write requests</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>in_flight</td>
+      <td>requests</td>
+      <td>number of I/Os currently in flight</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>io_ticks</td>
+      <td>milliseconds</td>
+      <td>total time this block device has been active</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>time_in_queue</td>
+      <td>milliseconds</td>
+      <td>total wait time for all requests</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>discard I/Os</td>
+      <td>requests</td>
+      <td>number of discard I/Os processed</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>discard merges</td>
+      <td>requests</td>
+      <td>number of discard I/Os merged with in-queue I/O</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>discard sectors</td>
+      <td>sectors</td>
+      <td>number of sectors discarded</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>discard ticks</td>
+      <td>milliseconds</td>
+      <td>total wait time for discard requests</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里面大部分字段都是很容易理解的，稍微难理解的在于io_ticks。初看之下，明明已经有了rd_ticks和wr_ticks 为什么还需一个io_ticks。注意rd_ticks和wr_ticks是把每一个IO消耗时间累加起来，但是硬盘设备一般可以并行处理多个IO，因此，rd_ticks和wr_ticks之和一般会比自然时间（wall-clock time）要大。而io_ticks 不关心队列中有多少个IO在排队，它只关心设备有IO的时间。即不考虑IO有多少，只考虑IO有没有。在实际运算中，in_flight不是0的时候保持计时，而in_flight 等于0的时候，时间不累加到io_ticks。</p>
+
+<h2 id="内核中的数据结构">内核中的数据结构</h2>
+<pre><code class="language-C">path: root/include/linux/blk_types.h
+enum stat_group {
+    STAT_READ,
+    STAT_WRITE,
+    STAT_DISCARD,
+
+    NR_STAT_GROUPS
+};
+
+path: root/include/linux/genhd.h
+struct disk_stats {
+    u64 nsecs[NR_STAT_GROUPS];
+    unsigned long sectors[NR_STAT_GROUPS];
+    unsigned long ios[NR_STAT_GROUPS];
+    unsigned long merges[NR_STAT_GROUPS];
+    unsigned long io_ticks;
+    unsigned long time_in_queue;
+    local_t in_flight[2];
+};
+
+path: root/block/genhd.c
+static int diskstats_show(struct seq_file *seqf, void *v)
+{
+    struct gendisk *gp = v;
+    struct disk_part_iter piter;
+    struct hd_struct *hd;
+    char buf[BDEVNAME_SIZE];
+    unsigned int inflight;
+ 
+    /*
+    if (&amp;disk_to_dev(gp)-&gt;kobj.entry == block_class.devices.next)
+        seq_puts(seqf,  "major minor name"
+                         "     rio rmerge rsect ruse wio wmerge "
+                         "wsect wuse running use aveq"
+                         "\n\n");
+    */
+ 
+    disk_part_iter_init(&amp;piter, gp, DISK_PITER_INCL_EMPTY_PART0);
+    while ((hd = disk_part_iter_next(&amp;piter))) {
+        inflight = part_in_flight(gp-&gt;queue, hd);
+        seq_printf(seqf, "%4d %7d %s "
+                    "%lu %lu %lu %u "
+                    "%lu %lu %lu %u "
+                    "%u %u %u "
+                    "%lu %lu %lu %u\n",
+                    MAJOR(part_devt(hd)), MINOR(part_devt(hd)),
+                    disk_name(gp, hd-&gt;partno, buf),
+                    part_stat_read(hd, ios[STAT_READ]),
+                    part_stat_read(hd, merges[STAT_READ]),
+                    part_stat_read(hd, sectors[STAT_READ]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_READ),
+                    part_stat_read(hd, ios[STAT_WRITE]),
+                    part_stat_read(hd, merges[STAT_WRITE]),
+                    part_stat_read(hd, sectors[STAT_WRITE]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_WRITE),
+                    inflight,
+                    jiffies_to_msecs(part_stat_read(hd, io_ticks)),
+                    jiffies_to_msecs(part_stat_read(hd, time_in_queue)),
+                    part_stat_read(hd, ios[STAT_DISCARD]),
+                    part_stat_read(hd, merges[STAT_DISCARD]),
+                    part_stat_read(hd, sectors[STAT_DISCARD]),
+                    (unsigned int)part_stat_read_msecs(hd, STAT_DISCARD),
+                );
+    }
+    disk_part_iter_exit(&amp;piter);
+ 
+    return 0;
+}
+</code></pre>
+
+<h2 id="用户态iostat的数据结构">用户态iostat的数据结构</h2>
+<p>用户态程序打开<code class="highlighter-rouge">/proc/diskstats</code>文件，将数据填入到<code class="highlighter-rouge">struct io_stats</code>的结构中。</p>
+<pre><code class="language-C">/*
+ * Structures for I/O stats.
+ * These are now dynamically allocated.
+ */
+struct io_stats {
+	/* # of sectors read */
+	unsigned long rd_sectors	__attribute__ ((aligned (8)));
+	/* # of sectors written */
+	unsigned long wr_sectors	__attribute__ ((packed));
+	/* # of sectors discarded */
+	unsigned long dc_sectors	__attribute__ ((packed));
+	/* # of read operations issued to the device */
+	unsigned long rd_ios		__attribute__ ((packed));
+	/* # of read requests merged */
+	unsigned long rd_merges		__attribute__ ((packed));
+	/* # of write operations issued to the device */
+	unsigned long wr_ios		__attribute__ ((packed));
+	/* # of write requests merged */
+	unsigned long wr_merges		__attribute__ ((packed));
+	/* # of discard operations issued to the device */
+	unsigned long dc_ios		__attribute__ ((packed));
+	/* # of discard requests merged */
+	unsigned long dc_merges		__attribute__ ((packed));
+	/* Time of read requests in queue */
+	unsigned int  rd_ticks		__attribute__ ((packed));
+	/* Time of write requests in queue */
+	unsigned int  wr_ticks		__attribute__ ((packed));
+	/* Time of discard requests in queue */
+	unsigned int  dc_ticks		__attribute__ ((packed));
+	/* # of I/Os in progress */
+	unsigned int  ios_pgr		__attribute__ ((packed));
+	/* # of ticks total (for this device) for I/O */
+	unsigned int  tot_ticks		__attribute__ ((packed));
+	/* # of ticks requests spent in queue */
+	unsigned int  rq_ticks		__attribute__ ((packed));
+};
+</code></pre>
+
+<h1 id="采集数据到显示数据的计算">采集数据到显示数据的计算</h1>
+<p>通过获取的数据，我们可以直接得到以下信息。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>r/s
+w/s
+rkB/s
+wkB/s
+rrqm/s
+wrqm/s
+</code></pre></div></div>
+<p>这几项的计算是非常简单的，就是采样两次，后一次的值减去前一次的值，然后除以时间间隔，得到平均值即可。因为这些/proc/diskstats中对应的值都是累加的，后一次减去前一次，即得到采样时间间隔内的新增量。不赘述。</p>
+<h2 id="r_wait和w_wait的计算">r_wait和w_wait的计算</h2>
+<pre><code class="language-C">xios.r_await = (ioi-&gt;rd_ios - ioj-&gt;rd_ios) ?
+				       (ioi-&gt;rd_ticks - ioj-&gt;rd_ticks) /
+				       ((double) (ioi-&gt;rd_ios - ioj-&gt;rd_ios)) : 0.0;
+
+xios.w_await = (ioi-&gt;wr_ios - ioj-&gt;wr_ios) ?
+				       (ioi-&gt;wr_ticks - ioj-&gt;wr_ticks) /
+				       ((double) (ioi-&gt;wr_ios - ioj-&gt;wr_ios)) : 0.0;
+</code></pre>
+<p><script type="math/tex">r\_await = （间隔期间所有读IO花费的时间）/（间隔期间读请求的个数） \\
+w\_await = （间隔期间所有写IO花费的时间）/（间隔期间写请求的个数）</script></p>
+
+<h2 id="aqu-sz-平均队列深度的计算">aqu-sz 平均队列深度的计算</h2>
+<pre><code class="language-C">//其中rq_ticks即diskstats中的time_in_queue，注意这里的1000是ms-&gt;s
+#define S_VALUE(m,n,p)		(((double) ((n) - (m))) / (p) * 100)
+S_VALUE(ioj-&gt;rq_ticks, ioi-&gt;rq_ticks, itv) / 1000.0);
+</code></pre>
+<p>这里看下内核的实现：</p>
+<pre><code class="language-C">path: root/drivers/md/dm-stats.c
+
+    difference = now - shared-&gt;stamp;
+    if (!difference)
+        return;
+ 
+    in_flight_read = (unsigned)atomic_read(&amp;shared-&gt;in_flight[READ]);
+    in_flight_write = (unsigned)atomic_read(&amp;shared-&gt;in_flight[WRITE]);
+    if (in_flight_read)
+        p-&gt;io_ticks[READ] += difference;
+    if (in_flight_write)
+        p-&gt;io_ticks[WRITE] += difference;
+    if (in_flight_read + in_flight_write) {
+        p-&gt;io_ticks_total += difference;
+        p-&gt;time_in_queue += (in_flight_read + in_flight_write) * difference;
+    }
+    shared-&gt;stamp = now;
+</code></pre>
+<p><strong>举个栗子</strong>：</p>
+<blockquote>
+  <p>当第一个IO完成的时候，队列中250个IO，250个IO都等了4ms，即time_in_queue + = (250 * 4) ，当第二个IO完成的时候，time_in_queue += (249 * 4)，当所有IO都完成的时候，time_in_queue = 4*(250+249+248….+1)</p>
+</blockquote>
+
+<p>根据$time_in_queue/1000$,得到了平均队列长度。</p>
+
+<script type="math/tex; mode=display">time\_in\_queue += \Delta t_n * inflight_n \\
+
+aqu\_sz = 间隔时间内inflight的期望值 = \frac{\Delta t_i * inflight_i + ... + \Delta t_j * inflight_j}{\Delta t_i + ... + \Delta t_i}</script>
+
+<h2 id="rareq-sz--wareq-sz-平均请求的sector大小">rareq-sz	&amp; wareq-sz 平均请求的sector大小</h2>
+<pre><code class="language-C">xios.rarqsz = (ioi-&gt;rd_ios - ioj-&gt;rd_ios) ?
+			(ioi-&gt;rd_sectors - ioj-&gt;rd_sectors) / ((double) (ioi-&gt;rd_ios - ioj-&gt;rd_ios)) :
+				      0.0;
+xios.warqsz = (ioi-&gt;wr_ios - ioj-&gt;wr_ios) ?
+			(ioi-&gt;wr_sectors - ioj-&gt;wr_sectors) / ((double) (ioi-&gt;wr_ios - ioj-&gt;wr_ios)) :
+				      0.0;
+</code></pre>
+<p><script type="math/tex">rareq\_sz = (间隔期间读取的sector增长量)/（间隔期间读请求的个数） \\
+wareq\_sz = (间隔期间写入的sector增长量)/（间隔期间写请求的个数）</script></p>
+
+<h2 id="util-磁盘设备饱和度数据不准确">%util 磁盘设备饱和度(数据不准确)</h2>
+<pre><code class="language-C">path: root/drivers/md/dm-stats.c
+//其中的io_ticks_total即是队列非空的总时间
+    difference = now - shared-&gt;stamp;
+    if (!difference)
+        return;
+ 
+    in_flight_read = (unsigned)atomic_read(&amp;shared-&gt;in_flight[READ]);
+    in_flight_write = (unsigned)atomic_read(&amp;shared-&gt;in_flight[WRITE]);
+    if (in_flight_read)
+        p-&gt;io_ticks[READ] += difference;
+    if (in_flight_write)
+        p-&gt;io_ticks[WRITE] += difference;
+    if (in_flight_read + in_flight_write) {
+        p-&gt;io_ticks_total += difference;
+        p-&gt;time_in_queue += (in_flight_read + in_flight_write) * difference;
+    }
+    shared-&gt;stamp = now;
+</code></pre>
+<p>最简单的例子是，某硬盘处理单个IO请求需要0.1秒，有能力同时处理10个。但是当10个请求依次提交的时候，需要1秒钟才能完成这10%的请求，，在1秒的采样周期里，%util达到了100%。但是如果10个请一次性提交的话， 硬盘可以在0.1秒内全部完成，这时候，%util只有10%。</p>
+
+<p>在上面的例子中，一秒中10个IO，即IOPS=10的时候，%util就达到了100%，这并不能表明，该盘的IOPS就只能到10，事实上，纵使%util到了100%，硬盘可能仍然有很大的余力处理更多的请求，即并未达到饱和的状态。</p>
+
+<p>那么有没有一个指标用来衡量硬盘设备的饱和程度呢。很遗憾，iostat没有一个指标可以衡量磁盘设备的饱和度。</p>
+<blockquote>
+  <p>明明已经有了rd_ticks和wr_ticks 为什么还需一个io_ticks。注意rd_ticks和wr_ticks是把每一个IO消耗时间累加起来，但是硬盘设备一般可以并行处理多个IO，因此，rd_ticks和wr_ticks之和一般会比自然时间（wall-clock time）要大。而io_ticks 不关心队列中有多少个IO在排队，它只关心设备有IO的时间。即不考虑IO有多少，只考虑IO有没有。在实际运算中，in_flight不是0的时候保持计时，而in_flight 等于0的时候，时间不累加到io_ticks。</p>
+</blockquote>
+
+<h2 id="svctm-处理io请求所需的平均时间">svctm 处理IO请求所需的平均时间</h2>
+<pre><code class="language-C">    double tput = ((double) (sdc-&gt;nr_ios - sdp-&gt;nr_ios)) * HZ / itv; 
+                
+    xds-&gt;util = S_VALUE(sdp-&gt;tot_ticks, sdc-&gt;tot_ticks, itv);
+    xds-&gt;svctm = tput ? xds-&gt;util / tput : 0.0; 
+</code></pre>
+<p>对于iostat这个功能而言，%util固然会给人带来一定的误解和苦扰，但是svctm给人带来的误解更多。一直以来，人们希望了解块设备处理单个IO的service time，这个指标直接地反应了硬盘的能力。
+但是service time和iostat无关，iostat没有任何一个参数能够提供这方面的信息。这个值其实并没有什么意义，事实上，这个值不是独立的，它是根据其他值计算出来的。</p>
+
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/linux/2020/03/01/iotop/" data-toggle="tooltip" data-placement="top" title="iotop源码解析">
+                        Previous<br>
+                        <span>iotop源码解析</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                <!--Gitalk评论start  -->
+                
+                <!-- Gitalk end -->
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        // BY Fix:去除标题前的‘#’ issues:<https://github.com/qiubaiying/qiubaiying.github.io/issues/137>
+        // anchors.options = {
+        //   visible: 'always',
+        //   placement: 'right',
+        //   icon: '#'
+        // };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <link rel="stylesheet" href="/css/backtop.css">  <!-- Back Top -->
+<script type="text/javascript" src="/js/backtop.js"></script>  <!-- Back Top -->
+<div id="back-top">
+  <a href="#top" title="回到顶部"><h2><i class="fa fa-arrow-up" aria-hidden="true"></i></h2></a>
+</div>
+<!-- Footer -->
+<footer style="background-color: currentcolor;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-contao fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/FYBTT">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mr Wind 2020
+                    <br>
+                    Theme on <a href="https://github.com/FYBTT/FYBTT.github.io">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=FYBTT&repo=FYBTT.github.io&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    <span id="busuanzi_container_site_uv">
+                        本站访客数<span id="busuanzi_value_site_uv" style="color:aliceblue"></span>人次
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'ad936e42d0b4fc7ee2b36bca1408a0b6';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+<!-- line number for code block -->
+<script>
+var pres = document.getElementsByTagName("pre");
+for(var i = 0; i < pres.length; i++){
+    var pre = pres[i];
+    if(pre.childNodes[0].nodeName == "CODE"){
+        pre.setAttribute("class","line-numbers");
+    }
+}
+</script>
+
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

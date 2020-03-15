@@ -1,0 +1,25 @@
+I"|<p>iostat命令是报告cpu的统计信息和磁盘的i/o统计信息。iostat命令通过观察存储设备实际的工作时间和它们的平均传输率来监控系统的i/o负载。
+这个不需要root权限，数据来源可以直接通过访问procfs获取。</p>
+<h1 id="基本用法和输出的基本含义">基本用法和输出的基本含义</h1>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iostat <span class="nt">-d</span> <span class="nt">-x</span> 1#表示显示设备状态，显示扩展信息，每秒输出一次
+</code></pre></div></div>
+<p><img src="/img/perf/iostat.png" alt="iostat" /></p>
+<h2 id="iostat指标解读">iostat指标解读</h2>
+<p>| 性能指标 | 含义 | 提示 |
+| —— | —— | —— |
+| Device | 显示设备或者分区的Name | 这些设备可以在/dev下找到 |
+| r/s | 每秒发送给磁盘的请求数 | 合并后的请求数 |
+| w/s | 每秒发送给磁盘的请求数 | 合并后的请求数 |
+| rkB/s | 每秒从磁盘读取的数据量 | 单位为kB |
+| wkB/s | 每秒向磁盘写入的数据量 | 单位为kB |
+| rrqm/s | 每秒合并的读请求数 | %rrqm表示合并读请求的百分比 |
+| wrqm/s | 每秒合并的写请求数 | %wrqm表示合并写请求的百分比 |
+| r_await | 读请求处理完成等待时间 | 包括队列中的等待时间和设备实际处理的时间，单位ms |
+| w_await | 写请求处理完成等待时间 | 包括队列中的等待时间和设备实际处理的时间，单位ms |
+| aqu-sz | 平均请求队列长度 | 旧版本中为avgqu-sz |
+| rareq-sz | 平均读请求大小 | 单位为kB |
+| wareq-sz | 平均写请求大小 | 单位为kB |
+| svctm | 处理IO请求所需的平均时间（不包括等待时间） | 单位为毫秒 |
+| %util | 磁盘处理IO的时间百分比 | 即使用率，由于可能存在并行IO，100%不表明磁盘IO饱和 |</p>
+
+:ET

@@ -321,7 +321,7 @@
 │   ├── version.py<span class="o">(</span>无内容，不涉及<span class="o">)</span>
 │   └── vmstat.py
 </code></pre></div></div>
-<p><img src="/img/2020-03-01/iotop.png" alt="iotop" /></p>
+<p><img src="/img/perf/iotop.png" alt="iotop" /></p>
 <ol>
   <li>数据由taskstats获取,累加所有task得到。</li>
   <li>数据由vmstat中读取。</li>
@@ -353,7 +353,7 @@
 
 <p><strong>netlink 16字节的协议头</strong></p>
 
-<p><img src="/img/2020-03-01/netlink.png" alt="netlink协议头" /></p>
+<p><img src="/img/perf/netlink.png" alt="netlink协议头" /></p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Message</span><span class="p">:</span>
     <span class="err">用</span><span class="n">msg_type</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">contents</span> <span class="err">创建</span><span class="n">Message</span>
     <span class="bp">self</span><span class="o">.</span><span class="nb">type</span> <span class="o">=</span> <span class="n">msg_type</span>
@@ -442,7 +442,65 @@
 <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">ioprio</span><span class="p">):</span>
 </code></pre></div></div>
 <h2 id="data模块">data模块</h2>
-<p>向UI提供数据</p>
+<p>向UI提供数据，这里对Stats需要一下说明：</p>
+
+<blockquote>
+  <p>swapin_delay_total: 从发生page fault开始，到完成swapin结束的耗时</p>
+</blockquote>
+
+<blockquote>
+  <p>blkio_delay_total: 从提交同步IO开始，到同步IO返回结束的耗时；blkio_delay_total相关代码如下。</p>
+</blockquote>
+
+<pre><code class="language-C">path: linux/kernel/delayacct.c
+int __delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
+{
+    ...
+    tmp = d-&gt;blkio_delay_total + tsk-&gt;delays-&gt;blkio_delay;
+    d-&gt;blkio_delay_total = (tmp &lt; d-&gt;blkio_delay_total) ? 0 : tmp;
+    ... 
+    return 0;
+}
+
+path: linux/kernel/core.c(blkio_delay的更新)
+/*
+* This task is about to go to sleep on IO. Increment rq-&gt;nr_iowait so
+* that process accounting knows that this is a task in IO wait state.
+*/
+long __sched io_schedule_timeout(long timeout)
+{
+    int old_iowait = current-&gt;in_iowait;
+    struct rq *rq;
+    long ret;
+ 
+    current-&gt;in_iowait = 1;
+    blk_schedule_flush_plug(current);
+ 
+    delayacct_blkio_start();
+    rq = raw_rq();
+    atomic_inc(&amp;rq-&gt;nr_iowait);
+    ret = schedule_timeout(timeout);
+    current-&gt;in_iowait = old_iowait;
+    atomic_dec(&amp;rq-&gt;nr_iowait);
+    delayacct_blkio_end();
+ 
+    return ret;
+}
+EXPORT_SYMBOL(io_schedule_timeout);
+</code></pre>
+<blockquote>
+  <p>cancelled_write_bytes: 这里的数据由truncate引发，截短了cache中的文件，事实上就减少了原本要发生的写I/O</p>
+</blockquote>
+
+<blockquote>
+  <p>read_bytes: 进程读取的物理I/O字节数，包括mmap pagein，在submit_bio()中统计的</p>
+</blockquote>
+
+<blockquote>
+  <p>write_bytes: 进程写出的物理I/O字节数，包括mmap pageout，在submit_bio()中统计的</p>
+</blockquote>
+
+<p>现在来看下Stats代码。</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Stats</span><span class="p">:</span>
     <span class="c1">#Stats主要负责从内核中不断获取以下的5个值
 </span>    <span class="n">members_offsets</span> <span class="o">=</span> <span class="p">[</span>
@@ -650,6 +708,13 @@
                         </a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/linux/2020/03/08/iostat/" data-toggle="tooltip" data-placement="top" title="iostat源码解析">
+                        Next<br>
+                        <span>iostat源码解析</span>
+                        </a>
+                    </li>
                     
                 </ul>
 
