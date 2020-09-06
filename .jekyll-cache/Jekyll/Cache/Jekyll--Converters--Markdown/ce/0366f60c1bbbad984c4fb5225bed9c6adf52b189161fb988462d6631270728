@@ -1,0 +1,24 @@
+I"�<h1 id="简介">简介</h1>
+<p>如下图可知整个Block I/O框架可以分为三层：VFS、Block和I/O设备驱动。
+<img src="/img/perf/blockIOFramework.png" alt="blockIOFramework" />
+Linux内核中提供了跟踪Block层操作的手段，可以通过blk跟踪器、或者使用blktrace/blkparse/btt工具抓取分析、或者使用block相关trace events记录。
+blktrace的原理</p>
+
+<p>一个I/O请求进入block layer之后，可能会经历下面的过程：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Remap: 可能被DM(Device Mapper)或MD(Multiple Device, Software RAID) remap到其它设备
+Split: 可能会因为I/O请求与扇区边界未对齐、或者size太大而被分拆(split)成多个物理I/O
+Merge: 可能会因为与其它I/O请求的物理位置相邻而合并(merge)成一个I/O
+被IO Scheduler依照调度策略发送给driver
+被driver提交给硬件，经过HBA、电缆（光纤、网线等）、交换机（SAN或网络）、最后到达存储设备，设备完成IO请求之后再把结果发回。
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Q-------&gt;G------------&gt;I---------&gt;M-------------------&gt;D-----------------------------&gt;C
+ |-Q time-|-Insert time-|
+ |--------- merge <span class="nb">time</span> <span class="nt">------------</span>|-merge with other IO|
+ |----------------scheduler <span class="nb">time </span>time-------------------|---driver,adapter,storagetime--|
+ 
+ |----------------------- await <span class="nb">time </span><span class="k">in </span>iostat output <span class="nt">----------------------------------</span>|
+</code></pre></div></div>
+
+:ET

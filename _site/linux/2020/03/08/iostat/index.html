@@ -133,6 +133,7 @@
                     </li>
                     
                     
+                    
                 </ul>
             </div>
         </div>
@@ -621,7 +622,7 @@ S_VALUE(ioj-&gt;rq_ticks, ioi-&gt;rq_ticks, itv) / 1000.0);
   <p>当第一个IO完成的时候，队列中250个IO，250个IO都等了4ms，即time_in_queue + = (250 * 4) ，当第二个IO完成的时候，time_in_queue += (249 * 4)，当所有IO都完成的时候，time_in_queue = 4*(250+249+248….+1)</p>
 </blockquote>
 
-<p>根据$time_in_queue/1000$,得到了平均队列长度。</p>
+<p>根据<script type="math/tex">time\_in\_queue/1000</script>,得到了平均队列长度。</p>
 
 <script type="math/tex; mode=display">time\_in\_queue += \Delta t_n * inflight_n \\
 
@@ -688,6 +689,13 @@ wareq\_sz = (间隔期间写入的sector增长量)/（间隔期间写请求的�
                         </a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/linux/2020/03/19/trace_event_of_blk/" data-toggle="tooltip" data-placement="top" title="tracepoint_of_Block_Layer">
+                        Next<br>
+                        <span>tracepoint_of_Block_Layer</span>
+                        </a>
+                    </li>
                     
                 </ul>
 
@@ -784,7 +792,7 @@ wareq\_sz = (间隔期间写入的sector增长量)/（间隔期间写请求的�
                     
                     
                     <li>
-                        <a href="/feed.xml">
+                        <a target="_blank" href="https://me.csdn.net/qq_30490125">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-contao fa-stack-1x fa-inverse"></i>

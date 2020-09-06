@@ -1,0 +1,159 @@
+I"�B<h1 id="21-分布">2.1 分布</h1>
+<p>在统计上，分布是一组值及其对应的概率。
+为了表示Python中的分布，可以使用一个字典映射某个值和对应概率。这里编写类一个$Pmf$类，利用python字典实现功能。</p>
+
+<p>$Pmf$定义在thinkbayes.py文件中。</p>
+
+<p>要使用$Pmf$，可如下导入：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">thinkbayes.py</span> <span class="kn">import</span> <span class="n">Pmf</span>
+</code></pre></div></div>
+<p>下面代码建立一个$Pmf$来表示六面骰子的结果分布：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span> <span class="o">=</span> <span class="n">Pmf</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+    <span class="n">pmf</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">6.0</span><span class="p">)</span>
+</code></pre></div></div>
+<p>这里实际上也可以换种表达方式：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span> <span class="o">=</span> <span class="n">Pmf</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+    <span class="n">pmf</span><span class="o">.</span><span class="n">Incr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pmf</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span><span class="c1">#这个函数对概率进行归一化
+</span></code></pre></div></div>
+<p>最后，我们可以这样获取某个值的概率：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="n">pmf</span><span class="o">.</span><span class="n">Prob</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="22-盒子中的红球">2.2 盒子中的红球</h1>
+
+<p>我们在1.4章节中提到过这个问题。</p>
+<blockquote>
+  <p>假设有两个盒子，盒子A有3个红球和1个白球，盒子B有2个红球和2个白球。现在我们闭上眼睛选择一个盒子并抽取一个球，球为红色。问： 这个球来自盒子A的概率？</p>
+</blockquote>
+
+<p>现在看一下，如何用上文提到的$Pmf$来解决这个问题。
+首先给出取球前的先验概率：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span> <span class="o">=</span> <span class="n">Pmf</span><span class="p">()</span>
+<span class="n">pmf</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">'boxA'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">pmf</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="s">'boxB'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div></div>
+<p>现在开始更新数据（拿到一个红球），我们将先验乘以似然度。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span><span class="o">.</span><span class="n">Mult</span><span class="p">(</span><span class="s">'boxA'</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">pmf</span><span class="o">.</span><span class="n">Mult</span><span class="p">(</span><span class="s">'boxB'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div></div>
+<p>更新以后的数据没有归一化，由于假设互斥且完备，这里可以直接重新归一化。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
+</code></pre></div></div>
+<p>可得，后验概率为：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="n">pmf</span><span class="o">.</span><span class="n">Proc</span><span class="p">(</span><span class="s">'boxA'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">0.6</span>
+</code></pre></div></div>
+
+<h1 id="23-贝叶斯框架">2.3 贝叶斯框架</h1>
+<p>这一节实际上在泛化上文中的python代码。
+重新封装$Pmf$:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Ball</span><span class="p">(</span><span class="n">Pmf</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypos</span><span class="p">):</span>
+        <span class="n">Pmf</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">hypo</span> <span class="ow">in</span> <span class="n">hypos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">hypo</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
+</code></pre></div></div>
+<p>Ball类继承自Pmf，简化了初始化函数，<code class="highlighter-rouge">__init__</code>方法为每个先验赋予相同的先验。</p>
+
+<p>此时，之前盒子取球问题的初始化简化为：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hypos</span> <span class="o">=</span> <span class="p">[</span><span class="s">'boxA'</span><span class="p">,</span> <span class="s">'boxB'</span><span class="p">]</span>
+<span class="n">pmf</span> <span class="o">=</span> <span class="n">Ball</span><span class="p">(</span><span class="n">hypos</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Ball类提供类Update方法, 似然度由Likelihood计算。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#mixes变量用于保存似然度
+</span><span class="n">mixes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'boxA'</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">red</span> <span class="o">=</span> <span class="mf">0.75</span><span class="err">，</span> <span class="n">white</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">),</span>
+    <span class="s">'boxB'</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">red</span> <span class="o">=</span> <span class="mf">0.5</span><span class="err">，</span> <span class="n">white</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">Likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>
+    <span class="n">mix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixes</span><span class="p">[</span><span class="n">hypo</span><span class="p">]</span>
+    <span class="n">like</span> <span class="o">=</span> <span class="n">mix</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">like</span>
+
+<span class="k">def</span> <span class="nf">Update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">hypo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Values</span><span class="p">():</span>
+        <span class="n">like</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Likelihood</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mult</span><span class="p">(</span><span class="n">hypo</span><span class="p">,</span> <span class="n">like</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
+</code></pre></div></div>
+<p>更新数据（取球操作）</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pmf</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="s">'red'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>如果从一个盒子中多次有放回的进行取球</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'red'</span><span class="p">,</span> <span class="s">'red'</span><span class="p">,</span> <span class="s">'white'</span><span class="p">]:</span>
+    <span class="n">pmf</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="24-monty-hall难题">2.4 Monty Hall难题</h1>
+<p>问题可以参考1.6节中的猜苹果。
+既然2.3节中使用的是泛化的代码，这个问题一样可以使用，但这个问题的似然度获取函数需要重写。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">hypo</span> <span class="o">==</span> <span class="s">'A'</span><span class="err">：</span><span class="c1">#选择A盒子（apple），我只能在排除B或者C盒
+</span>        <span class="k">return</span> <span class="mf">0.5</span>
+    <span class="k">elif</span> <span class="n">hypo</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span><span class="c1">#选择B或者C，我不可能排除B或者C
+</span>        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="c1">#选择B或者C，我只能排除C或者B，因为A盒有apple
+</span>        <span class="k">return</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h1 id="25-封装框架">2.5 封装框架</h1>
+<p>显然，从上文的框架中，我们可以进一步进行抽象。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Suite</span><span class="p">(</span><span class="n">Pmf</span><span class="p">):</span>
+    <span class="c1">#代表一套假设和概率
+</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>
+        <span class="c1">#初始化假设的先验
+</span>
+    <span class="k">def</span> <span class="nf">Update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="c1">#更新基于该数据的每个假设
+</span>
+    <span class="k">def</span> <span class="nf">Print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#输出所有假设和概率
+</span></code></pre></div></div>
+<p>Suite的实现在thinkbayes.py中，如果要使用需要编写一个继承自Suite的类，并补充Likelihood方法实现。</p>
+
+<h1 id="26-巧克力豆问题">2.6 巧克力豆问题</h1>
+<p>首先，对AB包装的巧克力豆颜色进行封装：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mix1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">grey</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">yellow</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">orange</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">tan</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="p">}</span>
+
+<span class="n">mix2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">orange</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">yellow</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="n">red</span> <span class="o">=</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="n">brown</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>封装假设：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hypoA</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bag1</span> <span class="o">=</span> <span class="n">mix1</span><span class="p">,</span> <span class="n">bag2</span> <span class="o">=</span> <span class="n">mix2</span><span class="p">)</span>
+<span class="n">hypoB</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bag1</span> <span class="o">=</span> <span class="n">mix2</span><span class="p">,</span> <span class="n">bag2</span> <span class="o">=</span> <span class="n">mix1</span><span class="p">)</span>
+</code></pre></div></div>
+<p>用假设的名字来映射含义：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hypos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">A</span> <span class="o">=</span> <span class="n">hypoA</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">hypoB</span><span class="p">)</span>
+</code></pre></div></div>
+<p>最后来编写Likelihood函数：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def Likelihood(self, data, hypo):
+    bag, color = data
+    mix = hypos[hypo][bag]
+    like = mix[color]
+    return like
+</code></pre></div></div>
+<p>更新数据的代码如下：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>suite.Update(('bag1', 'yellow'))
+suite.Update(('bag2', 'green'))
+</code></pre></div></div>
+:ET

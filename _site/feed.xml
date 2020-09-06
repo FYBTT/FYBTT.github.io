@@ -5,9 +5,927 @@
     <description>A personal blog website for recording what I think and what I do</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 14 Mar 2020 22:25:42 -0500</pubDate>
-    <lastBuildDate>Sat, 14 Mar 2020 22:25:42 -0500</lastBuildDate>
+    <pubDate>Sun, 06 Sep 2020 04:40:22 -0500</pubDate>
+    <lastBuildDate>Sun, 06 Sep 2020 04:40:22 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>贝叶斯思维——chapter3（估计）</title>
+        <description>&lt;h1 id=&quot;31-骰子问题&quot;&gt;3.1 骰子问题&lt;/h1&gt;
+&lt;p&gt;假设我有５颗骰子，分别为4面，6面，8面，12面，20面。
+现在我从里面随机选取一个，投掷以后得到6，问最有可能取出的是哪个骰子？&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;这里通过3个步骤来解决这个问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;选择假设的表示方法&lt;/li&gt;
+  &lt;li&gt;选择数据的表示方法&lt;/li&gt;
+  &lt;li&gt;编写似然度函数&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;现在我们用[4,6,8,12,20]来表示假设：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;接下来我们通过骰子掷出的数字作为数据，似然函数如下：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Dice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#data为得到的投掷结果，hypo是我们的假设
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#意味着骰子的投掷值要大于骰子的面数，显然这不可能
+&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#可能情况下得到投掷值的概率自然就是1/hypo
+&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;随着投掷数据的变动，我们可以进一步得到每一个假设的后验概率分布，
+先验概率实际上也能看成没有任何事件发生情况下的后验概率。&lt;/p&gt;
+
+&lt;p&gt;接下来，如果我们投掷得到6，就相当于：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;suite.Update(6)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/img/bayies/3/distribute.png&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;32-火车头问题&quot;&gt;3.2 火车头问题&lt;/h1&gt;
+&lt;p&gt;铁路上以1到N命名火车，有一天你看到一个标号为60的火车头，估计铁路上有多少火车头？
+解：可以肯定的是铁路上至少有60个火车头，但这个数字到底是多少？&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;我们可以把问题分成两个步骤&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在得到数据之前，我们对N的认识是什么？（先验概率）&lt;/li&gt;
+  &lt;li&gt;已知一个N的任意值后，得到数据(“标志为60号的火车头”)的似然度？（似然度）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;由于缺少前置信息，我们假设，N是从1到1000的等概率的任何值。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#假设
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;其实到这里，应该已经看出来了，我们进入到了跟投掷骰子一样的情况里面。编写似然函数：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#data观察到的火车头编号，hypo是我们的假设
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#意味着观察到的火车头编号要大于火车数量，显然这不可能
+&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#可能情况下观察到60号火车头概率自然就是1/hypo
+&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新方式如下：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;此时，后去所有假设的可能性可绘制得到：
+&lt;img src=&quot;/img/bayies/3/train1.png&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可能性最大化的解是60
+不过，这还不是我们的目标;另一个可选的方案是计算&lt;strong&gt;后验概率的平均值分布&lt;/strong&gt;,简单点说，就是&lt;strong&gt;期望&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;E(火车数量)＝\sum_{i=1}^nhopy_{火车数量i}P(火车数量i)&lt;/script&gt;
+可以得到在取假设$[1-1000]$的情况下，我们能得到期望为333。&lt;/p&gt;
+
+&lt;h1 id=&quot;33-怎样看待先验概率&quot;&gt;3.3 怎样看待先验概率&lt;/h1&gt;
+
+&lt;p&gt;如果细看上面的火车头问题的话，会发现我们的假设是非常武断的&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;我们的假设区间的先验假设是平均分布的&lt;/li&gt;
+  &lt;li&gt;当选择1000作为上界时，期望值是333;
+选择500作为上界时，期望值是207;
+选择2000为上界时，期望值是552。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;结论：猜测结果对上界敏感&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;有两种方法可以进一步减小我们误差：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;获取更多的数据。（更多的数据，基于不同的先验分布，后验分布会趋于收敛）&lt;/li&gt;
+  &lt;li&gt;更多的背景资料（先验概率）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;就比如，我们看到了3个火车头，分别诉30，60，90。再更新分布可得其期望：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;上限&lt;/th&gt;
+      &lt;th&gt;期望&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;500&lt;/td&gt;
+      &lt;td&gt;152&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1000&lt;/td&gt;
+      &lt;td&gt;164&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2000&lt;/td&gt;
+      &lt;td&gt;171&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;34-其他先验概率&quot;&gt;3.4 其他先验概率&lt;/h1&gt;
+&lt;p&gt;如果没有更多的数据，我们就需要是通过收集背景资料来优化先验。
+事实上，公司规模的分布往往遵循幂律，这项规律表明，如果少于10个火车头的公司有1000家，100个火车头的公司可能有100家，1000个火车头的公司有10家,10000个火车头的公司可能只有1家。&lt;/p&gt;
+
+&lt;p&gt;数学上，幂律表示公司数量与公司规模成反比，或：
+&lt;script type=&quot;math/tex&quot;&gt;PMF(x) ∝ (\frac{1}{x})^a&lt;/script&gt;
+其中$PMF(x)$是$x$的概率密度函数，$a$通常是一个接近于1的参数。&lt;/p&gt;
+
+&lt;p&gt;我们可以构造一个服从幂律分布的先验：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#这里继承了Dice，即可以使用Dice的Likelihood函数；重定义__init__函数即可
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Train&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/img/bayies/3/train2.png&quot; alt=&quot;此处输入图片的描述&quot; /&gt;
+考虑了幂律分布作为背景资料以后，我们可以消除大于700的假设。&lt;/p&gt;
+
+&lt;p&gt;如果基于这种先验概率，在观察到列车30,60,90时，期望分别是：
+| 上限 | 期望 |
+| —— | —— |
+| 500 | 131 |
+| 1000 | 133 |
+| 2000 | 134 |&lt;/p&gt;
+
+&lt;p&gt;事实上，考虑一个任意大的上界，期望都将收敛到134。
+所以基于幂律分布的先验概率是比较现实的，因为它是基于公司规模的一些情况，并且在实际中表现更好。&lt;/p&gt;
+
+&lt;h1 id=&quot;35-置信区间&quot;&gt;3.5 置信区间&lt;/h1&gt;
+&lt;p&gt;一旦计算出了后验分布，通过单点估计或区间对后验分布进行总结通常是有用的。
+点估计通常使用平均数、中位数或最大似然值；
+区间，我们通常需要计算两个值，使得未知量有90%的可能落在两个值之间。这些值定义了一个置信区间。
+计算置信区间的简单做法是在后验概率分布中累加其中的概率，并记录对应与概率5%和95%的值。&lt;strong&gt;简单说就概率密度函数的区间积分值为0.9&lt;/strong&gt;。
+根据$Pmf$保存的结构，我们只要把概率进行累加即可。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;percentage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;percentage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;这个区间可以如下进行输出：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;interval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;95&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;interval&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;前面示例中，出现三个火车头，且先验概率呈现幂律分布的火车头问题中$90\%$置信区间为$(91,243)$。如此大的区间确切表明，（尽管期望值已经收敛了）我们任然相当不确定究竟有多少个火车头的存在。&lt;/p&gt;
+
+&lt;h1 id=&quot;36-累计分布函数&quot;&gt;3.6 累计分布函数&lt;/h1&gt;
+
+&lt;p&gt;上一节中，我们为了求算置信区间，两次调用了Percentile函数。如果需要求解多个区间，会导致计算量倍数增长。这里可以进行优化，我们在这里引入&lt;strong&gt;累计分布函数&lt;/strong&gt;$(Cdf)$。
+由于包含某个分布的相同信息，$Cdf$和$Pmf$某种程度等价，其优点就算可以有效计算百分位数。
+thinkbayes.py文件中就提供将$Pmf$转化为$Cdf$的调用：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MakeCdf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;interval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;95&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;interval&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 03 Sep 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/03/bayies3(%E4%BC%B0%E8%AE%A1)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/03/bayies3(%E4%BC%B0%E8%AE%A1)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>贝叶斯思维——chapter2（统计计算）</title>
+        <description>&lt;h1 id=&quot;21-分布&quot;&gt;2.1 分布&lt;/h1&gt;
+&lt;p&gt;在统计上，分布是一组值及其对应的概率。
+为了表示Python中的分布，可以使用一个字典映射某个值和对应概率。这里编写类一个$Pmf$类，利用python字典实现功能。&lt;/p&gt;
+
+&lt;p&gt;$Pmf$定义在thinkbayes.py文件中。&lt;/p&gt;
+
+&lt;p&gt;要使用$Pmf$，可如下导入：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;thinkbayes.py&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;下面代码建立一个$Pmf$来表示六面骰子的结果分布：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;这里实际上也可以换种表达方式：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#这个函数对概率进行归一化
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最后，我们可以这样获取某个值的概率：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;22-盒子中的红球&quot;&gt;2.2 盒子中的红球&lt;/h1&gt;
+
+&lt;p&gt;我们在1.4章节中提到过这个问题。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;假设有两个盒子，盒子A有3个红球和1个白球，盒子B有2个红球和2个白球。现在我们闭上眼睛选择一个盒子并抽取一个球，球为红色。问： 这个球来自盒子A的概率？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;现在看一下，如何用上文提到的$Pmf$来解决这个问题。
+首先给出取球前的先验概率：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxA'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxB'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;现在开始更新数据（拿到一个红球），我们将先验乘以似然度。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxA'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxB'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新以后的数据没有归一化，由于假设互斥且完备，这里可以直接重新归一化。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;可得，后验概率为：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxA'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.6&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;23-贝叶斯框架&quot;&gt;2.3 贝叶斯框架&lt;/h1&gt;
+&lt;p&gt;这一节实际上在泛化上文中的python代码。
+重新封装$Pmf$:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Ball&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Ball类继承自Pmf，简化了初始化函数，&lt;code class=&quot;highlighter-rouge&quot;&gt;__init__&lt;/code&gt;方法为每个先验赋予相同的先验。&lt;/p&gt;
+
+&lt;p&gt;此时，之前盒子取球问题的初始化简化为：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'boxA'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'boxB'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Ball&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ball类提供类Update方法, 似然度由Likelihood计算。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#mixes变量用于保存似然度
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mixes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'boxA'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.75&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;white&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'boxB'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;white&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mixes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新数据（取球操作）&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'red'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果从一个盒子中多次有放回的进行取球&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'red'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'red'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'white'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;24-monty-hall难题&quot;&gt;2.4 Monty Hall难题&lt;/h1&gt;
+&lt;p&gt;问题可以参考1.6节中的猜苹果。
+既然2.3节中使用的是泛化的代码，这个问题一样可以使用，但这个问题的似然度获取函数需要重写。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'A'&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;：&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#选择A盒子（apple），我只能在排除B或者C盒
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#选择B或者C，我不可能排除B或者C
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#选择B或者C，我只能排除C或者B，因为A盒有apple
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;25-封装框架&quot;&gt;2.5 封装框架&lt;/h1&gt;
+&lt;p&gt;显然，从上文的框架中，我们可以进一步进行抽象。&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;#代表一套假设和概率
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;#初始化假设的先验
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;#更新基于该数据的每个假设
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;#输出所有假设和概率
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Suite的实现在thinkbayes.py中，如果要使用需要编写一个继承自Suite的类，并补充Likelihood方法实现。&lt;/p&gt;
+
+&lt;h1 id=&quot;26-巧克力豆问题&quot;&gt;2.6 巧克力豆问题&lt;/h1&gt;
+&lt;p&gt;首先，对AB包装的巧克力豆颜色进行封装：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mix1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;grey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;yellow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;green&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;orange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tan&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mix2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;blue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;green&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;orange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;yellow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;red&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;brown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;封装假设：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypoA&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bag1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mix1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bag2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mix2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;hypoB&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bag1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mix2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bag2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mix1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;用假设的名字来映射含义：&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypoA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypoB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最后来编写Likelihood函数：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def Likelihood(self, data, hypo):
+    bag, color = data
+    mix = hypos[hypo][bag]
+    like = mix[color]
+    return like
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新数据的代码如下：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;suite.Update(('bag1', 'yellow'))
+suite.Update(('bag2', 'green'))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Tue, 01 Sep 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies2(%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies2(%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>贝叶斯思维——chapter1（贝叶斯定理）</title>
+        <description>&lt;h1 id=&quot;14-贝叶斯定理&quot;&gt;1.4 贝叶斯定理&lt;/h1&gt;
+&lt;p&gt;假设有两个盒子，盒子A有3个红球和1个白球，盒子B有2个红球和2个白球。现在我们闭上眼睛选择一个盒子并抽取一个球，球为红色。&lt;strong&gt;问：&lt;/strong&gt; 这个球来自盒子A的概率？&lt;/p&gt;
+
+&lt;p&gt;正面解这个问题，我们可能需要借助于表格。这里采用&lt;strong&gt;贝叶斯定理&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(A|R) = \frac{P(A and R) = P(A)P(R|A)}{P(R)}&lt;/script&gt;
+
+&lt;p&gt;我们用R代表球是红色的概率，A代表球来自盒子A的概率。&lt;/p&gt;
+
+&lt;p&gt;公式右侧，&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;P(A)这里不考虑球的影响，表示选中盒子A的概率。由于是随机选择，值为$1/2$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;P(R)这里表示从任意一个碗中得到红球的概率。选择盒子的概率是相同的，值为$5/8$&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;P(R|A)表示从盒子A中抽到红球的概率，值为$3/4$&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;结果为$3/5$。&lt;/p&gt;
+
+&lt;h1 id=&quot;15-历时诠释&quot;&gt;1.5 历时诠释&lt;/h1&gt;
+&lt;p&gt;还有另外一种理解贝叶斯定理的思路:它给我们提供的是一种根据数据集D的内容变化更新假设概率H的方法。
+这种对贝叶斯定理的理解被称为 &lt;strong&gt;“历时诠释”&lt;/strong&gt;。
+“历时”意味着某些事情随着时间而发生；在本例，即是假设的概率随着看到的新数据而变化。
+在考虑H(假设)和D(数据)的情况下，贝叶斯定理的表达式可以改写成:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(H|D) = \frac{P(H)P(D|H)}{P(D)}&lt;/script&gt;
+
+&lt;p&gt;在这种解释里，每项意义如下:
+$p(H)$称为&lt;strong&gt;先验概率&lt;/strong&gt;，即在&lt;strong&gt;得到新数据前某一假设的概率&lt;/strong&gt;。
+$p(H|D)$称为&lt;strong&gt;后验概率&lt;/strong&gt;，即在&lt;strong&gt;看到新数据后，我们要计算的该假设的概率&lt;/strong&gt;。
+$p(D|H)$是该假设下得到这一数据的概率，称为&lt;strong&gt;似然度&lt;/strong&gt;。
+$p(D)$是在任何假设下得到这一数据的概率，称为&lt;strong&gt;标准化常量&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;有些情况，我们可以基于现有背景信息进行计算。&lt;/p&gt;
+
+&lt;p&gt;在盒子的问题中，仅有两个假设：红球来自盒子A或者盒子B，他们是互斥和完备的。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;互斥：集合中，至多一个假设为真。
+完备的：集合中，至少一个假设为真，且集合包含了所有假设。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这种解释下，$p(H)$明确为$1/2$，$p(D|H)$为某个盒子中获取红球的概率，$p(D)$可以通过全概率公式获取。
+&lt;script type=&quot;math/tex&quot;&gt;P(D) = P(A1)P(D|A1) + P(A2)P(D|A2)&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;16-例子&quot;&gt;1.6 例子&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;/img/bayies/1/mm_bean.jpg&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/bayies/1/monty_hall.png&quot; alt=&quot;此处输入图片的描述&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 01 Sep 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies1(%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86)/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies1(%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86)/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>贝叶斯思维</category>
+        
+      </item>
+    
+      <item>
+        <title>《洞穴奇案》</title>
+        <description>&lt;p&gt;洞穴奇案是著名法学家富勒提出的一宗假想公案，是一宗同类相食案，并涉及大众民意、法律与道德关系、紧急避险抗辩、法官职责、自我防卫、生命的绝对价值、故意杀人等内容。他以五位法官的观点反映了五种不同的法哲学流派。后来萨伯再次以此法案为基础，以九个法官的视角提出九种额外的观点。此案曾被达玛窦称为法学经典，并成为西方法学院学生必读文本。&lt;/p&gt;
+
+&lt;p&gt;这个案例是富勒以一些真实案例为基础而假想出来的，可以看出富勒在这些案例中借用了大量事实，比如陷入绝境、人吃人、紧急避难抗辩、抽签、赦免的可能等。但他也在此基础上增添了另外的因素，他把事件从海上移到山洞中，以及细节的增加，十名营救人员的牺牲，无线设备的使用，医疗专家给出的意见，威特莫尔的反复无常等都给这起案件蒙上了更加复杂的色彩。正是由于富勒对事实的裁剪使得判决无罪和判决有罪皆拥有了足够的理由。而这两种类型的大部分法官都确信事实是不平衡的，但最终的判决结果是由法哲学平衡而并非事实不平衡所决定的。无疑，这起案件及法官们的判决引起了我们对法律思想多样性的思考。&lt;/p&gt;
+
+&lt;p&gt;书中罗列了富勒和萨伯两人共&lt;strong&gt;十四个观点&lt;/strong&gt;，反映了20世纪各流派的法哲学思想。我认为，这些观点集中体现了&lt;strong&gt;三种矛盾&lt;/strong&gt;。一是法律与道德的取舍，二是四名被告的行为是否构成紧急避险，三是一命换多命划算，还是生命具有绝对价值。&lt;/p&gt;
+
+&lt;h1 id=&quot;三个矛盾&quot;&gt;三个矛盾&lt;/h1&gt;
+
+&lt;h2 id=&quot;法律与道德的取舍&quot;&gt;法律与道德的取舍&lt;/h2&gt;
+
+&lt;p&gt;“‘任何人故意剥夺了他人的生命都必须被判处死刑。’尽管同情心会促使我们体谅这些人当时所处的悲惨境地，但法律条文不允许任何例外”，特鲁派尼坚持尊重法律条文，但同时他又建议寻求行政长官的特赦。这既表明法律不应被道德所牵制，又表明法律应适当考虑道德。特鲁派尼法官的这种看法虽被某些流派认为是墨守原文，但他提出的特赦又进一步证明道德与法律并非不可兼存，在严守法律基础上的道德实施有可能能让正义得到更好的实现。&lt;/p&gt;
+
+&lt;p&gt;尽管四名被告的行为的确违反了法律，的确应该受到惩罚。但在营救过程中，有十名营救人员因山崩而死亡，若判处四名被告死刑，十名营救人员为他们而死又显得荒谬至极。但又无足够理由判处其无罪。不论做出哪种判决，必然都不能令人信服，因此判决便成为一种两难。当理性判决与道德出现冲突，判决将难以实行。&lt;/p&gt;
+
+&lt;p&gt;但也有法官认为，法律与道德是独立的。基恩法官就指出，个人道德观念并非法官所应考虑，法官应尊重自己的岗位，严格依照法律规定实行判决。只有这样才能防止法律规范的瓦解，更好地发挥法律的作用。伯纳姆法官在此基础上指出在多元化社会没有一种道德观被官方视为最优，因此只有守护法律才是尊重人民，在法律外寻找正义本身就毫无依据。&lt;/p&gt;
+
+&lt;p&gt;与之相反，汉迪法官则认为只有统治者、被统治者和法官情感一致时，法律才可能保持弹性。而民意在很大意义上又是由道德所决定的，因此遵从民意即体现了法律即道德的思想。&lt;/p&gt;
+
+&lt;h2 id=&quot;紧急避险抗辩是否成立&quot;&gt;紧急避险抗辩是否成立&lt;/h2&gt;
+
+&lt;p&gt;紧急避险，又称“紧急避难”。是指为了使公共利益、本人或者他人的人身和其他权利免受正在发生的危险，不得已而采取的损害较小的另一方的合法利益，以保护较大的合法权益的行为。其成立条件为：（1）为了保护公共利益、本人或者他人的合法权益免受危险的损害。（2）客观上具有正在发生的真实危险。（3）迫不得已而采取的行为。（4）不能超过必要的限度而造成不应有的危害。&lt;/p&gt;
+
+&lt;p&gt;认为紧急避险抗辩不成立的，理由有如下几点：（1）四名被告危险准备不足。（2）选择被害人有欠公平。（3）受害者欲再等一周，表明杀人非迫不得已而采取的行为。（4）除杀人外，有可以替代的不会造成如此重大危害的方法。&lt;/p&gt;
+
+&lt;p&gt;认为紧急避险抗辩成立的，理由有如下几点：（1）身处困境实为天意，非四名被告之过错。（2）据专家意见可知，四名被告的饥饿程度已达到能够致死的地步。（3）四名被告已得到专家的意见，杀人食肉是其为生存而不得不采取的行为。（4）杀人是生存的唯一选择。&lt;/p&gt;
+
+&lt;p&gt;就我个人而言，也难以确定紧急避险抗辩是否成立。一方面，四名被告当时处于饿死的危险之中，且杀人食肉的确是四名被告为了保护自身合法权益免受危险而采取的行为；另一方面，四名被告完全可以采取其它危害更小的方法来应对危险，杀人食肉并非迫不得已而采取的行为且这一行为超过了必要的限度而造成了不应有的危害。&lt;/p&gt;
+
+&lt;p&gt;在这个问题上，我们应注意几点：（1）将紧急避险制定在一个技术性原则下是不妥的，（2）紧急避险本身是为法律的不正义找一个出口，不能因为受害者无辜就推翻紧急避险。&lt;/p&gt;
+
+&lt;h2 id=&quot;关于平等一命换多命还是生命具有绝对价值&quot;&gt;关于平等（一命换多命还是生命具有绝对价值）&lt;/h2&gt;
+
+&lt;p&gt;书中有一处细节 “其中一次山崩更夺走了十名营救人员的生命”，用十名营救人员的生命换来四名被告的存活，如果直接就判处死刑，显得对牺牲者的生命十分不负责，也显得荒谬不已。&lt;/p&gt;
+
+&lt;p&gt;塔利法官以为，抽签比直接选择最虚弱者更为公平，把探险者的生命置于一个平等起点上，但他却忽略了抽签的目的是为了让赢家有理由杀人食肉，结果造成了更大的不平等。正如特朗派特法官所言，这种观点无异于扭曲平等来正当化不平等。&lt;/p&gt;
+
+&lt;p&gt;塔利法官又指出以一换五是一宗“预防性杀人”，是一宗划算的交易。而特朗派特法官则针锋相对地表示，每个生命都具有平等的价值。在未征得威特莫尔同意的情况下，四名被告杀人食肉的做法无疑侵犯了其合法权利。每个人都有义务面对死亡，都不能违反最高道德和和法律义务去杀害他人。&lt;/p&gt;
+
+&lt;h1 id=&quot;十四个观点&quot;&gt;十四个观点&lt;/h1&gt;
+
+&lt;h2 id=&quot;观点一尊重法律条文赞成有罪&quot;&gt;观点一：尊重法律条文。（赞成有罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;“任何人故意剥夺了他人的生命都必须被判处死刑。”尽管同情心会促使我们体谅这些人当时所处的悲惨境地，但法律条文不允许有任何例外。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;被告虽有罪，但应获得行政赦免。假如的确如此，正义将得到实现，而不会损害我们法典的字义或精神，也不会鼓励任何漠视法律的行为。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点二探究立法精神赞成无罪&quot;&gt;观点二：探究立法精神。（赞成无罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;案发时他们不在联邦法律管辖下，而是在自然法之下（这些人不是处于“文明社会的状态”）。联邦法律（即实定法，与自然法相对）是建立在人们在社会中可以共存这一可能性上的，法律存在的理由停止时，法律也随之停止；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个人可以违反法律的表面规定而不违反法律本身。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点三法律与道德的两难弃权&quot;&gt;观点三：法律与道德的两难。（弃权）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;以自然法为依据何其荒谬：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;一是在何种程度下这些人超越了实体法的约束范围？因为饥饿？被岩石囚禁？通过了新的政府宪章？没有明确的标准和清晰度边界；&lt;/p&gt;
+
+&lt;p&gt;二是合同法比惩罚谋杀的法律具有更高的效力。根据此一规则，个人有权订立有效的协定授权他人把自己的身体当作食物，并且此种协定一旦达成就不能撤销，如果有当事人之一试图撤回，其他人可以掌控法律，用暴力强制执行协定。&lt;/p&gt;
+
+&lt;p&gt;假如试图撤回协定者在反抗其他人的强制执行时无意杀害对方，也不能要求免责，因为这和被判死刑者杀死合法判处他绞刑的法官一样，不属于正当防卫。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;法律的目的是什么？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;刑事立法被公认的目的之一是威慑，问题在于刑法还有为人民报复的本能提供一个有序的出口、矫正犯罪分子等功能，如果我们必须根据法律的目的来解释法律，当法律有许多目的或者这些目的有争议时，我们该如何处理？&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;饥饿不能成为杀人的理由。如果一开始威特莫尔就不同意此协定，多数人是否可以否决他的意见？或者假定根本没有计划，其他人只是杀害了威特莫尔，并以他身体最虚弱来证明他们的行为是正当的？又或者采取其他办法决定受害者。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点四维持法治传统赞成有罪&quot;&gt;观点四：维持法治传统（赞成有罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;从立法至上原则引申出来的是法官有义务忠实适用法律条文，根据法律的平实含义来解释法律，不能参考个人的意愿或个人的正义观念。如果被宣判有罪，行政赦免不是法官该回答的；不应该讨论这些人的作为的善恶问题。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果要对自我防卫免责事由进行修改，必须借助自然哲学家及心理学家，而不是我们的司法和学术意见所产生的咬文嚼字和形而上学的混杂。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点五以常识来判断赞成无罪&quot;&gt;观点五：以常识来判断（赞成无罪）&lt;/h2&gt;
+
+&lt;p&gt;应该听取公众的意见，而九成以上的公众不会判处被告们有罪，并且行政长官很可能不会赦免被告们的罪行。&lt;/p&gt;
+
+&lt;h2 id=&quot;观点六撇开己见赞成有罪&quot;&gt;观点六：撇开己见（赞成有罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;对立法机关而言，法律和道德不可分离，对司法机关而言，法律和道德相互独立。立法机关禁止谋杀有其道德动机：它认为谋杀是错误的，因此禁止它……但是，人民不允许法官们适用自己的道德观点。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当法律与道德冲突时，法官的角色就是守护法律。公民可以向行政长官请愿要求行政赦免，向立法机关游说改革法律，批评检察官，事后批评陪审团，在报刊文章里发泄怨气等，但作为法官，我们必须遵守法律。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;法律无关同情。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;紧急避难抗辩并不成立：一是威特莫尔想在执行协议前再等一个星期，即使这个想法是错误的，也至少说明这些被告人在杀人当天并没有面临十万火急的紧急避难；二是饥饿不能构成紧急避难。“联邦诉沃尔金案”的判决已表明既然一个人不能为了防止饥饿实施相对无害的偷面包行为，那我们当然也无法容忍为了避免饥饿而有意杀人并食用人肉；三是减轻饥饿并不只有杀人一种选择，还包括等最虚弱的人自然死亡、吃掉自己的身体末端（如手指、脚趾、耳垂等）、尝试重新恢复无线电联络、再等几天；四是那些由于自己的选择或者疏忽造成危险的人不能运用紧急避难抗辩。（到山地探险本来就是一项危险的活动，而探险者们无视了这个问题，并且没有带上足够的给养）；五是选择被害人有失公平。在掷骰子之前，威特莫尔撤回了同意，这削弱了紧急避难的抗辩，而且他的撤回本身即使毫无根据或者不够理性，也削弱了选择程式的公正性。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;“法律在很多方面不同于理想中的正义，其中之一是，法律体现了特定时刻特定民族同意用来统治自己的理想正义，为了确保这种同意，法律必须接受每个人都个体理想所达成的诸多妥协。”&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点七判断的酌情权赞成无罪&quot;&gt;观点七：判断的酌情权（赞成无罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;本案紧急避难的确信合理。被告采取紧急避难在当时是合理的，因为是根据专家意见作出的，并没有建立在他们自己对于生命的预期之上。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;饥饿在本案中可作为一种紧急避难。本案与沃尔金案的区别：首先，沃尔金可能并不是一直在挨饿，我们不知道他所认为的紧急避难的极限何在；其次，他并没有专家的意见来支持他的紧急避难确信；第三，除了犯罪，沃尔金还有其他选择，如乞讨、找一份工作。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当时情形下杀人是生存唯一的选择。“一个处境危险的人所合理相信的，比一个检察官用事后诸葛之见所认为合理的要多得多。”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;身处危境不是被困者之过错。探险者并没有选择要被山崩埋在地下，也不是由于自己的疏忽而被埋到里边的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;食物匮乏非疏忽大意造成。探险者不可能预见这场山崩从而携带超出计划需求的给养。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;受害人的同意无关紧要。如果一种随机的抽签是选择受害人的公平方法，那么受害人的同意是无关紧要的。此案中，紧急避难的基础是牢靠的，虽然其理由不够强大，但其反对意见也不够充分。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;惩罚被告有悖法律的目的。惩罚被告并不会阻止别人在将来也不幸陷入相同的困境当中。尽管在大多数杀人案件中都有一种天然的报复需求，但是众所周知本案并没有这样一种需求。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;刑罚适用的问题。即使先前的观点都是无效的，我们也必须让关于谋杀的法律条文之中的那一部分规定归于无效，它规定死刑是所有谋杀犯的唯一惩罚，而不考虑他们之间在心理状态和行为情状上的根本差异。即使被告人是有罪的，他也罪不至死。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点八一命换多命赞成无罪&quot;&gt;观点八：一命换多命（赞成无罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;我们赦免那些自我防卫杀人者意味着，杀人行为本身并不是我们通过关于谋杀的法律力图惩罚的恶事。而且，因为自我防卫杀人也有可能是有目的的，所以甚至连有意识地杀人本身也不是我们力图惩罚的恶事。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一命换多命是一项划算的“交易”。被告们有目的地杀人完全是预防性的，如果不如此的话，六个人早已全部死亡。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;选择杀人好过等待自然死亡。等待第一个人自然死亡的确会使得杀人成为不必要，但这一选择并不比抽签更公平，因为第一个自然死亡的始终是“最弱者”。选择牺牲者的方法是公平的，因为它是随机的，而不是因为它是经过各方同意的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;平等地承担死亡是公平的。威特莫尔撤回同意不是他退出抽签的正当理由，他的退出将会增加其他人退出的压力，并因此增加破坏整个抽签计划的可能性。但那样所增加的，是将目标锁定在成员中最弱的人身上的机会，而不是增加平均分配风险的可能性。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;紧急避难同样适用。杀人行为之所以是正当的，不是因为它缺乏故意，而是因为，即使他们的那种选择是有目的、深思熟虑的或者故意的，公共政策也支持选择较小的恶而不是较大的恶。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;本案中紧急避难比行政赦免更适用。一是紧急抗辩在法官和法院可控的范围之内；二是紧急避难不仅是仁慈的，而且还是公正的；三是紧急避难是法律，人民和各党派都期待我们遵守它；它具有公共的、可供裁决的标准；它在公开的法庭上被争论。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点九动机与选择赞成无罪&quot;&gt;观点九：动机与选择（赞成无罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;探险者们在明知道情况下有意识地杀了人，但是那并不意味着他们故意杀了人。相反，显而易见，他们是在没有故意的情况下杀了人。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于紧急避难的杀人是正当的。自我防卫是紧急避难的一种，自我防卫法律的新近发展允许自我防卫者可以先发制人而不必等到即刻的死亡或者严重人身伤害。威特莫尔是无辜的，是极度的饥饿，而不是威特莫尔的过错使得杀掉一个人成为必要。被告们是基于紧急避难而杀人的，因此必须被判未犯谋杀罪。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;主张永久性地推翻沃尔金案。原因如下：在实际中，私人慈善机构或者联邦政府并不会给他们提供更多的选择，所以如沃尔金那样的穷人除偷窃之外别无选择。饥饿是最为重要的一种紧急避难，如果它不能在法律之内得到缓解，那么在法律之外寻求解决便没有可受谴责的犯罪意图。相反，这种紧急避难包含着一种不容侵犯的求生意愿，而这种意愿是先于法律而存在的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如何评估紧急避难：恰当的紧急避难判断标准不是从我们的判例中寻得的表述精确的规则或者我们自己力图精确表述的规则，而是要带着勇气和公正去估量被告人试图用非法行为所要避免的不正义。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;没有目的地惩罚毫无意义。对于一个没有邪恶意图的被告人，报应是不恰当的。一个有罪判决并不会阻止其他人在今后做出同样的行为。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;我们永远也不会有充分的证据去估量洞里的人杀人时的心理状态，但是我们拥有充分的证据去合理地怀疑他们是否有故意。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个观点存在分歧的最高法院表明至少一名法官认为合理怀疑是存在的，应该通过与无效审理相似的、可以称为无效上诉审来阻止有罪判决的做出。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;现实社会并不像伯纳姆法官讲述的那样（观点六第二条），现实社会并不是一个多元化、充分理性和公平的社会，而是一个一些观点和利益支配着其他观点和利益的社会。只要情况确实如此，求诸法律之外的正义是让法律符合正义要求的唯一希望所在。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点十生命的绝对价值赞成有罪但案件应发回重审&quot;&gt;观点十：生命的绝对价值（赞成有罪，但案件应发回重审）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;在法律看来，每一个生命都是极其崇高和无限珍贵的。这让每个生命具有平等的价值。没有哪一个生命可以超过其他生命。任何牺牲都必须是自愿的，否则就是侵犯了法律所确认的生命平等和神圣尊严。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;抽签本身是公平的，但其目的却是为了赢家的利益而杀掉输家，这一目标是在实施终极意义上的不平等。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;忍受不正义好过实施不正义。即便为了保全自己的性命有必要杀人，正义也从来没有要求我们去杀人。正义要求我们面对死亡，而不是去杀害别人。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;杀人永远不是“划算”的交易。如果为了挽救五个人杀掉一个人，为了挽救一百万人而杀掉一个人。但是他会为了五个人杀掉四个人吗？为了一百万人杀掉九十九万呢？所有的生命都具有无限的价值，那么一个生命与两个生命就是同样珍贵的，与一百万个生命相比亦是如此。在预防性杀人中永远都没有划算的交易；有的只是手上带着鲜血的幸存者。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;支持死刑的原则并没有生命神圣原则那么重要，因此应废除规定强制性死刑的法律条文条款。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点十一契约与认可赞成有罪&quot;&gt;观点十一：契约与认可（赞成有罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;被害人撤回同意的行为不容忽视。被害人的同意并不等同于被告们的确信。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;被告须为自己的行为负责。他们自愿地走进一个布满危险的自然环境之中，可以预见在那里他们应对灾难的选择范围是狭窄的。他们之所以这样做不是为了避免死亡或采集食物，而只是为了娱乐。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;被害人自我防卫的权利。紧急避难并不适用于本案，或者说也不适用于任何非自我防卫杀人行为。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;无罪判决可能会导致悲剧重复发生。加入被告们早已确切地知晓杀人将会导致被处死，那他们杀死朋友的唯一理由就不会存在了，因为那样他们就会知道杀害他们的朋友并不会挽救他们的生命，反而会使他们的死成为定局。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;相信惩罚一个被告会威慑到其他人，就像相信我们能跳过一个三米宽的深渊一样。认为它是这样并不会让它的确如此，但是认为它不是这样会使它的确不如此。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;理性与情感不应截然分离。帕斯卡尔：没有理性的法律是荒谬可憎的；而受限于理性的法律是不公平的和可憎的。少年感情，理性只能建造出死寂的营地，而缺少理性，感情就难以找到有效方式坚持不渝。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点十二设身处地赞成无罪&quot;&gt;观点十二：设身处地（赞成无罪）&lt;/h2&gt;
+
+&lt;p&gt;假如法官发现自己在惩罚一个不比自己坏的人，他应该辞职。如果惩罚被告的法官都是在惩罚不比自己坏的人，那无疑是法律的耻辱。&lt;/p&gt;
+
+&lt;h2 id=&quot;观点十三判决的道德启示赞成有罪&quot;&gt;观点十三：判决的道德启示（赞成有罪）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;严格惩罚犯罪是预防犯罪最有效的手段。对所有实施了受禁止行为的人都进行惩罚，可以实现三个目标：一是我们将会把大街上的危险分子一扫而光；二是我们会缩短审判时间，让惩罚来得更为迅速且少有遗漏；三是我们将会有力地阻止其他人做出同样的行为。同惩罚的严厉性相比，惩罚的迅捷性和必然性在防止犯罪方面更为有力。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;废除免责事由有助于减少犯罪。对心理免责事由的继续承认会加剧问题，即使它们有理由，也是源于次要社会政策的，它没有保护公民免受犯罪侵害的社会政策那么重要。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;本案是一种“囚徒困境”。这是背叛者（被告们）利用笨蛋（受害者）的经典案例。只有判处有罪才能使背叛的成本不断攀升，直到超过合作乃至做笨蛋的成本。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;意识形态不应左右法律。在观点九中，海伦法官试图通过推翻“联邦诉沃尔金案”来强化紧急避难抗辩。她反对沃尔金案是因为该案立足于坏的意识形态而非法律，还是因为它立足于坏的意识形态而非好的意识形态呢？她的这种观点并非法律，而只是一项政治建言，是一种政治意识形态。因此，如果她反对沃尔金案是因为它是意识形态的，那么她亦必须反对自己的替代方案。如果她反对沃尔金案是因为它是坏蛋意识形态，那就承认了自己的选择也仅仅是另外一种意识形态。无论哪一种，她都削弱了自己的建议。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;回应观点十二：根据这种观点，要想有效地实现正义，法官必须要成为天使。法律的首要假定就是法官也是凡人，法官不需要拥有罪犯所缺少的品质。他们所需要的品质，是清晰准确地理解法律，并勇敢和前后一贯地适用法律。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;观点十四利益冲突回避&quot;&gt;观点十四：利益冲突（回避）&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;法律允许负责地适用自由裁量权。雷肯法官（观点十三）认为海伦法官（观点九）点结论反映了她的政治意识形态而不是当下的法律，那么他的关于废除心理免责事由的建议、对于无例外严格责任规则的偏爱，乃至他赋予减少犯罪目标的优先性又是什么呢？&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新“社会契约”源自被当前法律的拒绝。在被告们向外界询问无果时就拒绝了纽卡斯国的法律，转而制定了他们自己的法律。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在这十四种观点中，我们可以看到法律思想的多样性，尊重法律条文、法律与道德、生命的绝对价值、紧急避险抗辩、契约与认可、法律精神、法官职责、自我防卫，从不同的角度出发，得出的结论不尽相同。尽管此案是一宗假想案，判决结果也众说纷纭，但从中我们不仅可以学习到大量法律知识，还能培养自己多层次、多角度、多方面思考问题的能力&lt;/p&gt;
+</description>
+        <pubDate>Sun, 17 May 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/reading/2020/05/17/%E6%B4%9E%E7%A9%B4%E5%A5%87%E6%A1%88/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/reading/2020/05/17/%E6%B4%9E%E7%A9%B4%E5%A5%87%E6%A1%88/</guid>
+        
+        <category>book</category>
+        
+        <category>转载</category>
+        
+        
+        <category>reading</category>
+        
+      </item>
+    
+      <item>
+        <title>blktrace/blk 追踪者</title>
+        <description>&lt;h1 id=&quot;简介&quot;&gt;简介&lt;/h1&gt;
+&lt;p&gt;如下图可知整个Block I/O框架可以分为三层：VFS、Block和I/O设备驱动。
+&lt;img src=&quot;/img/perf/blockIOFramework.png&quot; alt=&quot;blockIOFramework&quot; /&gt;
+Linux内核中提供了跟踪Block层操作的手段，可以通过blk跟踪器、或者使用blktrace/blkparse/btt工具抓取分析、或者使用block相关trace events记录。
+blktrace的原理&lt;/p&gt;
+
+&lt;p&gt;一个I/O请求进入block layer之后，可能会经历下面的过程：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Remap: 可能被DM(Device Mapper)或MD(Multiple Device, Software RAID) remap到其它设备
+Split: 可能会因为I/O请求与扇区边界未对齐、或者size太大而被分拆(split)成多个物理I/O
+Merge: 可能会因为与其它I/O请求的物理位置相邻而合并(merge)成一个I/O
+被IO Scheduler依照调度策略发送给driver
+被driver提交给硬件，经过HBA、电缆（光纤、网线等）、交换机（SAN或网络）、最后到达存储设备，设备完成IO请求之后再把结果发回。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Q-------&amp;gt;G------------&amp;gt;I---------&amp;gt;M-------------------&amp;gt;D-----------------------------&amp;gt;C
+ |-Q time-|-Insert time-|
+ |--------- merge &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------------&lt;/span&gt;|-merge with other IO|
+ |----------------scheduler &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;time-------------------|---driver,adapter,storagetime--|
+ 
+ |----------------------- await &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;iostat output &lt;span class=&quot;nt&quot;&gt;----------------------------------&lt;/span&gt;|
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 25 Mar 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/linux/2020/03/25/blktrace/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2020/03/25/blktrace/</guid>
+        
+        <category>blktrace</category>
+        
+        <category>perf</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
+    
+      <item>
+        <title>tracepoint_of_Block_Layer</title>
+        <description>&lt;h1 id=&quot;基本概念及流程&quot;&gt;基本概念及流程：&lt;/h1&gt;
+&lt;p&gt;bio 代表一个IO 请求。
+request 是bio 提交给IO调度器产生的数据，一个request 中放着顺序排列的bio。
+当设备提交bio 给IO调度器时，IO调度器可能会插入bio，或者生成新的request。
+request_queue代表着一个物理设备，顺序的放着request。&lt;/p&gt;
+&lt;h2 id=&quot;request的数据结构&quot;&gt;request的数据结构&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/requestQ.png&quot; alt=&quot;requeststruct&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;request的种类&quot;&gt;request的种类&lt;/h2&gt;
+&lt;p&gt;IO从块设备层（block IO layer），到发送到块设备驱动（device driver）整个过程经过三类队列：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;unplug request queue 属于线程 current-&amp;gt;plug&lt;/li&gt;
+  &lt;li&gt;elevator queue 调度队列，不同的调度器，队列不同&lt;/li&gt;
+  &lt;li&gt;device request queue 派遣队列，dispatch queue。（例如，在deadline_dispatch_requests中实现） 该queue即针对设备的，每个设备都有独有的request queue&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;plug和unplug：目的是让请求不马上被驱动程序处理。设备处于pluged状态，设备不会被激活。处于unplugged状态，被激活。
+来自上层的请求，先尝试合并入unplug 队列，若不能合并，则调用elv_merge合并入调度队列elevator queue（elv_merge的后两种req的获取途径都是从elevator queue中得到）。若找不到可合并的请求，则获得一个空请求request，用该bio初始化该request，然后放到unplug队列中&lt;/p&gt;
+&lt;h2 id=&quot;request的流动&quot;&gt;request的流动&lt;/h2&gt;
+&lt;p&gt;一个request在送往设备之前会被放入到每个设备所对应的request queue。其实，通过分析一个IO在elevator层其实会经过很多request queue，不同的request queue会有不同的作用。
+&lt;img src=&quot;/img/perf/requestLevel.jpg&quot; alt=&quot;requestLevel&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;biorequest的提交流程&quot;&gt;bio/request的提交流程&lt;/h1&gt;
+
+&lt;h2 id=&quot;task自有的蓄流层&quot;&gt;task自有的蓄流层&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/blk_queue_bio.png&quot; alt=&quot;blk_queue_bio&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;调用generic_make_request，维护当前的bio链表，调用bdev_get_queue获取设备的request_queue，调用blk_partition_remap检查目标设备是否是一个磁盘分区，如果是个分区，则需要做转化；&lt;/li&gt;
+  &lt;li&gt;调用request_queue的make_request_fn函数，将bio插入到request_queue中；&lt;/li&gt;
+  &lt;li&gt;调用blk_init_allocated_queue阶段绑定的blk_queue_bio来处理第2步传递的bio；
+    &lt;ol&gt;
+      &lt;li&gt;如果因为硬件限制bio的地址范围和io驱动的数据交互，调用blk_queue_bounce创建bounce buffer来转移bio；&lt;/li&gt;
+      &lt;li&gt;如果某些原因，例如bio横跨设备边界，调用blk_queue_split将一个bio分割成两个，重新调用generic_make_request处理分割的bio；，调用blk_attempt_plug_merge将bio合并到当前线程的plugged蓄流链表中，遍历request_queue的plug_list链表中的request；&lt;/li&gt;
+      &lt;li&gt;请求队列允许合并(QUEUE_FLAG_NOMERGES标记)，调用blk_attempt_plug_merge将bio合并到当前线程的plugged蓄流链表中，遍历request_queue的plug_list链表中的request；
+        &lt;ol&gt;
+          &lt;li&gt;如果发现可以合并的request；&lt;/li&gt;
+          &lt;li&gt;调用bio_attempt_back_merge或bio_attempt_front_merge进行合并；
+&lt;img src=&quot;/img/perf/bio_merge.png&quot; alt=&quot;bio_merge&quot; /&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;请求队列不允许合并，申请request_queue的queue_lock，调用调度器的elv_merge函数，进行bio的合并；
+&lt;img src=&quot;/img/perf/elv_merge.png&quot; alt=&quot;elv_merge&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;合并失败的处理逻辑比较简单：调用get_request为bio分配一个新的request结构，注意：这里可能会阻塞(sleep)；&lt;/li&gt;
+      &lt;li&gt;如果task的蓄流功能启动；
+        &lt;ol&gt;
+          &lt;li&gt;蓄流链表plug_list为空，启动plug_trace；&lt;/li&gt;
+          &lt;li&gt;蓄流链表有如果不为空，且超过MAX_REQUEST_COUNT的阈值，调用blk_flush_plug_list，向调度层提交request,启动plug_trace；&lt;/li&gt;
+          &lt;li&gt;将新请求的request添加到plug_list链表中;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;task的蓄流功能未启动，直接提交bio到调度层的request；&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;elevator调度层&quot;&gt;elevator调度层&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/perf/blk_flush_plug_list.png&quot; alt=&quot;blk_flush_plug_list&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;蓄流层的request数量超过阈值以后开始进行request的提交，blk_flush_plug_list会遍历蓄流链表中的每个request，然后将每个request通过_elv_add_request接口添加到elecator调度队列中，添加的过程中会尝试与调度队列中已有的request进行合并。
+    &lt;ol&gt;
+      &lt;li&gt;对蓄流链表中的request进行排序&lt;/li&gt;
+      &lt;li&gt;从蓄流链表中摘下一个request，将request合入到elevator中。对于第一个摘下的request，执行queue_unplug操作。
+        &lt;ol&gt;
+          &lt;li&gt;调用elv_add_request将request插入到elevator的调度队列中&lt;/li&gt;
+          &lt;li&gt;添加的过程中会尝试与调度队列中已有的request进行合并，先让蓄流的request调用elv_attempt_insert_merge尝试与调度队列中的request合并，如果不能合并则落入到ELEVATOR_INSERT_SORT分支&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;当调度器需要发送request时，会调用elevator_dispatch_fn。该函数会直接从调度器所管理的request queue中获取一个request，然后调用elv_dispatch_sort函数将请求加入到设备所在的request queue中(dispatch分发层)，该函数可以对request进行排序，插入到合适的位置。
+&lt;img src=&quot;/img/perf/unplug.png&quot; alt=&quot;unplug&quot; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;设备驱动dispatch分发层&quot;&gt;设备驱动——dispatch分发层&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;通过调用elevator的elevator_dispatch_fn函数向dispatch分发层提交request&lt;/li&gt;
+  &lt;li&gt;通过调用 run_queue 的方法将 elevator 分类处理过的 request 转移至 device request queue 中，最后调用 scsi_dispatch_cmd 方法将请求发送到 HBA 。&lt;/li&gt;
+  &lt;li&gt;在这个过程有一些问题需要处理：底层设备可能存在故障； HBA 的处理队列是有长度限制的。因此，如何连续调度 device request queue 及重新调度 request 成了一个需要考虑的问题。在 Linux 中，如果 scsi 层需要重新调度一个 request，可以通过 blk_requeue_request 接口来完成。通过该接口，可以把 request 重新放回到 device request queue 中。另外，在一个 request 结束之后的回调函数中，需要通过 scsi_run_queue 函数来再次调度处理 device request queue 中的剩余请求，从而可以保证批量处理 device request queue 中的请求， HBA 也一直运行在最大的 queue depth 深度。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;block层的trace-events&quot;&gt;block层的trace events&lt;/h1&gt;
+&lt;p&gt;在linux procfs的/sys/kernel/debug/tracing/events/block下，可以看到以下block相关的事件。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root/block/blk-core.c
+├── block_getrq &amp;lt;- __get_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#get a free request&lt;/span&gt;
+├── block_sleeprq &amp;lt;- get_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#get a free request&lt;/span&gt;
+├── block_rq_requeue &amp;lt;- blk_requeue_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+|# Description:
+|#    Drivers often keep queueing requests &lt;span class=&quot;k&quot;&gt;until &lt;/span&gt;the hardware cannot accept
+|#    more, when that condition happens we need to put the request back
+|#    on the queue.
+├── block_bio_frontmerge &amp;lt;- bio_attempt_front_merge&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+├── block_bio_backmerge &amp;lt;- bio_attempt_back_merge&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+├── block_plug &amp;lt;- blk_queue_bio&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+├── block_unplug &amp;lt;- blk_flush_plug_list&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#queue_unplug&lt;/span&gt;
+├── block_bio_queue	&amp;lt;- generic_make_request_checks&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+├── block_bio_remap &amp;lt;- blk_partition_remap&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+├── block_rq_issue &amp;lt;- blk_peek_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+└── block_rq_complete &amp;lt;- blk_update_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+root/block/blk.c  
+└── block_bio_complete &amp;lt;- bio_endio&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+root/fs/buffer.c 
+├── block_touch_buffer
+└── block_dirty_buffer
+
+root/block/bounce.c
+└── block_bio_bounce &amp;lt;- blk_queue_bounce&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; 
+
+root/block/elevator.c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;blk-mq-sched.c&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;blk-mq.c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+└── block_rq_insert &amp;lt;- __elv_add_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+root/block/blk-merge.c
+└── block_split &amp;lt;- blk_queue_split&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+root/drivers/md/dm-rq.c
+└── block_rq_remap &amp;lt;- map_request&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;内核空间里面主要是给块层IO路径上的关键点添加tracepoint,然后借助于relayfs系统特性将收集到的数据写到buffer去。此时，我们来使能block的tracepoint&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; set_event
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; events/block/enable 
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; events/printk/enable 
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;nomarkers &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; trace_options 
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; tracing_on 
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;0 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; trace      
+root@openmv:/sys/kernel/debug/tracing# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;trace_pipe &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /home/re.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;打开&lt;code class=&quot;highlighter-rouge&quot;&gt;/home/re.txt&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-t&quot;&gt;#                              _-----=&amp;gt; irqs-off
+#                             / _----=&amp;gt; need-resched
+#                            | / _---=&amp;gt; hardirq/softirq
+#                            || / _--=&amp;gt; preempt-depth
+#                            ||| /     delay
+#           TASK PID   CPU#  ||||    TIMESTAMP  FUNCTION
+#              |  |      |   ||||       |         |
+     jbd2/sda1-8-533   [000] .... 396695.376685: block_bio_remap: 8,0 FWFS 3905554656 + 8 &amp;lt;- (8,1) 3905552608
+     jbd2/sda1-8-533   [000] .... 396695.376696: block_bio_queue: 8,0 FWFS 3905554656 + 8 [jbd2/sda1-8]
+     jbd2/sda1-8-533   [000] .... 396695.376709: block_getrq: 8,0 FWFS 3905554656 + 8 [jbd2/sda1-8]
+     jbd2/sda1-8-533   [000] d... 396695.376716: block_rq_insert: 8,0 FWFS 0 () 3905554656 + 8 [jbd2/sda1-8]
+     ksoftirqd/3-23    [003] dns. 396695.377109: block_rq_issue: 8,0 WFS 0 () 3905554656 + 8 [ksoftirqd/3]
+     ksoftirqd/3-23    [003] ..s. 396695.377480: block_rq_complete: 8,0 WFS () 3905554656 + 8 [0]
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Thu, 19 Mar 2020 00:00:00 -0500</pubDate>
+        <link>http://0.0.0.0:4000/linux/2020/03/19/trace_event_of_blk/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/linux/2020/03/19/trace_event_of_blk/</guid>
+        
+        <category>kernel</category>
+        
+        <category>trace</category>
+        
+        <category>block</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>iostat源码解析</title>
@@ -382,7 +1300,7 @@ S_VALUE(ioj-&amp;gt;rq_ticks, ioi-&amp;gt;rq_ticks, itv) / 1000.0);
   &lt;p&gt;当第一个IO完成的时候，队列中250个IO，250个IO都等了4ms，即time_in_queue + = (250 * 4) ，当第二个IO完成的时候，time_in_queue += (249 * 4)，当所有IO都完成的时候，time_in_queue = 4*(250+249+248….+1)&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;根据$time_in_queue/1000$,得到了平均队列长度。&lt;/p&gt;
+&lt;p&gt;根据&lt;script type=&quot;math/tex&quot;&gt;time\_in\_queue/1000&lt;/script&gt;,得到了平均队列长度。&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;time\_in\_queue += \Delta t_n * inflight_n \\
 
@@ -1098,15 +2016,23 @@ EXPORT_SYMBOL(io_schedule_timeout);
       <item>
         <title>贝叶斯思维——chapter6（决策分析）</title>
         <description>&lt;h1 id=&quot;63-概率密度函数&quot;&gt;6.3 概率密度函数&lt;/h1&gt;
-&lt;p&gt;到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射。Pmf对象提供了一个Prob方法获得值和概率。在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
+&lt;p&gt;到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射，是基于统计的一种离散的映射关系。Pmf对象提供了一个Prob方法获得值和概率。&lt;/p&gt;
+
+&lt;p&gt;在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
 &lt;script type=&quot;math/tex&quot;&gt;f(x)=\frac{1}{\sqrt{2*PI}}exp(-x^2/2)&lt;/script&gt;
 对于一个给定的x值，这个函数可得概率密度。更高的密度说明可能性也高，这个意义上，密度和概率质量是相似的。
-但密度不是概率。密度$\in[0, \propto)$，概率$\in[0,1]$。如果你在一个连续区间内对密度进行积分，其结果是一个概率。&lt;/p&gt;
+但密度不是概率。密度$\in[0, \propto)$，概率$\in[0,1]$。&lt;em&gt;如果你在一个连续区间内对密度进行积分，其结果是一个概率&lt;/em&gt;。&lt;/p&gt;
 &lt;h1 id=&quot;64-pdf的表示&quot;&gt;6.4 PDF的表示&lt;/h1&gt;
-&lt;p&gt;要在python中表示PDF，thinkbayes.py提供名为PDF的类。PDF是一个抽象的类，这意味着它定义了PDF接口，但不提供一个完整的实现。PDF接口包括两种方法，Destiny和MakePmf:&lt;/p&gt;
+&lt;p&gt;要在python中表示PDF，thinkbayes.py提供名为PDF的类。PDF是一个抽象的类，这意味着它定义了PDF接口，但不提供一个完整的实现。PDF接口包括两种方法，$Destiny$和$MakePmf$:&lt;/p&gt;
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Pdf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
 	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Destiny&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
 		&lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UnimplementedMethodException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MakePmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Density&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
@@ -1117,725 +2043,6 @@ EXPORT_SYMBOL(io_schedule_timeout);
         
         
         <category>贝叶斯思维</category>
-        
-      </item>
-    
-      <item>
-        <title>贝叶斯思维——chapter5（胜率和加数）</title>
-        <description>&lt;h1 id=&quot;51-胜率&quot;&gt;5.1 胜率&lt;/h1&gt;
-&lt;p&gt;通常用[0,1]之间的数字来表示概率，不过这并非唯一的方法。也可用博彩业的另一种概率表示形式——胜率（odd）。
-胜率是一个事件可能发生的概率与不发生的概率比值。
-假如球队A同球队B比赛，获胜的概率为75%，我会说他们的胜率是3:1。
-但当概率较低，通常称之为赔率（odd against），而不是胜率（odds in  favor）。例子中球队B获胜的概率为25%，我会说他们的赔率为3:1。
-即胜率和概率是相同信息的不同表示形式。&lt;/p&gt;
-
-&lt;h1 id=&quot;52-贝叶斯定理的胜率形式&quot;&gt;5.2 贝叶斯定理的胜率形式&lt;/h1&gt;
-&lt;p&gt;已知贝叶斯定理的概率形式：
-&lt;script type=&quot;math/tex&quot;&gt;p(H|D)=\frac{P(H)P(D|H)}{P(D)}&lt;/script&gt;
-在相同观察数据的前提D下，如果我们有A和B两个假设，将后验概率相除的比值如下：
-&lt;script type=&quot;math/tex&quot;&gt;\frac{p(A|D)}{P(B|D)}=\frac{P(A)P(D|A)}{P(B)P(D|B)}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;请注意等式中出现的标准化常数p(D)。
-若A和B是互斥且穷尽的，就意味着P(A)=1-P(B)，因此我们可以将先验的比率、后验的比率重写成胜率。将A的胜率写成$o(A)$,得到：
-&lt;script type=&quot;math/tex&quot;&gt;o(A|D)=o(A)\frac{P(D|A)}{P(D|B)}&lt;/script&gt;
-从字面形式上，说明了后验胜率是先验胜率乘以似然比。这就是贝叶斯定理的胜率表示形式。
-&lt;strong&gt;例如：&lt;/strong&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;有两个盒子，盒子1中有香草饼30个，巧克力饼10个。盒子2中的两种饼干各20个。
-现在假如你随意选择一个盒子，然后选择一个饼干。如果香草饼，则它来自盒子1的概率是多少？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;取到盒子1的先验概率为50%，所以盒子A的胜率为1。&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;似然度的比值=\frac{P(D|A)}{P(D|B)}=\frac{P(香草饼|盒1)}{P(香草饼|盒2)}&lt;/script&gt;
-
-&lt;p&gt;所以后验概率为3:2，对应概率为3:5。&lt;/p&gt;
-
-&lt;h1 id=&quot;53-奥利弗的血迹&quot;&gt;5.3 奥利弗的血迹&lt;/h1&gt;
-&lt;p&gt;以下是来自麦凯的《信息理论、推理和学习》的另一个问题。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;在一个犯罪现场，有两个人留下血迹，一个嫌犯奥利弗是O型血。现场发现的血迹分别为O型（当地有60%的人口血液类型）和AB型（仅1%的罕见类型）。
-那么这些数据是否支持奥利弗是嫌犯？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;要回答这个问题，我们需要想想”数据支持了假设“这到底意味着说明。直觉上，相比之前，如果某一假设随着数据的出现而呈现更大的可能性，我们就说”数据支持了假设“。
-在饼干的问题上，概率为3:5。因此我们说香草饼干这一个数据作为证据支持其来自盒子1。
-贝叶斯定理的胜率形式提供了一种方法，使这一直觉更加准确。
-回顾一下公式：
-&lt;script type=&quot;math/tex&quot;&gt;o(A|D)=o(A)\frac{P(D|A)}{P(D|B)}&lt;/script&gt;
-除以o(A):
-&lt;script type=&quot;math/tex&quot;&gt;\frac{o(A|D)}{o(A)}=\frac{P(A)P(D|A)}{P(B)P(D|B)}&lt;/script&gt;
-等式左边是后验胜率和前验胜率的比值。右边是似然比，也被称为&lt;strong&gt;贝叶斯因子&lt;/strong&gt;。
-如果贝叶斯因子的值大于1，则意味着数据更支持假设A而不支持假设B。
-现在，我们回到原来的问题。如果奥利弗是在嫌犯，就解释了样本O型血的来源，因此数据的概率就是在人群中挑中一个AB型血的人概率1%。
-如果奥利弗没有在现场留下血液，我们就要对连个样本及逆行解释。假设在人群中任意选取两人，有多大可能性找到O和AB型的人呢？
-&lt;script type=&quot;math/tex&quot;&gt;P=2(0.6)(0.01)=1.2%&lt;/script&gt;
-如果不是奥利弗的血液，数据的似然度还会高些，所以这个血液证据并没有支持奥利弗是嫌犯。&lt;/p&gt;
-
-&lt;h1 id=&quot;54-加数&quot;&gt;5.4 加数&lt;/h1&gt;
-&lt;p&gt;贝叶斯统计的基本操作是UPdate，这需要先验概率和一组数据，然后产生一个后验分布。但是，实际解决问题中通常涉及其他操作，包括缩放、加法和其他算数运算、最大值和最小值，还有混合运算。
-本章主要介绍加法和最大值。
-前提，我们对三个6面筛子的总和感兴趣，有两种方法可以计算其总和分布。&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;模拟：
- 给定一个表示筛子面分布的Pmf，可以绘制随机样本，把他们都加起来，累加每次模拟求和的分布。&lt;/li&gt;
-  &lt;li&gt;枚举：
- 给定两个Pmfs，可以枚举所有可能的数值对，并计算其和的分布。（后面会以连加的方式得到3个筛子的总体分布）&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;thinkbays提供了这两个函数。首先定义一个类来表示单个骰子：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sides&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sides&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-			&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;现在，可以创建一个6面骰子:&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后使用thinkbays.SampleSum产生1000次转动3个骰子的样本。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;three&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SampleSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;SampleSum以分布的列表（Pmf或$Cdf$对象）和样本大小n为参数。它产生n次随机样本的和（单次模拟的汇总——转动3次骰子），并将其分布作为一个Pmf对象返回。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SampleSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MakePmfFromList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RandomSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;SampleSum使用RandomSum，也在thinkbays.py中：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RandomSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;RandomSum在每个分布中调用Random然后汇总结果。
-模拟的缺点是得到的结果至少近似正确的，随着n的变大，结果会更准确，但运行时间也会增加。
-另一种方法是枚举所有大的值，并计算每对概率和总和。这在Pmf.__add__上实现：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__add__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pmf&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;self是一个Pmf对象，other可以是Pmf或者其他提供条目的对象。
-下面是如何使用它：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;three_exact&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;当在Pmf中应用+操作符时，Python调用__add__函数。在这个例子中，__add__被调用了两次。&lt;/p&gt;
-
-&lt;h1 id=&quot;55-最大化&quot;&gt;5.5 最大化&lt;/h1&gt;
-&lt;p&gt;有三种方法计算最大值的分布。&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;模拟
- 给定一个Pmf，代表单一选择的分布，可以生成随机样本，找到最大值和模拟最大值的累计分布。&lt;/li&gt;
-  &lt;li&gt;枚举
- 给定两个Pmf，可以枚举所有可能的数值对，并计算分布的最大值。&lt;/li&gt;
-  &lt;li&gt;指数计算
- 如果我们将一个Pmf转换为$Cdf$，有一个简单而有效的算法查找最大的$Cdf$。
-这里不对方法1和方法2多做解释，对于指数计算部分，如果我们转换Pmf到$Cdf$，这里首先给出累积分布函数的定义：
-&lt;script type=&quot;math/tex&quot;&gt;$CDF$(x) = p(X \leq x)&lt;/script&gt;
-如果我从$CDF$&lt;sub&gt;1&lt;/sub&gt;中取出X，从$CDF$&lt;sub&gt;2&lt;/sub&gt;中取出Y，计算最大值$Z = max(X,Y)$，则Z小于等于5的概率是多少？
-如果选择X和Y是独立行为&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;$CDF$&lt;sub&gt;3&lt;/sub&gt;(5) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(5)$CDF$&lt;sub&gt;2&lt;/sub&gt;(5)&lt;/p&gt;
-
-&lt;p&gt;其中$CDF$&lt;sub&gt;3&lt;/sub&gt;是Z的分布。
-我们可以一般化5为任意值的情况：&lt;/p&gt;
-
-&lt;p&gt;$CDF$&lt;sub&gt;3&lt;/sub&gt;(z) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(z)$CDF$&lt;sub&gt;2&lt;/sub&gt;(z)&lt;/p&gt;
-
-&lt;p&gt;特例情况下是我们从同一分布中选择k值，&lt;/p&gt;
-
-&lt;p&gt;$CDF$&lt;sub&gt;k&lt;/sub&gt;(z) = $CDF$&lt;sub&gt;1&lt;/sub&gt;(z)&lt;sup&gt;k&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;因此，为了求k的最大值的分布，我们可以枚举给定$Cdf$的概率再将其变化为k的次幂。$Cdf$提供了一种方法，该方法如下：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Cdf&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ps&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cdf&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;56-混合分布&quot;&gt;5.6 混合分布&lt;/h1&gt;
-&lt;p&gt;假设有一个骰子，清单如下：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;5个——4面骰子 \\
-
-4个——6面骰子 \\
-
-3个——8面骰子 \\
-
-2个——12面骰子 \\
-
-1个——20面骰子&lt;/script&gt;
-
-&lt;p&gt;从盒子中选择一个骰子转动，如果确定骰子，很容易确定分布。n面骰子产生一个均匀从1到n的分布。
-若随机选择骰子，由此产生的分布测试有不同上界的均匀分布的混合分布。
-在一般情况下，这类混合量不适合任何简单的数学模型，但它可以从对$PMF$直接计算得到。跟之前的小节内容一样，一个选择是模拟，生成一个随机样本计算模拟样本的$PMF$。
-但为了得到一个确切的解法，让我们选从只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;d8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后创建一个$Pmf$来表示这一混合分布：
-只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalze&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;第一个循环枚举骰子，第二个循环枚举循环骰子结果和概率。在循环内部汇聚了两个分布的贡献。
-更一般的，假如事先知道选中每一个骰子的概率，就能对结果进行相应的加权。
-首先创建一个映射了骰子和骰子被讯中概率的$Pmf$对象：
-只有两个骰子的简单版本开始，一个6面和一个8面。可以用$Pmf$来表示每个骰子。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pmf_dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;于是，我们得到计算混合分布算法的一个更通用版本：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thinkbayes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pmf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;mix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Incr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;weight&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies5(%E8%83%9C%E7%8E%87%E5%92%8C%E5%8A%A0%E6%95%B0)/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies5(%E8%83%9C%E7%8E%87%E5%92%8C%E5%8A%A0%E6%95%B0)/</guid>
-        
-        <category>python</category>
-        
-        
-        <category>贝叶斯思维</category>
-        
-      </item>
-    
-      <item>
-        <title>贝叶斯思维——chapter4(估计进阶)</title>
-        <description>&lt;p&gt;&lt;strong&gt;写在前面：&lt;/strong&gt;
-库文件链接：&lt;a href=&quot;https://code.csdn.net/snippets/1890933.git&quot;&gt;thinkbayes.py&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;41-欧元问题&quot;&gt;4.1 欧元问题&lt;/h1&gt;
-&lt;h2 id=&quot;问题&quot;&gt;问题：&lt;/h2&gt;
-&lt;p&gt;《信息论：推理和学习算法》中，有过这样一个问题：“当硬币以边缘转动250次,得到正面140次，反面110次。”，“统计学声明称：如果这是一个均匀的硬币，这样的结果出现的可能性小于7%。”&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;上述结果是否对“硬币偏心而非均匀”提供了证据？&lt;/p&gt;
-&lt;h2 id=&quot;解&quot;&gt;解：&lt;/h2&gt;
-&lt;p&gt;我们将采取一下步骤来回答这个问题。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;估计该硬币正面朝上的概率。&lt;/li&gt;
-  &lt;li&gt;估计该数是否支持硬币偏心的假设。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;已知一个硬币，那么我们以其边缘转动，它正面朝上的概率都是确定的x。（取决于硬币的物理特性——重量分布）
-如果硬币的重量分布是均匀的，那么我们认为这里的x接近&lt;script type=&quot;math/tex&quot;&gt;50%&lt;/script&gt;，但是作为一个不均匀的硬币，这个x应该会有较大差别。
-我们接下来要利用贝叶斯定理和观察到的数据来估计x。
-我们先定义假设&lt;script type=&quot;math/tex&quot;&gt;H_x&lt;/script&gt;，表示正面朝上的概率为x％:&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;说先从均匀的先验概率开始。后面我们在考虑其他的先验概率。
-likelihood的函数相对容易，若&lt;script type=&quot;math/tex&quot;&gt;H_x&lt;/script&gt;为真，正面朝上概率为&lt;script type=&quot;math/tex&quot;&gt;x/100&lt;/script&gt;，反面朝上概率为&lt;script type=&quot;math/tex&quot;&gt;(1 - x/100)&lt;/script&gt;。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Euro&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Suite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#可以参考上一篇
-&lt;/span&gt;        
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'H'&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
-        
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#可以参考上一篇
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;利用观察到的数据对x进行估计。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Euro&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'H'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;140&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'T'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;总结：&lt;/strong&gt;在均匀分布的先验概率前提下，后验分布会有一个较为明显的偏移。&lt;/p&gt;
-&lt;h1 id=&quot;42-后验概率的概述&quot;&gt;4.2 后验概率的概述&lt;/h1&gt;
-&lt;p&gt;总结一下，有几种方式来概括后验概率分布的特征。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;找后验概率的最大似然。（你会发现这里的最大似然实际上就等于观察得到的百分比$140/250$。&lt;/li&gt;
-  &lt;li&gt;计算平均数和中位数来概述后验概率。&lt;/li&gt;
-  &lt;li&gt;计算置信区间来概述后验概率。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;回到原来的问题，我们想知道硬币是否是均匀的。当观察到的后验可信区间不包括50％，我们认为硬币的重量分布的确是不均匀的。
-但确切地说，这不是我们最开始的问题。之前的问题是“这些数据是否恰恰为——硬币偏心而非均匀——给出了证据？要回答这个问题，我们需要更加精确得理解‘数据为某假说提供证据’这句化的含义，这个放到下一章讲”。
-既然我们想要知道硬币是否是均匀的，很自然得想到是求x为50%的概率：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Prob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.021&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然而这个值几乎不能说明什么，这使得对假设的评估显得毫无意义。我们可以通过将范围区间划分为更多或者更少的细小区间。这样，对给定的假设的概率会更大或更小。&lt;/p&gt;
-&lt;h1 id=&quot;43-先验概率的湮没&quot;&gt;4.3 先验概率的湮没&lt;/h1&gt;
-&lt;p&gt;我们之前假设先验是均匀的，但这可能不是一个好的假设。如果硬币是偏心的，我们可以相信x会大幅度偏离$50％$，但如果偏心到$10%$或者$90%$就近乎不可能。
-更合理的方式，是为$50%$附近给出一个相对与$10%$或者$90%$更高的先验概率。
-我们可以构建一个三角先验分布的例子：
-&lt;img src=&quot;http://img.blog.csdn.net/20160921115235274&quot; alt=&quot;此处输入图片的描述&quot; /&gt;
- 只是给力一个先验分布的形状，还需要做归一化。
- 下面的代码构成了所谓的三角先验分布：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;TrianglePrior&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Euro&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;事实上，即使我们应用了不同的先验，后验分布也非常得相似。
-这就是先验湮没的一个例子：如果有足够的数据，计时在先验分布上持有不同的观点，我们也会得到趋于&lt;strong&gt;收敛的后验概率&lt;/strong&gt;。&lt;/p&gt;
-&lt;h1 id=&quot;44-优化&quot;&gt;4.4 优化&lt;/h1&gt;
-&lt;p&gt;从上述的代码我们可以看到，对于每个得到的数据我们都会单独的应用一次Update,从上一章的Update的实现中我们可以看到在每次应用一次该函数，都需要进行一次归一化处理。
-所以，如果我们已知了一个数据的序列，就没有必要一个一个得进行训练，对所有数据都训练结束了，再进行归一化即可。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mult&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;这样处理会在一定程度上优化我们的速度，但time依然与数据量成正比。我们可以通过改写Likelihood来处理整个数据集，而不是一次模拟运行一次。
-对于之前的硬币版本改动如下：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Likelihood&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hypo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;100.0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;like&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然后我们就可以用两个整数的元组来调用Update:&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;140&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;suite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;我们用指数函数的计算取代了原来的乘法，这样对于任意次数的硬币模拟消耗的运行时间基本一致。&lt;/p&gt;
-&lt;h1 id=&quot;45-beta分布&quot;&gt;4.5 Beta分布&lt;/h1&gt;
-&lt;p&gt;还有一个优化可以让解法更快。
-到目前位置，我们的假设都是取的一组离散值。现在，我们将使用一个连续分布，确切得说，应该是&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布。&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-f(x;\alpha,\beta) &amp;= \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}\qquad \text{beta 分布} \\
-f(x;\alpha,\beta) &amp;\propto x^{\alpha-1}(1-x)^{\beta-1}\\
-\Gamma(\alpha) &amp;= \int_0^{\infty}t^{\alpha-1}e^{-t}\,dt\qquad \text{gamma 分布}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;这时候我们可以做积分变化&lt;script type=&quot;math/tex&quot;&gt;t = \beta x&lt;/script&gt;,可得：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Gamma(\alpha,\beta)=\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx,\text{从而}\\
-\frac{1}{\Gamma(\alpha,\beta)}\beta^{\alpha}\int_0^\infty x^{\alpha-1}e^{-x\beta}dx=1&lt;/script&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布定义在从0到1的闭区间上，用一句话来说，beta分布可以看做是一个概率的概率分布，当你不知道一个事件发生的概率是多少时，&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布给出了所有概率的出现的可能性的大小。
-我们令：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{B(\alpha,\beta)}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}&lt;/script&gt;
-
-&lt;p&gt;这里的B函数是一个标准化函数，它只是为了使得这个分布的概率密度积分等于1才加上的。
-##二项分布的似然函数&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(y|x)=C_n^k x^k(1-x)^{(n-k)} \propto x^k(1-x)^{(n-k)}&lt;/script&gt;
-
-&lt;p&gt;##贝叶斯估计
-我们做贝叶斯估计的目的就是要在给定y的情况下求出x,所以我们的目的是求解如下的后验概率：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x|y)=\frac{P(y|x)P(x)}{P(y)}\propto P(y|x)P(x)&lt;/script&gt;
-
-&lt;p&gt;注意，这里因为&lt;script type=&quot;math/tex&quot;&gt;P(y)&lt;/script&gt;与我们所要估计的$x$是独立的，因此我们可以不考虑它。
-##共轭先验
-现在我们有了二项分布的似然函数和&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布，现在我们要将&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布代入到贝叶斯估计的&lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt;中，将二项分布的似然函数代入到&lt;script type=&quot;math/tex&quot;&gt;P(y|x)&lt;/script&gt;中，可以得到：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-P(x|y) &amp; \propto x^k(1-x)^{(n-k)}*x^{\alpha-1}(1-x)^{\beta-1}\\
-&amp; \propto x^{(\alpha + k - 1)}(1-x)^{(n+\beta-k-1)}\\
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;我们假设&lt;script type=&quot;math/tex&quot;&gt;a\prime = a+k,b\prime = n+\beta-k&lt;/script&gt;
-最后我们发现这个贝叶斯估计服从&lt;script type=&quot;math/tex&quot;&gt;beta(a\prime,b\prime)&lt;/script&gt;分布的，我们只要用B函数将它标准化就得到我们的后验概率：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(x|y)=\frac{1}{B(a\prime,b\prime)}x^{(a\prime-1)}(1-x)^{(b\prime-1)}&lt;/script&gt;
-
-&lt;p&gt;这相当于如果我们的先验概率是带有参数的&lt;script type=&quot;math/tex&quot;&gt;a,b的beta&lt;/script&gt;分布，我们看到h次正面和t次反面的数据，后验概率就是参数为&lt;script type=&quot;math/tex&quot;&gt;a+h,b+t的beta&lt;/script&gt;分布。换句话来说，我们通过两个假发就实现了Update方法。
-这样的处理会大大简化我们的计算，只不过仅试用与先验概率的分布的确是&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布的情况。幸运的是，在最低限度上，对许多实际的先验分布&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布都可以进行良好的近似，同时也可以完美匹配均匀先验。参数a = 1和b = 1的&lt;script type=&quot;math/tex&quot;&gt;beta&lt;/script&gt;分布就是从0到1的均匀分布。
-thinkbayes.py提供了一个类来表示beta分布：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;默认情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;__init__&lt;/code&gt;使用均匀分布。Update进行贝叶斯更新：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;heads&lt;/span&gt;
-        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tails&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;data是一对表示正面和反面的数量的整数。
-因此，我们的得到了另一种解决欧元问题的方法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation}
-beta = thinkbayes.Beta()
-beta.Update((140, 110))
-print beta.Mean()
-\end{equation}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;beta提供了Mean，计算期望的函数：&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h1 id=&quot;46-讨论&quot;&gt;4.6 讨论&lt;/h1&gt;
-&lt;p&gt;我们可以看到，在较大数据集的情况下，先验之间的区别被掩盖了，这会减轻一些我们在前面一张关于客观性的担忧。甚至很对现实世界的问题，明显不同的先验概率最终会被矫正。
-但事实并不总是如此。首先，请记住，所有贝叶斯分析是基于模型决策的。如果两个人没有选择相同的模型，我们可能对数据进行不同的解读。因此，即使使用相同的数据，我们也可能得到不同的似然度，因而后验概率可能不会收敛。
-另外，请注意，在贝叶斯Update中，我们以一个似然度乘以每个先验概率，所以如果&lt;script type=&quot;math/tex&quot;&gt;p(H)&lt;/script&gt;为0，则&lt;script type=&quot;math/tex&quot;&gt;p(H|D)&lt;/script&gt;也为0。在欧元问题上，如果我们确定x小于50%，并指定大于50%的假设概率都为0，那么再多的数据都无法说服你。
-这种看法是&lt;strong&gt;克伦威尔法则&lt;/strong&gt;的基础，建议是：应当避免设置任何一个假设的先验概率为0，哪怕的确存在这种可能性。&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 22 Feb 2020 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/</guid>
-        
-        <category>python</category>
-        
-        
-        <category>贝叶斯思维</category>
-        
-      </item>
-    
-      <item>
-        <title>kramdown 语法</title>
-        <description>&lt;h1 id=&quot;kramdown-语法&quot;&gt;kramdown 语法&lt;/h1&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;以下所有内容均基于 jekyll 中的 kramdown 做的测试。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;1-公式&quot;&gt;1 公式&lt;/h2&gt;
-
-&lt;p&gt;按照官方文档，kramdown 中 &lt;code&gt;display&lt;/code&gt; 公式用双美元符 &lt;code&gt;$$&lt;/code&gt; 表示，并且前后需留空行（&lt;a href=&quot;https://kramdown.gettalong.org/syntax.html#code-blocks&quot;&gt;文档&lt;/a&gt;中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为&lt;code&gt;inline&lt;/code&gt;公式，另外若前后均有空行但想要解析为&lt;code&gt;inline&lt;/code&gt;公式，则可以对第一个美元符号转义：&lt;/p&gt;
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;若不想解析为公式，则对前两个美元符号转义：&lt;/p&gt;
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;\$\$&lt;/span&gt;...&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;下面我们来一个个尝试：&lt;/p&gt;
-
-&lt;h3 id=&quot;11-math-block&quot;&gt;1.1 math block&lt;/h3&gt;
-
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;表现为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;y=ax+b&lt;/script&gt;
-
-&lt;h3 id=&quot;12-inline-math&quot;&gt;1.2 inline math&lt;/h3&gt;
-
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;表现为：&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;这个公式
-&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
-是行内吧！
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;表现为：&lt;br /&gt;
-这个公式
-&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;
-是行内吧！&lt;/p&gt;
-
-&lt;h3 id=&quot;13-no-math&quot;&gt;1.3 no math&lt;/h3&gt;
-
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;k&quot;&gt;\$\$&lt;/span&gt;y=ax+b&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;表现为：&lt;/p&gt;
-
-&lt;p&gt;$$y=ax+b$$&lt;/p&gt;
-
-&lt;font color=&quot;red&quot;&gt;仍然是math block！&lt;/font&gt;
-
-&lt;p&gt;注意：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;kramdown 对于单个美元符号仍会解析为inline code&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;14-math-with-color&quot;&gt;1.4 math with color&lt;/h3&gt;
-
-&lt;p&gt;由于 markdown 不支持字体颜色，所以修改字体颜色要通过 html 直接修改，但带颜色的公式也会出问题。&lt;/p&gt;
-
-&lt;p&gt;如：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;文字变为蓝色了。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
-正常公式：$$y=ax+b$$  
-蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;$$y=ax+b$$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
-蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;$y=ax+b$$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;font color=&quot;blue&quot;&gt;文字变为蓝色了。&lt;/font&gt;
-&lt;p&gt;正常公式：&lt;script type=&quot;math/tex&quot;&gt;y=ax+b&lt;/script&gt;&lt;br /&gt;
-蓝色公式：&lt;font color=&quot;blue&quot;&gt;$$y=ax+b$$&lt;/font&gt;
-蓝色公式：&lt;font color=&quot;blue&quot;&gt;\$$y=ax+b$$&lt;/font&gt;&lt;/p&gt;
-
-&lt;font color=&quot;red&quot;&gt;所以为公式修改颜色会使 inline math 变为 math code 。&lt;/font&gt;
-
-&lt;p&gt;解决办法是不要使用双 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，使用单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;蓝色公式：&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;$y=ax+b$&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;蓝色公式：&lt;font color=&quot;blue&quot;&gt;$y=ax+b$&lt;/font&gt;&lt;/p&gt;
-
-&lt;p&gt;所以 kramdown 其实支持单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，但某些时候单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;公式会有问题，如面对&lt;code class=&quot;highlighter-rouge&quot;&gt;}_... _{&lt;/code&gt;的时候：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;${a}_1-a_{2}$   
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;${a}&lt;em&gt;1-a&lt;/em&gt;{2}$&lt;/p&gt;
-
-&lt;p&gt;甚至不在一个公式域中也可以影响到：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;${a}_1$ and $a_{2}$
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;${a}&lt;em&gt;1$ and $a&lt;/em&gt;{2}$&lt;/p&gt;
-
-&lt;p&gt;原因在于在 kramdown 中，&lt;code class=&quot;highlighter-rouge&quot;&gt;__&lt;/code&gt;的解析优先级要比&lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;高，所以会先解析&lt;code class=&quot;highlighter-rouge&quot;&gt;__&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;综上，平时使用双 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;，公式带颜色时使用单 &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;写上面这行话又发现了 inline code 带颜色的坑。&lt;/p&gt;
-
-&lt;p&gt;如：&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;综上，平时使用双 &lt;span class=&quot;sb&quot;&gt;`$`&lt;/span&gt;，公式带颜色时使用单 &lt;span class=&quot;sb&quot;&gt;`$`&lt;/span&gt;。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt;  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;变为了&lt;/p&gt;
-&lt;font color=&quot;blue&quot;&gt;综上，平时使用双 `$`，公式带颜色时使用单 `$`。&lt;/font&gt;
-
-&lt;h2 id=&quot;2-代码&quot;&gt;2 代码&lt;/h2&gt;
-
-&lt;p&gt;markdown 中使用 &lt;code&gt;```&lt;/code&gt;实现代码块，&lt;code&gt;`&lt;/code&gt;实现行内代码。而 kramdown 中的代码块使用 &lt;code&gt;~~~&lt;/code&gt;， 行内代码仍使用 &lt;code&gt;`&lt;/code&gt;。指定代码类型方式相同，仍是在第一行的&lt;code&gt;~~~&lt;/code&gt;后面加上类型。&lt;/p&gt;
-
-&lt;p&gt;如：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~~~cpp
-int a = 1;
-int b = a;
-~~~
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;以上代码显示为：&lt;/p&gt;
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;这里有`&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`代码。&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;以上显示为：  &lt;br /&gt;
-这里有&lt;code class=&quot;highlighter-rouge&quot;&gt;inline&lt;/code&gt;代码。&lt;/p&gt;
-
-&lt;h3 id=&quot;注意&quot;&gt;注意：&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code&gt;```&lt;/code&gt;一般也能正确解析，但是不推荐，下面代码即通过&lt;code&gt;```&lt;/code&gt;生成。
-    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;3-代码中包含公式&quot;&gt;3 代码中包含公式&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;挑战来了！&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;code block 中包含公式是没有问题的，如第一节所示。而 inline code 中包含公式会有各种问题。&lt;/p&gt;
-
-&lt;h3 id=&quot;31-单--符号&quot;&gt;3.1 单 $ 符号&lt;/h3&gt;
-
-&lt;p&gt;如何在 inline code 中实现以下效果呢？&lt;/p&gt;
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;首先尝试&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`$y=ax+b$`&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;效果为：&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;$y=ax+b$&lt;/code&gt;&lt;/p&gt;
-&lt;font color=&quot;red&quot;&gt;公式被解析了！&lt;/font&gt;
-
-&lt;p&gt;再尝试&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`\$y=ax+b$`&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;效果为：&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;\$y=ax+b$&lt;/code&gt;&lt;/p&gt;
-&lt;font color=&quot;red&quot;&gt;仍然被解析！&lt;/font&gt;
-
-&lt;p&gt;当然，如果前后都转义呢？&lt;/p&gt;
-&lt;div class=&quot;language-md highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;sb&quot;&gt;`\$y=ax+b\$`&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;效果为：&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;\$y=ax+b\$&lt;/code&gt;&lt;/p&gt;
-&lt;font color=&quot;red&quot;&gt;失败了！&lt;/font&gt;
-
-&lt;h3 id=&quot;32-双--符号&quot;&gt;3.2 双 $ 符号&lt;/h3&gt;
-
-&lt;p&gt;如何在 inline code 中实现以下效果呢？&lt;/p&gt;
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;一次性展示：&lt;/p&gt;
-
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;`&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;`   
-`&lt;span class=&quot;k&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;`   
-`&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;\$\$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;`   
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$y=ax+b$$&lt;/code&gt; &lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;\$$y=ax+b$$&lt;/code&gt; &lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;\$\$y=ax+b$$&lt;/code&gt;&lt;/p&gt;
-
-&lt;font color=&quot;red&quot;&gt;都没用！&lt;/font&gt;
-&lt;p&gt;最后看来，最接近的方式还是分开写：&lt;/p&gt;
-&lt;div class=&quot;language-latex highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;`&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;``y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;b``&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;$$&lt;/span&gt;`
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;y=ax+b&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$$&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;转载自：[https://hugueliu.github.io/2019/12/29/kramdown_syntax/][1]&lt;/p&gt;
-</description>
-        <pubDate>Sun, 29 Dec 2019 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/jekyll/2019/12/29/kramdown_syntax/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/jekyll/2019/12/29/kramdown_syntax/</guid>
-        
-        <category>markdown</category>
-        
-        <category>转载</category>
-        
-        
-        <category>jekyll</category>
-        
-      </item>
-    
-      <item>
-        <title>vscode配置mathjax</title>
-        <description>&lt;h1 id=&quot;vscode配置mathjax&quot;&gt;vscode配置mathjax&lt;/h1&gt;
-
-&lt;hr /&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;vscode中markdown preview enhanced插件配置mathjax使其可以自动添加公式编号。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;1-修改公式渲染插件为mathjax&quot;&gt;1. 修改公式渲染插件为&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;按下&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+p&lt;/code&gt;，找到&lt;code class=&quot;highlighter-rouge&quot;&gt;Markdown-preview-enhanced: Math Rendering Option&lt;/code&gt;选项，修改为&lt;code class=&quot;highlighter-rouge&quot;&gt;MathJax&lt;/code&gt;
-或在setting.json文件添加&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;markdown-preview-enhanced.mathRenderingOption&quot;: &quot;MathJax&quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-开启公式自动编号&quot;&gt;2. 开启公式自动编号&lt;/h2&gt;
-
-&lt;p&gt;mathjax中公式自动编号功能默认是关闭的，需要手动打开&lt;/p&gt;
-
-&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax_config.js&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;TeX&lt;/code&gt;中添加下面一行：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json{.line-numbers}&quot;&gt;equationNumbers: { autoNumber: &quot;AMS&quot; },
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最终配置为：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-js{.line-numbers}&quot;&gt;module.exports = {
-  extensions: ['tex2jax.js'],
-  jax: ['input/TeX','output/HTML-CSS'],
-  messageStyle: 'none',
-  tex2jax: {
-    processEnvironments: false,
-    processEscapes: true
-  },
-  TeX: {
-    extensions: ['AMSmath.js', 'AMSsymbols.js', 'noErrors.js', 'noUndefined.js'],
-    equationNumbers: { autoNumber: &quot;AMS&quot; },
-  },
-  'HTML-CSS': { availableFonts: ['TeX'] }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;3-公式编写&quot;&gt;3. 公式编写&lt;/h2&gt;
-
-&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;equation&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align&lt;/code&gt;环境中的公式才会自动编号&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation}
-y = ax+b
-\end{equation}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\begin{align}
-y = ax+b
-\end{align}&lt;/script&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align}
-y = ax+b
-\end{align}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\begin{align}
-y = ax+b
-\end{align}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;若想取消某个&lt;code class=&quot;highlighter-rouge&quot;&gt;equation&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align&lt;/code&gt;环境中公式的编号，可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;equation*&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;align*&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{equation*}
-y = ax+b
-\end{equation*}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation*}
-y = ax+b
-\end{equation*}&lt;/script&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align*}
-y = ax+b
-\end{align*}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align*}
-y = ax+b
-\end{align*}&lt;/script&gt;
-
-&lt;p&gt;另外，还可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;tag&lt;/code&gt;自定义编号，按照顺序下面这个公式编号应为3，手动指定为4&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-TeX{.line-numbers}&quot;&gt;\begin{align}
-y = ax+b
-\tag{4}
-\end{align}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}
-y = ax+b
-\tag{4}
-\end{align}&lt;/script&gt;
-
-&lt;p&gt;转载自：[https://hugueliu.github.io/2019/12/16/vscode_mpe_equation_auto_number/][1]&lt;/p&gt;
-</description>
-        <pubDate>Mon, 16 Dec 2019 00:00:00 -0600</pubDate>
-        <link>http://0.0.0.0:4000/vscode/2019/12/16/vscode_mpe_equation_auto_number/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/vscode/2019/12/16/vscode_mpe_equation_auto_number/</guid>
-        
-        <category>vscode</category>
-        
-        <category>markdown</category>
-        
-        <category>mathjax</category>
-        
-        <category>转载</category>
-        
-        
-        <category>vscode</category>
         
       </item>
     

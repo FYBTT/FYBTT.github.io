@@ -133,6 +133,7 @@
                     </li>
                     
                     
+                    
                 </ul>
             </div>
         </div>
@@ -226,6 +227,137 @@
             ">
     			
 <div class="post-preview">
+    <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/03/bayies3(%E4%BC%B0%E8%AE%A1)/">
+        <h2 class="post-title">            
+            贝叶斯思维——chapter3（估计）
+        </h2>
+        
+        <div class="post-content-preview">
+            3.1 骰子问题
+假设我有５颗骰子，分别为4面，6面，8面，12面，20面。
+现在我从里面随机选取一个，投掷以后得到6，问最有可能取出的是哪个骰子？
+
+这里通过3个步骤来解决这个问题：
+
+  选择假设的表示方法
+  选择数据的表示方法
+  编写似然度函数
+
+
+现在我们用[4,6,8,12,20...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on September 3, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
+    <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies2(%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97)/">
+        <h2 class="post-title">            
+            贝叶斯思维——chapter2（统计计算）
+        </h2>
+        
+        <div class="post-content-preview">
+            2.1 分布
+在统计上，分布是一组值及其对应的概率。
+为了表示Python中的分布，可以使用一个字典映射某个值和对应概率。这里编写类一个$Pmf$类，利用python字典实现功能。
+
+$Pmf$定义在thinkbayes.py文件中。
+
+要使用$Pmf$，可如下导入：
+from thinkba...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on September 1, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
+    <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/09/01/bayies1(%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86)/">
+        <h2 class="post-title">            
+            贝叶斯思维——chapter1（贝叶斯定理）
+        </h2>
+        
+        <div class="post-content-preview">
+            1.4 贝叶斯定理
+假设有两个盒子，盒子A有3个红球和1个白球，盒子B有2个红球和2个白球。现在我们闭上眼睛选择一个盒子并抽取一个球，球为红色。问： 这个球来自盒子A的概率？
+
+正面解这个问题，我们可能需要借助于表格。这里采用贝叶斯定理。
+
+
+
+我们用R代表球是红色的概率，A代表球来自盒子A的...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on September 1, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
+    <a href="/reading/2020/05/17/%E6%B4%9E%E7%A9%B4%E5%A5%87%E6%A1%88/">
+        <h2 class="post-title">            
+            《洞穴奇案》
+        </h2>
+        
+        <div class="post-content-preview">
+            洞穴奇案是著名法学家富勒提出的一宗假想公案，是一宗同类相食案，并涉及大众民意、法律与道德关系、紧急避险抗辩、法官职责、自我防卫、生命的绝对价值、故意杀人等内容。他以五位法官的观点反映了五种不同的法哲学流派。后来萨伯再次以此法案为基础，以九个法官的视角提出九种额外的观点。此案曾被达玛窦称为法学经...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on May 17, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
+    <a href="/linux/2020/03/25/blktrace/">
+        <h2 class="post-title">            
+            blktrace/blk 追踪者
+        </h2>
+        
+        <h3 class="post-subtitle">
+            kernel性能调优(kernel:5.3.0-28-generic)
+        </h3>
+        
+        <div class="post-content-preview">
+            简介
+如下图可知整个Block I/O框架可以分为三层：VFS、Block和I/O设备驱动。
+
+Linux内核中提供了跟踪Block层操作的手段，可以通过blk跟踪器、或者使用blktrace/blkparse/btt工具抓取分析、或者使用block相关trace events记录。
+blkt...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on March 25, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
+    <a href="/linux/2020/03/19/trace_event_of_blk/">
+        <h2 class="post-title">            
+            tracepoint_of_Block_Layer
+        </h2>
+        
+        <h3 class="post-subtitle">
+            trace event of block-layer(kernel-4.4.174)
+        </h3>
+        
+        <div class="post-content-preview">
+            基本概念及流程：
+bio 代表一个IO 请求。
+request 是bio 提交给IO调度器产生的数据，一个request 中放着顺序排列的bio。
+当设备提交bio 给IO调度器时，IO调度器可能会插入bio，或者生成新的request。
+request_queue代表着一个物理设备，顺序的放...
+        </div>
+    </a>
+    <p class="post-meta">Posted by bear on March 19, 2020</p>
+</div>
+
+<hr>
+
+<div class="post-preview">
     <a href="/linux/2020/03/08/iostat/">
         <h2 class="post-title">            
             iostat源码解析
@@ -254,7 +386,7 @@ iostat -d -x 1#表示显示设备状态，...
         </h2>
         
         <h3 class="post-subtitle">
-            对一个新系统进行的验证，不写一篇感觉亏了
+            kernel性能调优(kernel:5.3.0-28-generic)
         </h3>
         
         <div class="post-content-preview">
@@ -303,117 +435,29 @@ Linux pid,tgid关系
         
         <div class="post-content-preview">
             6.3 概率密度函数
-到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射。Pmf对象提供了一个Prob方法获得值和概率。在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
+到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射，是基于统计的一种离散的映射关系。Pmf对象提供了一个Prob方法获得值和概率。
 
-对于一个给定的x值，这个函数可得概率密度。更高的密度...
+在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
+
+对于一个给定的x...
         </div>
     </a>
     <p class="post-meta">Posted by bear on February 22, 2020</p>
-</div>
-
-<hr>
-
-<div class="post-preview">
-    <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies5(%E8%83%9C%E7%8E%87%E5%92%8C%E5%8A%A0%E6%95%B0)/">
-        <h2 class="post-title">            
-            贝叶斯思维——chapter5（胜率和加数）
-        </h2>
-        
-        <div class="post-content-preview">
-            5.1 胜率
-通常用[0,1]之间的数字来表示概率，不过这并非唯一的方法。也可用博彩业的另一种概率表示形式——胜率（odd）。
-胜率是一个事件可能发生的概率与不发生的概率比值。
-假如球队A同球队B比赛，获胜的概率为75%，我会说他们的胜率是3:1。
-但当概率较低，通常称之为赔率（odd aga...
-        </div>
-    </a>
-    <p class="post-meta">Posted by bear on February 22, 2020</p>
-</div>
-
-<hr>
-
-<div class="post-preview">
-    <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4/2020/02/22/bayies4(%E4%BC%B0%E8%AE%A1%E8%BF%9B%E9%98%B6)/">
-        <h2 class="post-title">            
-            贝叶斯思维——chapter4(估计进阶)
-        </h2>
-        
-        <div class="post-content-preview">
-            写在前面：
-库文件链接：thinkbayes.py
-
-4.1 欧元问题
-问题：
-《信息论：推理和学习算法》中，有过这样一个问题：“当硬币以边缘转动250次,得到正面140次，反面110次。”，“统计学声明称：如果这是一个均匀的硬币，这样的结果出现的可能性小于7%。”
-
-
-
-上述结果是否对“硬币...
-        </div>
-    </a>
-    <p class="post-meta">Posted by bear on February 22, 2020</p>
-</div>
-
-<hr>
-
-<div class="post-preview">
-    <a href="/jekyll/2019/12/29/kramdown_syntax/">
-        <h2 class="post-title">            
-            kramdown 语法
-        </h2>
-        
-        <h3 class="post-subtitle">
-            使用 kramdown 中遇到的问题--公式和代码
-        </h3>
-        
-        <div class="post-content-preview">
-            kramdown 语法
-
-
-  以下所有内容均基于 jekyll 中的 kramdown 做的测试。
-
-
-1 公式
-
-按照官方文档，kramdown 中 display 公式用双美元符 $$ 表示，并且前后需留空行（文档中有三种方案，这里只以空行作为例子）。若不是前后均为空行，则为inline...
-        </div>
-    </a>
-    <p class="post-meta">Posted by bear on December 29, 2019</p>
-</div>
-
-<hr>
-
-<div class="post-preview">
-    <a href="/vscode/2019/12/16/vscode_mpe_equation_auto_number/">
-        <h2 class="post-title">            
-            vscode配置mathjax
-        </h2>
-        
-        <h3 class="post-subtitle">
-            为markdown preview enhanced插件配置mathjax实现自动编号
-        </h3>
-        
-        <div class="post-content-preview">
-            vscode配置mathjax
-
-
-
-
-  vscode中markdown preview enhanced插件配置mathjax使其可以自动添加公式编号。
-
-
-1. 修改公式渲染插件为mathjax
-
-按下ctrl+p，找到Markdown-preview-enhanced: Math Re...
-        </div>
-    </a>
-    <p class="post-meta">Posted by liumh on December 16, 2019</p>
 </div>
 
 <hr>
 
 
 <!-- Pager -->
+
+<ul class="pager">
+    
+    
+    <li class="next">
+        <a href="/page2">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
 
 
     		</div>
@@ -441,15 +485,15 @@ Linux pid,tgid关系
                                     jekyll
                                 </a>
                         
-                                <a href="/pages/categories/#贝叶斯思维" title="贝叶斯思维" rel="3">
+                                <a href="/pages/categories/#贝叶斯思维" title="贝叶斯思维" rel="6">
                                     贝叶斯思维
                                 </a>
                         
-                                <a href="/pages/categories/#reading" title="reading" rel="1">
+                                <a href="/pages/categories/#reading" title="reading" rel="2">
                                     reading
                                 </a>
                         
-                                <a href="/pages/categories/#linux" title="linux" rel="2">
+                                <a href="/pages/categories/#linux" title="linux" rel="4">
                                     linux
                                 </a>
                         
@@ -474,25 +518,37 @@ Linux pid,tgid关系
                             
                         
                             
-                                <a href="/pages/tags/#转载" title="转载" rel="3">
+                                <a href="/pages/tags/#转载" title="转载" rel="4">
                                     转载
                                 </a>
                             
                         
                             
-                                <a href="/pages/tags/#python" title="python" rel="3">
+                                <a href="/pages/tags/#python" title="python" rel="6">
                                     python
                                 </a>
                             
                         
                             
-                        
+                                <a href="/pages/tags/#book" title="book" rel="2">
+                                    book
+                                </a>
                             
                         
                             
-                                <a href="/pages/tags/#perf" title="perf" rel="2">
+                        
+                            
+                                <a href="/pages/tags/#perf" title="perf" rel="3">
                                     perf
                                 </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
                             
                         
                             
@@ -543,7 +599,7 @@ Linux pid,tgid关系
                     
                     
                     <li>
-                        <a href="/feed.xml">
+                        <a target="_blank" href="https://me.csdn.net/qq_30490125">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-contao fa-stack-1x fa-inverse"></i>
