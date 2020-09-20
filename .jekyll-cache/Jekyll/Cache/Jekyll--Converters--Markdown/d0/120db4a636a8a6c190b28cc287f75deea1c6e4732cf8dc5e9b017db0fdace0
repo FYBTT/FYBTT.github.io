@@ -1,10 +1,13 @@
-I"�L<h1 id="41-欧元问题">4.1 欧元问题</h1>
+I"�L<h1 id="41-欧元问题">4.1 欧元问题</h1>
+
 <blockquote>
   <p>《信息论：推理和学习算法》中，有过这样一个问题：“当硬币以边缘转动250次,得到正面140次，反面110次。”，“统计学声明称：如果这是一个均匀的硬币，这样的结果出现的可能性小于7%。”</p>
 </blockquote>
 
 <p>上述结果是否对“硬币偏心而非均匀”提供了证据？</p>
+
 <h2 id="解">解：</h2>
+
 <p>我们将采取一下步骤来回答这个问题。</p>
 
 <ol>
@@ -17,10 +20,13 @@
 
 <p>接下来要利用贝叶斯定理和观察到的数据来估计$x$。
 我们先定义假设$H_x$，表示正面朝上的概率为$x\%$:</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hypos</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
 </code></pre></div></div>
+
 <p>先从均匀的先验概率开始。
 Likelihood的函数相对容易，若$H_x$为真，正面朝上概率为$x/100$，反面朝上概率为$(1 - x/100)$。</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Euro</span><span class="p">(</span><span class="n">Suite</span><span class="p">):</span>
         
     <span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hypo</span><span class="p">):</span>

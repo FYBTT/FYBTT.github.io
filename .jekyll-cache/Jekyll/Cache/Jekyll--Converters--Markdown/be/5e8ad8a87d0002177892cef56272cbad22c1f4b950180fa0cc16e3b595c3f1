@@ -1,0 +1,21 @@
+I"{<p>Jekyll ——静态网站生成框架，这个github的静态网站数据就是用Jekyll生成的。但Jekyll的安装过程非常琐碎，直接安装到 Host OS 上是一种污染环境的方法。而Docker提供了不需要自己配置的运行环境，并且这样的方式适用于 Linux 和 Windows。</p>
+
+<ol>
+  <li>首先是获取 Jekyll 的最新 Docker 镜像：
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull jekyll/jekyll
+</code></pre></div>    </div>
+  </li>
+  <li>切换到你的 Jekyll 网站所在目录，执行这条命令启动 Jekyll：
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#blog 表示运行的container的命名</span>
+docker run <span class="nt">--mount</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bind</span>,source<span class="o">=</span><span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>,target<span class="o">=</span>/srv/jekyll <span class="se">\</span>
+<span class="nt">-p</span> 4000:4000 <span class="nt">--name</span> blog <span class="nt">-it</span> jekyll/jekyll <span class="se">\</span>
+jekyll serve
+</code></pre></div>    </div>
+  </li>
+  <li>通过 localhost:4000 访问到这个 Jekyll 的动态生成结果了。</li>
+</ol>
+
+<p>因为我们给这个 Container 赋予了名字 blog，所以之后如果再次需要这个 Container 的话，只需要这样就可以启动：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker start -i blog
+</code></pre></div></div>
+:ET
