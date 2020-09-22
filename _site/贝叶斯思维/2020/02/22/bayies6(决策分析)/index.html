@@ -250,14 +250,18 @@
                 post-container">
 
 				<h1 id="63-概率密度函数">6.3 概率密度函数</h1>
-<p>到现在为止，我们已经和概率质量函数（PMF）打过交道。PMF是从每一个可能值到其概率的映射，是基于统计的一种离散的映射关系。Pmf对象提供了一个Prob方法获得值和概率。</p>
+<p>到现在为止，我们已经和概率质量函数$Pmf$打过交道。$Pmf$是从每一个可能值到其概率的映射，是基于统计的一种离散的映射关系。$Pmf$对象提供了一个$Prob$方法获得值和概率。</p>
 
-<p>在数学的表示上，PDF通常写成一个函数；例如高斯分布$N(0,1)$的PDF：
-<script type="math/tex">f(x)=\frac{1}{\sqrt{2*PI}}exp(-x^2/2)</script>
-对于一个给定的x值，这个函数可得概率密度。更高的密度说明可能性也高，这个意义上，密度和概率质量是相似的。
-但密度不是概率。密度$\in[0, \propto)$，概率$\in[0,1]$。<em>如果你在一个连续区间内对密度进行积分，其结果是一个概率</em>。</p>
+<p>在数学的表示上，连续的概率密度函数$Pdf$通常写成一个函数；例如高斯分布$N(0,1)的Pdf$：</p>
+
+<script type="math/tex; mode=display">f(x)=\frac{1}{\sqrt{2*PI}}exp(-x^2/2)</script>
+
+<p>更高的密度说明可能性也高，这个意义上，密度和概率质量是相似的。</p>
+
+<p><strong>但密度不是概率</strong>。密度$\in[0, \propto)$，概率$\in[0,1]$。<strong>如果你在一个连续区间内对密度进行积分，其结果是一个概率</strong>。</p>
+
 <h1 id="64-pdf的表示">6.4 PDF的表示</h1>
-<p>要在python中表示PDF，thinkbayes.py提供名为PDF的类。PDF是一个抽象的类，这意味着它定义了PDF接口，但不提供一个完整的实现。PDF接口包括两种方法，$Destiny$和$MakePmf$:</p>
+<p>要在python中表示$Pdf$，thinkbayes.py提供名为$Pdf$的类。$Pdf$是一个<strong>抽象类</strong>，这意味着它定义了$Pdf$<strong>接口</strong>，但不提供一个完整的实现。$Pdf$接口包括两种方法:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Pdf</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 	<span class="k">def</span> <span class="nf">Destiny</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 		<span class="k">raise</span> <span class="n">UnimplementedMethodException</span><span class="p">()</span>
@@ -268,6 +272,24 @@
 		<span class="n">pmf</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
 		<span class="k">return</span> <span class="n">pmf</span>
 </code></pre></div></div>
+<p>$Pdf$提供了makepdf的实现，而没有Density方法，Density方法必须通过子类提供。
+<strong>实体类</strong>是继承自抽象类的一个子类，提供具体实现。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#正态分布
+</span><span class="k">class</span> <span class="nc">GaussianPdf</span><span class="p">(</span><span class="n">Pdf</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
+	<span class="k">def</span> <span class="nf">Density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span>
+</code></pre></div></div>
+<p>内核密度估计(KDE)，能从样本中找到一个恰当平滑的$Pdf$进行数据拟合。Scipy提供了KDE的实现，thinkbayes提供了一个EstimatedPdf类。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">EstimatedPdf</span><span class="p">(</span><span class="n">Pdf</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">kde</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">Density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kde</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+<h1 id="65-价格猜测建模">6.5 价格猜测建模</h1>
 
 
                 <hr style="visibility: hidden;">

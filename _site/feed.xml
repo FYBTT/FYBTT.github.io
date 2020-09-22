@@ -5,8 +5,8 @@
     <description>A personal blog website for recording what I think and what I do</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 20 Sep 2020 04:55:52 -0500</pubDate>
-    <lastBuildDate>Sun, 20 Sep 2020 04:55:52 -0500</lastBuildDate>
+    <pubDate>Tue, 22 Sep 2020 12:34:42 -0500</pubDate>
+    <lastBuildDate>Tue, 22 Sep 2020 12:34:42 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
